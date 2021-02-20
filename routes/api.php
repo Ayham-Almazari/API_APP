@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\API\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,4 +18,35 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('posts',\App\Http\Controllers\PostController::class);
+Route::group([
+    'prefix' => 'auth',
+],function (){
+   //rout without restricted access auth
+    Route::post('login'      , [AuthController::class,'login']);
+    Route::post('register'   , [AuthController::class,'register'] );
+    Route::post('refresh'    , [AuthController::class,'refresh']);
+
+    Route::middleware('auth:api')->group(function ($router) {
+        Route::post('logout'   , [AuthController::class,'logout']);
+        Route::post( 'user' ,  [AuthController::class,'user']);
+    });
+});
+Route::group([
+    'prefix' => 'auth/admin',
+],function (){
+    //rout without restricted access auth
+    Route::post('login'      , [AuthController::class,'login']);
+    Route::post('register'   , [AuthController::class,'register'] );
+    Route::post('refresh'    , [AuthController::class,'refresh']);
+
+    Route::middleware('auth:admin')->group(function ($router) {
+        Route::post('logout'   , [AuthController::class,'logout']);
+        Route::post( 'user' ,  [AuthController::class,'user']);
+    });
+});
+
+Route::apiResource('posts',PostController::class);
+
+Route::apiResource('manufactor',ManufactorsController::class);
+
+
