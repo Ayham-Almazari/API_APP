@@ -10,6 +10,8 @@ class Admin extends Model implements JWTSubject
 {
     use HasFactory;
 
+    protected $table="admins";
+
     /**
      * The attributes that are mass assignable.
      *

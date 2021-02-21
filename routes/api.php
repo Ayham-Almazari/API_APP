@@ -22,26 +22,26 @@ Route::group([
     'prefix' => 'auth',
 ],function (){
    //rout without restricted access auth
-    Route::post('login'      , [AuthController::class,'login']);
-    Route::post('register'   , [AuthController::class,'register'] );
-    Route::post('refresh'    , [AuthController::class,'refresh']);
+    Route::post('login'      , [AuthController::class,'login']   );
+    Route::post('register'   , [AuthController::class,'register']);
+    Route::post('refresh'    , [AuthController::class,'refresh'] );
 
-    Route::middleware('auth:api')->group(function ($router) {
+    Route::middleware('jwt.verify')->group(function ($router ) {
         Route::post('logout'   , [AuthController::class,'logout']);
-        Route::post( 'user' ,  [AuthController::class,'user']);
+        Route::post( 'user'    ,    [AuthController::class,'user']  );
     });
 });
 Route::group([
     'prefix' => 'auth/admin',
 ],function (){
     //rout without restricted access auth
-    Route::post('login'      , [AuthController::class,'login']);
-    Route::post('register'   , [AuthController::class,'register'] );
-    Route::post('refresh'    , [AuthController::class,'refresh']);
+    Route::post('login'      , [AuthController::class,'login']   );
+    Route::post('register'   , [AuthController::class,'register']);
+    Route::post('refresh'    , [AuthController::class,'refresh'] );
 
-    Route::middleware('auth:admin')->group(function ($router) {
+    Route::middleware('admin')->group(function ($router) {
         Route::post('logout'   , [AuthController::class,'logout']);
-        Route::post( 'user' ,  [AuthController::class,'user']);
+        Route::post( 'user'    ,    [AuthController::class,'user']  );
     });
 });
 

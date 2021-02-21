@@ -8,6 +8,14 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Exceptions\InvalidClaimException;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\PayloadException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
+
 class AuthController extends Controller
 {
     /**
@@ -27,7 +35,7 @@ class AuthController extends Controller
     public function register(Request $request ) {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'email' => 'required|string|email|unique:users',
+            'email' => 'required|string|email:rfc,dns|unique:users',
             'password' => 'required|confirmed|min:6|max:10'
         ]);
 
@@ -39,14 +47,25 @@ class AuthController extends Controller
         }
 
         $user = new User([
-            'name'=>$request->name,
-            'email'=>$request->email,
+            'name'=>e($request->name),
+            'email'=>e($request->email),
             'password'=>bcrypt($request->password)
         ]);
+        try {
+            $token = $this->guard()->claims(['role'=>'user'])->login($user);
+        }catch (TokenInvalidException $e){
+            return \response()->json([
+                'state'=>false,
+                'msg'=>$e->getMessage()
+            ]);
+        }catch (\Tymon\JWTAuth\Exceptions\InvalidClaimException $e){
+            return \response()->json([
+                'state'=>false,
+                'msg'=>$e->getMessage()
+            ]);
+        }
         $user->save();
-        return response()->json([
-            "message"=>"user created successfully ."
-        ],201);
+        return $this->respondWithToken($token,$user);
 
 
     }
@@ -64,13 +83,11 @@ class AuthController extends Controller
             'remember_me'=>'boolean'
         ]);
         $credentials = $request->only('email', 'password');
-        if (! $token = $this->guard()->attempt($credentials)) {
+        if (! $token = $this->guard()->claims(['role'=>'user'])->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return $this->respondWithToken($token)->cookie(
-            "_token",$token,null
-        );
+        return $this->respondWithToken($token,\auth()->user());
     }
 
     /**
@@ -78,7 +95,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function user()
+    public function user(Request $request)
     {
         return response()->json(['data'=>auth()->user()]);
     }
@@ -90,7 +107,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        $this->guard()->logout(true);
+            $this->guard()->logout(true);
 
         return response()->json([
             'status'=>true,
@@ -105,7 +122,15 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        return $this->respondWithToken(auth()->refresh());
+        try {
+            $token=auth()->refresh(true,true);
+        }catch (\Tymon\JWTAuth\Exceptions\JWTException $e){
+            return response()->json([
+                'state'=>false,
+                "msg"=>$e->getMessage()
+            ]);
+        }
+        return $this->respondWithToken(auth()->claims(['role'=>'user'])->refresh());
     }
 
     /**
@@ -115,12 +140,16 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token)
+    protected function respondWithToken($token,$user = null)
     {
         return response()->json([
+            "state"=>true,
+            "data"=>$user,
             'access_token' => $token,
-            'token_type' => 'bearer',
-        ]);
+            'token_type' => 'bearer'
+        ],200)->cookie(
+            "_token", $token
+        );
     }
 
     private function guard(){
