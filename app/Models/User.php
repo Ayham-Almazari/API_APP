@@ -23,6 +23,7 @@ class User extends Authenticatable implements JWTSubject
         'password',
     ];
 
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -64,5 +65,10 @@ class User extends Authenticatable implements JWTSubject
         return [
             'role'=>'user'
         ];
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
     }
 }

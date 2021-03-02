@@ -9,9 +9,16 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $guarded=[];
+    protected $guarded=[
+
+    ];
 
     protected $casts=[
         'likes'=>'integer'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(Buyer::class);
+    }
 }

@@ -64,4 +64,6 @@ class PostController extends Controller
     {
         return $post->delete();
     }
+
+
 }

@@ -20,7 +20,6 @@ class JwtMiddleware
         try {
 
             $user = JWTAuth::parseToken()->authenticate();
-
             if( !$user ) throw new Exception('User Not Found');
 
         } catch (Exception $e) {
@@ -28,14 +27,14 @@ class JwtMiddleware
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
 
                 return response()->json([
-
+                        //Token Invalid
                         'data' => null,
 
                         'status' => false,
 
                         'err_' => [
 
-                            'message' => 'Token Invalid',
+                            'message' => 'Something error ...',
 
                             'code' => 1
 
@@ -48,16 +47,16 @@ class JwtMiddleware
             }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
 
                 return response()->json([
-
+                        //Token Expired
                         'data' => null,
 
                         'status' => false,
 
                         'err_' => [
 
-                            'message' => 'Token Expired',
+                            'message' => 'Something error ...',
 
-                            'code' =>1
+                            'code' =>2
 
                         ]
 
@@ -72,16 +71,16 @@ class JwtMiddleware
                 if( $e->getMessage() === 'User Not Found') {
 
                     return response()->json([
-
+                            //User Not Found
                             "data" => null,
 
                             "status" => false,
 
                             "err_" => [
 
-                                "message" => "User Not Found",
+                                "message" => "Something error ...",
 
-                                "code" => 1
+                                "code" => 3
 
                             ]
 
@@ -90,16 +89,16 @@ class JwtMiddleware
                     ); }
 
                 return response()->json([
-
+                        //Authorization Token not found
                         'data' => null,
 
                         'status' => false,
 
                         'err_' => [
 
-                            'message' => 'Authorization Token not found',
+                            'message' => 'Something error ...',
 
-                            'code' =>1
+                            'code' =>4
 
                         ]
 
@@ -110,6 +109,7 @@ class JwtMiddleware
             }
 
         }
+
         return $next($request);
     }
 }
