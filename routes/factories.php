@@ -21,12 +21,10 @@ Route::group([
     //rout without restricted access auth
     Route::post('login'      ,      [FactoryController::class,'login']    );
     Route::post('register'   ,      [FactoryController::class,'register'] );
-
-    Route::middleware('jwt.verify')->group(function () {
+    Route::middleware('auth:factory')->group(function () {
         Route::post('logout'   ,    [FactoryController::class,'logout']   );
         Route::post( 'user'    ,    [FactoryController::class,'user']     );
-
-        Route::post('refresh'    ,  [FactoryController::class,'refresh']  )->middleware('auth:factory');
+        Route::post('refresh'    ,  [FactoryController::class,'refresh']  );
     });
 });
 

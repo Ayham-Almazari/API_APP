@@ -21,7 +21,6 @@ class XssSanitize
             $input = strip_tags($input);
         });
         $request->merge($input);
-        return response(['dd'=>$request->all()]);
         return $next($request);
     }
 

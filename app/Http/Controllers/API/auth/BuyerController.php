@@ -83,7 +83,7 @@ class BuyerController extends Controller
             $this->guard()->logout(true);
 
         return response()->json([
-            'status'=>true,
+            'status'  => true,
             'message' => 'Successfully logged out'
         ],200);
     }
