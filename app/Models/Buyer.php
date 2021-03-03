@@ -7,12 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Admin extends  Authenticatable implements JWTSubject
+class Buyer extends Authenticatable implements JWTSubject
 {
     use HasFactory;
-
-    protected $table="admins";
-
     /**
      * The attributes that are mass assignable.
      *
@@ -53,7 +50,7 @@ class Admin extends  Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [
-            "role"=>'admin'
+            "role"=>'buyer'
         ];
     }
 }

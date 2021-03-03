@@ -15,12 +15,17 @@ class JwtMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $guard='buyer')
     {
-        try {
 
+        try {
             $user = JWTAuth::parseToken()->authenticate();
-            if( !$user ) throw new Exception('User Not Found');
+            if( !$user)
+                throw new Exception('User Not Found');
+
+            auth()->shouldUse($guard); //shoud you user guard / table
+            if( !auth($guard)->user() && auth()->payload()->get('role')!==$guard)
+                throw new Exception('Unauthorized');
 
         } catch (Exception $e) {
 
@@ -81,6 +86,25 @@ class JwtMiddleware
                                 "message" => "Something error ...",
 
                                 "code" => 3
+
+                            ]
+
+                        ]
+
+                    ); }
+                if( $e->getMessage() === 'Unauthorized') {
+
+                    return response()->json([
+                            //User Not guard
+                            "data" => null,
+
+                            "status" => false,
+
+                            "err_" => [
+
+                                "message" => "Something error ...".$guard,
+
+                                "code" => 6
 
                             ]
 

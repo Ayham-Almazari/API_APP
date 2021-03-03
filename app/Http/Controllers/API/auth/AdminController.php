@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\API\auth;
 
+use App\Models\Admin;
 use App\Models\Buyer;
-use App\Models\User;
 use App\Http\Requests\buyerauth\{ Register_buyer,Login_buyer};
 use App\Http\Traits\Responses_Trait;
 use http\Env\Response;
@@ -20,11 +20,11 @@ use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
-class BuyerController extends Controller
+class AdminController extends Controller
 {
     use Responses_Trait;
+    private const admin = 'admin';
 
-    private const buyer = 'buyer';
 
     public function __construct()
     {
@@ -37,15 +37,13 @@ class BuyerController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function register(Register_buyer $request) {
-
-        $user = new Buyer([
+        $user = new Admin([
             'name'=>$request->name,
             'email'=>$request->email,
             'password'=>Hash::make($request->post('password'))
         ]);
         $user->save();
-
-        return $this->returnSuccessMessage("the user registered successfully" );
+        return $this->returnSuccessMessage("the user registered successfully");
     }
 
     /**
@@ -56,11 +54,11 @@ class BuyerController extends Controller
     public function login(Login_buyer $request)
     {
         $credentials = $request->only('email', 'password');
-        if (! $token = $this->guard()->claims((new Buyer())->getJWTCustomClaims())->attempt($credentials)) {
+        if (! $token = $this->guard()->claims((new Admin())->getJWTCustomClaims())->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return $this->respondWithToken($token,auth()->user());
+        return $this->respondWithToken($token,\auth()->user());
     }
 
     /**
@@ -80,7 +78,7 @@ class BuyerController extends Controller
      */
     public function logout()
     {
-            $this->guard()->logout(true);
+        $this->guard()->logout(true);
 
         return response()->json([
             'status'=>true,
@@ -95,20 +93,21 @@ class BuyerController extends Controller
      */
     public function refresh(Request $request)
     {
-        $token= $this->guard()->claims((new Buyer())->getJWTCustomClaims())
+        $token= $this->guard()->claims((new Admin())->getJWTCustomClaims())
             ->refresh();
-            return
-                $this->respondWithToken(
-                    $token
-                    ,
-                    JWTAuth::user()
-                );
+        return
+            $this->respondWithToken(
+                $token
+                ,
+                JWTAuth::user()
+            );
     }
 
 
 
     private function guard(){
-        return Auth::guard(self::buyer);
+        return Auth::guard(self::admin);
     }
 
 }
+

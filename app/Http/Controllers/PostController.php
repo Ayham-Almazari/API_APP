@@ -12,6 +12,12 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('jwt.verify')->only('index');
+    }
+
     public function index()
     {
         return Post::all();

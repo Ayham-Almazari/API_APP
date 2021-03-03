@@ -2,33 +2,25 @@
 
 namespace App\Http\Controllers\API\auth;
 
-use App\Models\Buyer;
-use App\Models\User;
-use App\Http\Requests\buyerauth\{ Register_buyer,Login_buyer};
-use App\Http\Traits\Responses_Trait;
-use http\Env\Response;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\buyerauth\Login_buyer;
+use App\Http\Requests\buyerauth\Register_buyer;
+use App\Http\Traits\Responses_Trait;
+use App\Models\Buyer;
+use App\Models\Factory;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Exceptions\InvalidClaimException;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Exceptions\PayloadException;
-use Tymon\JWTAuth\Exceptions\TokenExpiredException;
-use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-
-class BuyerController extends Controller
+class FactoryController extends Controller
 {
     use Responses_Trait;
 
-    private const buyer = 'buyer';
+    private const factory = 'factory';
 
     public function __construct()
     {
-
     }
 
     /**
@@ -38,14 +30,14 @@ class BuyerController extends Controller
      */
     public function register(Register_buyer $request) {
 
-        $user = new Buyer([
+        $user = new Factory([
             'name'=>$request->name,
             'email'=>$request->email,
             'password'=>Hash::make($request->post('password'))
         ]);
         $user->save();
 
-        return $this->returnSuccessMessage("the user registered successfully" );
+        return $this->returnSuccessMessage("the user registered successfully");
     }
 
     /**
@@ -56,7 +48,7 @@ class BuyerController extends Controller
     public function login(Login_buyer $request)
     {
         $credentials = $request->only('email', 'password');
-        if (! $token = $this->guard()->claims((new Buyer())->getJWTCustomClaims())->attempt($credentials)) {
+        if (! $token = $this->guard()->claims((new Factory())->getJWTCustomClaims())->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -80,12 +72,13 @@ class BuyerController extends Controller
      */
     public function logout()
     {
-            $this->guard()->logout(true);
+        $this->guard()->logout(true);
 
         return response()->json([
             'status'=>true,
             'message' => 'Successfully logged out'
         ],200);
+
     }
 
     /**
@@ -95,20 +88,19 @@ class BuyerController extends Controller
      */
     public function refresh(Request $request)
     {
-        $token= $this->guard()->claims((new Buyer())->getJWTCustomClaims())
+        $token= $this->guard()->claims((new Factory())->getJWTCustomClaims())
             ->refresh();
-            return
-                $this->respondWithToken(
-                    $token
-                    ,
-                    JWTAuth::user()
-                );
+        return
+            $this->respondWithToken(
+                $token
+                ,
+                JWTAuth::user()
+            );
     }
 
 
 
     private function guard(){
-        return Auth::guard(self::buyer);
+        return Auth::guard(self::factory);
     }
-
 }

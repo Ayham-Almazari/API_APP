@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'api',
+        'guard' => 'buyer',
         'passwords' => 'users',
     ],
 
@@ -51,7 +51,16 @@ return [
             'provider' => 'admins',
             'hash' => false,
         ],
-
+        'factory' => [
+            'driver' => 'jwt',
+            'provider' => 'Factories',
+            'hash' => false,
+        ],
+        'buyer' => [
+            'driver' => 'jwt',
+            'provider' => 'buyers',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -80,7 +89,14 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
-
+        'buyers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Buyer::class,
+        ],
+        'Factories' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Factory::class,
+        ],
     ],
 
     /*
@@ -110,7 +126,7 @@ return [
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
-        ],
+        ]
     ],
 
     /*

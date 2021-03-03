@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\auth\AdminController;
+use App\Http\Controllers\API\auth\BuyerController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,16 +16,16 @@ use App\Http\Controllers\API\auth\AdminController;
 
 
 Route::group([
-    'prefix' => 'auth/admin',
+    'prefix' => 'auth/buyer',
 ],function (){
     //rout without restricted access auth
-    Route::post('login'      , [AdminController::class,'login']   );
-    Route::post('register'   , [AdminController::class,'register']);
+    Route::post('login'      , [BuyerController::class,'login']   );
+    Route::post('register'   , [BuyerController::class,'register']);
 
-    Route::middleware(['jwt.verify:admin'])->group(function () {
-        Route::post('logout'   , [AdminController::class,'logout']);
-        Route::post( 'user'    ,    [AdminController::class,'user']  );
-        Route::post('refresh'    , [AdminController::class,'refresh'] );
+    Route::middleware('jwt.verify')->group(function () {
+        Route::post('logout'   , [BuyerController::class,'logout']);
+        Route::post( 'user'    ,    [BuyerController::class,'user']  );
+        Route::post('refresh'    , [BuyerController::class,'refresh'] );
     });
 });
 
