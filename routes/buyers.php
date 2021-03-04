@@ -22,7 +22,7 @@ Route::group([
     Route::post('login'      , [BuyerController::class,'login']       );
     Route::post('register'   , [BuyerController::class,'register']    );
 
-    Route::middleware(['jwt.verify:buyer'])->group(function () {
+    Route::middleware(['auth:buyer','jwt.verify:buyer'])->group(function () {
         Route::post('logout'   , [BuyerController::class,'logout']    );
         Route::post( 'user'    ,    [BuyerController::class,'user']   );
         Route::post('refresh'    , [BuyerController::class,'refresh'] );

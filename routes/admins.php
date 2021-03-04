@@ -22,7 +22,7 @@ Route::group([
     Route::post('login'      , [AdminController::class,'login']   );
     Route::post('register'   , [AdminController::class,'register']);
 
-    Route::middleware(['jwt.verify:admin'])->group(function () {
+    Route::middleware(['auth:admin','jwt.verify:admin'])->group(function () {
         Route::post('logout'   , [AdminController::class,'logout']);
         Route::post( 'user'    ,    [AdminController::class,'user']  );
         Route::post('refresh'    , [AdminController::class,'refresh'] );

@@ -6,7 +6,8 @@ use Closure;
 use Illuminate\Http\Request;
 use Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
-class JwtMiddleware
+use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
+class JwtMiddleware extends BaseMiddleware
 {
     /**
      * Handle an incoming request.
@@ -25,7 +26,7 @@ class JwtMiddleware
             if( !auth($guard)->user() && auth()->payload()->get('role')!==$guard)
                 throw new Exception('Unauthorized');
 
-            $user = JWTAuth::parseToken()->authenticate();
+            $user = JWTAuth::parseToken()->authenticate($request,[$guard]);
             if( !$user)
                 throw new Exception('User Not Found');
 
