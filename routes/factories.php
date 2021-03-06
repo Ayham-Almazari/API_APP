@@ -21,6 +21,8 @@ Route::group([
     //rout without restricted access auth
     Route::post('login'      ,      [FactoryController::class,'login']    );
     Route::post('register'   ,      [FactoryController::class,'register'] );
+    Route::post('sendPasswordResetLink', [FactoryController::class,'sendEmail']);
+    Route::post('resetPassword', [FactoryController::class,'passwordResetProcess']);
     Route::middleware(['auth:factory','jwt.verify:factory'])->group(function () {
         Route::post('logout'   ,    [FactoryController::class,'logout']   );
         Route::post( 'user'    ,    [FactoryController::class,'user']     );

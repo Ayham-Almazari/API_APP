@@ -21,7 +21,8 @@ Route::group([
     //rout without restricted access auth
     Route::post('login'      , [AdminController::class,'login']   );
     Route::post('register'   , [AdminController::class,'register']);
-
+    Route::post('sendPasswordResetLink', [AdminController::class,'sendEmail']);
+    Route::post('resetPassword', [AdminController::class,'passwordResetProcess']);
     Route::middleware(['auth:admin','jwt.verify:admin'])->group(function () {
         Route::post('logout'   , [AdminController::class,'logout']);
         Route::post( 'user'    ,    [AdminController::class,'user']  );

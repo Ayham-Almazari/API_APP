@@ -2,27 +2,20 @@
 
 namespace App\Http\Controllers\API\auth;
 
-use App\Models\Admin;
-use App\Models\Buyer;
-use App\Http\Requests\buyerauth\{ Register_buyer,Login_buyer};
+use App\Http\Traits\auth\{ChangePassword,PasswordResetRequest};
 use App\Http\Traits\Responses_Trait;
-use http\Env\Response;
+use App\Models\Admin;
+use App\Http\Requests\auth\{Register_buyer,Login_buyer};
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Exceptions\InvalidClaimException;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Exceptions\PayloadException;
-use Tymon\JWTAuth\Exceptions\TokenExpiredException;
-use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
-
+use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller
 {
-    use Responses_Trait;
+    use Responses_Trait,ChangePassword,PasswordResetRequest;
     private const admin = 'admin';
 
 
@@ -109,5 +102,29 @@ class AdminController extends Controller
         return Auth::guard(self::admin);
     }
 
+
+    // Reset password
+    private function resetPassword($request) {
+        // find email
+        $userData = Admin::whereEmail($request->email)->first();
+        // update password
+        $userData->update([
+            'password'=>bcrypt($request->password)
+        ]);
+        // remove verification data from db
+        $this->updatePasswordRow($request)->delete();
+
+        // reset password response
+        return response()->json([
+            'data'=>'Password has been updated.'
+        ], Response::HTTP_CREATED);
+    }
+
+
+    //this is a function to get your email from database
+    public function validateEmail($email)
+    {
+        return !!Admin::where('email', $email)->first();
+    }
 }
 

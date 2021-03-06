@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\buyerauth;
+namespace App\Http\Requests\auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,7 +24,7 @@ class Login_buyer extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|string|email',
+            'email' => 'required|string|email:rfc,dns|unique:admins|max:255',
             'password' => 'required|min:8|max:20',
             'remember_me'=>'boolean'
         ];

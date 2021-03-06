@@ -22,3 +22,4 @@ Route::apiResource('posts',PostController::class);
 Route::apiResource('manufactor',ManufactorsController::class);
 
 
+

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\buyerauth;
+namespace App\Http\Requests\auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,7 +25,7 @@ class Register_buyer extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email:rfc,dns|unique:users|max:255',
+            'email' => 'required|string|email:rfc,dns|unique:admins|max:255',
             'password' => ['required','confirmed','min:8','max:20','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/']
         ];
     }

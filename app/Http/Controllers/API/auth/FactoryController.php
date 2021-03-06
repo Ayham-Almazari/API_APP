@@ -3,19 +3,20 @@
 namespace App\Http\Controllers\API\auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\buyerauth\Login_buyer;
-use App\Http\Requests\buyerauth\Register_buyer;
+use App\Http\Requests\auth\Login_buyer;
+use App\Http\Requests\auth\Register_buyer;
+use App\Http\Traits\auth\{ChangePassword,PasswordResetRequest};
 use App\Http\Traits\Responses_Trait;
-use App\Models\Buyer;
 use App\Models\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class FactoryController extends Controller
 {
-    use Responses_Trait;
+    use Responses_Trait,ChangePassword,PasswordResetRequest;
 
     private const factory = 'factory';
 
@@ -102,5 +103,29 @@ class FactoryController extends Controller
 
     private function guard(){
         return Auth::guard(self::factory);
+    }
+
+
+    // Reset password
+    private function resetPassword($request) {
+        // find email
+        $userData = Factory::whereEmail($request->email)->first();
+        // update password
+        $userData->update([
+            'password'=>bcrypt($request->password)
+        ]);
+        // remove verification data from db
+        $this->updatePasswordRow($request)->delete();
+
+        // reset password response
+        return response()->json([
+            'data'=>'Password has been updated.'
+        ], Response::HTTP_CREATED);
+    }
+
+    //this is a function to get your email from database
+    public function validateEmail($email)
+    {
+        return !!Factory::where('email', $email)->first();
     }
 }
