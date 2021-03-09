@@ -15,7 +15,8 @@ use App\Http\Controllers\API\auth\BuyerController;
 */
 
 
-
+Route::get('email/verify', [\App\Http\Controllers\API\auth\VerificationController::class,'verify'])->name('verification.verify');
+Route::get('email/resend', [\App\Http\Controllers\API\auth\VerificationController::class,'resend'])->name('verification.resend');
 
 Route::apiResource('posts',PostController::class);
 

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API\auth;
 
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class VerificationController
 {
@@ -43,8 +42,7 @@ class VerificationController
         if (auth()->user()->hasVerifiedEmail()) {
             return $this->returnSuccessMessage('EMAIL ALREADY VERIFIED');
         }
-        $this->Email_verification_code=Str::random(4);
-        auth()->user()->sendEmailVerificationNotification();
+        auth()->user()->sendEmailVerificationNotification();a
 
         return $this->returnSuccessMessage("Email verification link sent on your email id");
     }
