@@ -64,6 +64,7 @@ trait PasswordResetRequest
     public function failedResponse()
     {
         return response()->json([
+            'status'=>false,
             'error' => 'Email does\'t found on our database'
         ], Response::HTTP_NOT_FOUND);
     }
@@ -71,6 +72,7 @@ trait PasswordResetRequest
     public function successResponse()
     {
         return response()->json([
+            'status'=>true,
             'data' => 'Reset Email is send successfully, please check your inbox.'
         ], Response::HTTP_OK);
     }

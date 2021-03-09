@@ -23,7 +23,7 @@ Route::group([
     Route::post('register'   , [BuyerController::class,'register']    );
     Route::post('sendPasswordResetLink', [BuyerController::class,'sendEmail']);
     Route::post('resetPassword', [BuyerController::class,'passwordResetProcess']);
-    Route::middleware(['jwt.verify:buyer'])->group(function () {
+    Route::middleware(['auth:buyer','jwt.verify:buyer'])->group(function () {
         Route::post('logout'   , [BuyerController::class,'logout']    );
         Route::post( 'user'    ,    [BuyerController::class,'user']   );
         Route::post('refresh'    , [BuyerController::class,'refresh'] );

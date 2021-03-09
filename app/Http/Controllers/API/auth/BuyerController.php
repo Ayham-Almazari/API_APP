@@ -16,11 +16,11 @@ class BuyerController extends Controller
 {
     use Responses_Trait,ChangePassword,PasswordResetRequest;
 
-    private const buyer = 'buyer';
+    private const guard = 'buyer';
 
     public function __construct()
     {
-
+        Auth::shouldUse(self::guard);
     }
 
     /**
@@ -52,7 +52,7 @@ class BuyerController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return $this->respondWithToken($token,auth()->user());
+        return $this->respondWithToken($token,auth()->user(),'successfully logged in');
     }
 
     /**

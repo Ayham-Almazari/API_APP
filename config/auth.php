@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'buyer',
-        'passwords' => 'users',
+        'passwords' => 'admin',
     ],
 
     /*
@@ -115,8 +115,18 @@ return [
     */
 
     'passwords' => [
-        'api' => [
+        'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+        'admin' => [
+            'provider' => 'admins',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+        'admins' => [
+            'provider' => 'admins',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

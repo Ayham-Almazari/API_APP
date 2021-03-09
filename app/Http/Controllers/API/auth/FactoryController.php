@@ -18,10 +18,11 @@ class FactoryController extends Controller
 {
     use Responses_Trait,ChangePassword,PasswordResetRequest;
 
-    private const factory = 'factory';
+    private const guard = 'factory';
 
     public function __construct()
     {
+        Auth::shouldUse(self::guard);
     }
 
     /**
@@ -53,7 +54,7 @@ class FactoryController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return $this->respondWithToken($token,auth()->user());
+        return $this->respondWithToken($token,auth()->user(),'successfully logged in');
     }
 
     /**
@@ -102,7 +103,7 @@ class FactoryController extends Controller
 
 
     private function guard(){
-        return Auth::guard(self::factory);
+        return Auth::guard(self::guard);
     }
 
 

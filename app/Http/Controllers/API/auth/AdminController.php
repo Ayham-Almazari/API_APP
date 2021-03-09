@@ -12,15 +12,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Password;
 
 class AdminController extends Controller
 {
     use Responses_Trait,ChangePassword,PasswordResetRequest;
     private const admin = 'admin';
-
+    private $Email_verification_code;
 
     public function __construct()
     {
+        Auth::shouldUse(self::admin);
 
     }
 
@@ -51,7 +53,7 @@ class AdminController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return $this->respondWithToken($token,\auth()->user());
+        return $this->respondWithToken($token,auth()->user(),'successfully logged in');
     }
 
     /**
@@ -126,5 +128,8 @@ class AdminController extends Controller
     {
         return !!Admin::where('email', $email)->first();
     }
+
+
+
 }
 

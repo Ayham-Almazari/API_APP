@@ -5,6 +5,7 @@ namespace App\Http\Traits\auth;
 
 use App\Http\Requests\auth\Login_buyer;
 use App\Http\Requests\auth\UpdatePasswordRequest;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
 
@@ -12,7 +13,15 @@ trait ChangePassword
 {
 
 
-    public function passwordResetProcess(UpdatePasswordRequest $request){
+    public function passwordResetProcess(Request $request){
+       $v= $request->validate([
+            'resetToken'=>'required|string|max:255',
+            'email' => 'required|string|email:rfc,dns|max:255',
+            'password' => ['required','confirmed','min:8','max:20','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/']
+        ]);
+        if ($v->fails()) {
+            return \response([$v->errors()]);
+        }
         return $this->updatePasswordRow($request)->count() > 0 ? $this->resetPassword($request) : $this->tokenNotFoundError();
     }
 

@@ -25,9 +25,11 @@ Route::group([
     Route::post('resetPassword', [AdminController::class,'passwordResetProcess']);
     Route::middleware(['auth:admin','jwt.verify:admin'])->group(function () {
         Route::post('logout'   , [AdminController::class,'logout']);
-        Route::post( 'user'    ,    [AdminController::class,'user']  );
+        Route::get( 'user'    ,    [AdminController::class,'user']  );
         Route::post('refresh'    , [AdminController::class,'refresh'] );
     });
+    Route::get('email/verify', [AdminController::class,'verify'])->name('verification.verify');
+    Route::get('email/resend', [AdminController::class,'resend'])->name('verification.resend');
 });
 
 

@@ -22,8 +22,10 @@ class JwtMiddleware extends BaseMiddleware
 
 
         try {
+
+
             auth()->shouldUse($guard); //shoud you user guard / table
-            if( !auth($guard)->user() && auth()->payload()->get('role')!==$guard)
+            if( !auth($guard)->user() && auth()->paylaoad()->get('role')!==$guard)
                 throw new Exception('Unauthorized');
 
             $user = JWTAuth::parseToken()->authenticate($request,[$guard]);

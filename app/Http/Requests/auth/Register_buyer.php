@@ -38,7 +38,7 @@ class Register_buyer extends FormRequest
     public function messages()
     {
         return [
-            'password.regex' => ':attribute have at least 1 lowercase AND 1 uppercase AND 1 number AND 1 symbol'
+            'password.regex' => ':attribute have at least 1 lowercase AND 1 u ppercase AND 1 number AND 1 symbol'
         ];
     }
 }
