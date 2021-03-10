@@ -40,7 +40,7 @@ trait VerificationController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function resend(Request $request) {
+    public function resend() {
 
         if (auth()->user()->hasVerifiedEmail()) {
             return $this->returnSuccessMessage('EMAIL ALREADY VERIFIED');

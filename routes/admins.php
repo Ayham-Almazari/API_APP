@@ -28,8 +28,11 @@ Route::group([
         Route::get( 'user'    ,    [AdminController::class,'user']  );
         Route::post('refresh'    , [AdminController::class,'refresh'] );
     });
-    Route::get('email/verify', [AdminController::class,'verify'])->name('verification.verify');
-    Route::get('email/resend', [AdminController::class,'resend'])->name('verification.resend');
+    Route::middleware('Logged')->group(function (){
+        Route::get('email/verify', [AdminController::class,'verify'])->name('verification.verify');
+        Route::get('email/resend', [AdminController::class,'resend'])->name('verification.resend');
+    });
+
 });
 
 

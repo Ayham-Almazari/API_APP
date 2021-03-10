@@ -61,7 +61,7 @@ class AdminController extends Controller
     /**
      * Get the authenticated User.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponsea
      */
     public function user(Request $request)
     {
