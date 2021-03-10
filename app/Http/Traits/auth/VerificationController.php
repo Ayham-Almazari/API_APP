@@ -1,13 +1,15 @@
 <?php
 
 
-namespace App\Http\Controllers\API\auth;
+namespace App\Http\Traits\auth;
 
 
+use App\Http\Traits\Responses_Trait;
 use Illuminate\Http\Request;
 
-class VerificationController
+trait VerificationController
 {
+    use Responses_Trait;
     /**
      * Verify email
      *
@@ -38,11 +40,13 @@ class VerificationController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function resend() {
+    public function resend(Request $request) {
+
         if (auth()->user()->hasVerifiedEmail()) {
             return $this->returnSuccessMessage('EMAIL ALREADY VERIFIED');
         }
-        auth()->user()->sendEmailVerificationNotification();a
+
+        auth()->user()->sendEmailVerificationNotification();
 
         return $this->returnSuccessMessage("Email verification link sent on your email id");
     }

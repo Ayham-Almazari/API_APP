@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API\auth;
 
-use App\Http\Traits\auth\{ChangePassword,PasswordResetRequest};
+use App\Http\Traits\auth\{ChangePassword, PasswordResetRequest, VerificationController};
 use App\Http\Traits\Responses_Trait;
 use App\Models\Admin;
 use App\Http\Requests\auth\{Register_buyer,Login_buyer};
@@ -12,11 +12,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
 
 class AdminController extends Controller
 {
-    use Responses_Trait,ChangePassword,PasswordResetRequest;
+    use Responses_Trait,ChangePassword,PasswordResetRequest,VerificationController;
     private const admin = 'admin';
     private $Email_verification_code;
 
