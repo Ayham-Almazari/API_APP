@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Factory extends Authenticatable implements JWTSubject
+class Owner extends Authenticatable implements JWTSubject
 {
     use HasFactory;
     /**
@@ -49,7 +49,7 @@ class Factory extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [
-            "role"=>'factory'
+            "role"=>'owner'
         ];
     }
 }

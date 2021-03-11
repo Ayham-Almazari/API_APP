@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Manufactor;
+use App\Models\Owner;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ManufactorFactory extends Factory
+class OwnerFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = \App\Models\Factory::class;
+    protected $model = Owner::class;
 
     /**
      * Define the model's default state.

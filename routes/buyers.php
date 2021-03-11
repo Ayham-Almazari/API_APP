@@ -28,6 +28,10 @@ Route::group([
         Route::post( 'user'    ,    [BuyerController::class,'user']   );
         Route::post('refresh'    , [BuyerController::class,'refresh'] );
     });
+    Route::middleware('Logged:buyer')->group(function (){
+        Route::get('email/verify', [BuyerController::class,'verify'])->name('verification.verify');
+        Route::get('email/resend', [BuyerController::class,'resend'])->name('verification.resend');
+    });
 });
 
 

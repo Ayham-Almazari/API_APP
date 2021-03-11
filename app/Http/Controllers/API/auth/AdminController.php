@@ -25,7 +25,6 @@ class AdminController extends Controller
     public function __construct()
     {
         Auth::shouldUse(self::admin);
-
     }
 
     /**

@@ -15,7 +15,7 @@ class CheckIfLoggedIn
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next,$GUARD)
     {
         if(!Auth::check()){
             return response()->json(["User Must Be Logged In"]);

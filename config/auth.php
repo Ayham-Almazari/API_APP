@@ -51,9 +51,9 @@ return [
             'provider' => 'admins',
             'hash' => false,
         ],
-        'factory' => [
+        'owner' => [
             'driver' => 'jwt',
-            'provider' => 'Factories',
+            'provider' => 'Owners',
             'hash' => false,
         ],
         'buyer' => [
@@ -93,9 +93,9 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Buyer::class,
         ],
-        'Factories' => [
+        'Owners' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Factory::class,
+            'model' => App\Models\Owner::class,
         ],
     ],
 

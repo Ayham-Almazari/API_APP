@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers\API\auth;
 
-use App\Models\Buyer;
-use App\Http\Requests\auth\{Register_buyer, Login_buyer, UpdatePasswordRequest};
+use App\Http\Requests\auth\Login_buyer;
+use App\Http\Requests\auth\Register_buyer;
+use App\Http\Traits\auth\ChangePassword;
+use App\Http\Traits\auth\PasswordResetRequest;
 use App\Http\Traits\Responses_Trait;
-use Illuminate\Support\Facades\Hash;
+use App\Models\Factory;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use App\Http\Traits\auth\{ChangePassword,PasswordResetRequest};
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
-class BuyerController extends Controller
-{
-    use Responses_Trait, ChangePassword, PasswordResetRequest ;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Http\Controllers\Controller;
 
-    private const guard = 'buyer';
+class OwnerController extends Controller
+{
+    use Responses_Trait,ChangePassword,PasswordResetRequest;
+
+    private const guard = 'owner';
 
     public function __construct()
     {
@@ -30,14 +33,14 @@ class BuyerController extends Controller
      */
     public function register(Register_buyer $request) {
 
-        $user = new Buyer([
+        $user = new Factory([
             'name'=>$request->name,
             'email'=>$request->email,
             'password'=>Hash::make($request->post('password'))
         ]);
-        $user->save();a
+        $user->save();
 
-        return $this->returnSuccessMessage("the user registered successfully" );
+        return $this->returnSuccessMessage("the user registered successfully");
     }
 
     /**
@@ -48,8 +51,8 @@ class BuyerController extends Controller
     public function login(Login_buyer $request)
     {
         $credentials = $request->only('email', 'password');
-        if (! $token = $this->guard()->claims((new Buyer())->getJWTCustomClaims())->attempt($credentials)) {
-            return response()->json(['error' => 'Invalid Email Or Password'], 401);
+        if (! $token = $this->guard()->claims((new Factory())->getJWTCustomClaims())->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
         return $this->respondWithToken($token,auth()->user(),'successfully logged in');
@@ -72,12 +75,13 @@ class BuyerController extends Controller
      */
     public function logout()
     {
-            $this->guard()->logout(true);
+        $this->guard()->logout(true);
 
         return response()->json([
-            'status'  => true,
+            'status'=>true,
             'message' => 'Successfully logged out'
         ],200);
+
     }
 
     /**
@@ -87,14 +91,14 @@ class BuyerController extends Controller
      */
     public function refresh(Request $request)
     {
-        $token= $this->guard()->claims((new Buyer())->getJWTCustomClaims())
+        $token= $this->guard()->claims((new Factory())->getJWTCustomClaims())
             ->refresh();
-            return
-                $this->respondWithToken(
-                    $token
-                    ,
-                    JWTAuth::user()
-                );
+        return
+            $this->respondWithToken(
+                $token
+                ,
+                JWTAuth::user()
+            );
     }
 
 
@@ -104,11 +108,10 @@ class BuyerController extends Controller
     }
 
 
-
     // Reset password
     private function resetPassword($request) {
         // find email
-        $userData = Buyer::whereEmail($request->email)->first();
+        $userData = Factory::whereEmail($request->email)->first();
         // update password
         $userData->update([
             'password'=>bcrypt($request->password)
@@ -125,9 +128,6 @@ class BuyerController extends Controller
     //this is a function to get your email from database
     public function validateEmail($email)
     {
-        return !!Buyer::where('email', $email)->first();
+        return !!Factory::where('email', $email)->first();
     }
-
-
-
 }

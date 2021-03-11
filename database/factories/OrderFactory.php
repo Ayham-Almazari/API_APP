@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Manufactor;
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ManufactorFactory extends Factory
+class OrderFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = \App\Models\Factory::class;
+    protected $model = Order::class;
 
     /**
      * Define the model's default state.
@@ -22,7 +22,10 @@ class ManufactorFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'buyer_id'=>rand(1,50),
+            'owner_id'=>rand(1,50),
+            'status'=>array_rand(array_flip(["Shipped", "Cancelled", "In Process"])),
+            'comment'=>$this->faker->text
         ];
     }
 }

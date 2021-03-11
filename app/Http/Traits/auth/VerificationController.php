@@ -32,7 +32,7 @@ trait VerificationController
             return \response([$e->getMessage()]);
         }
 
-        return $this->returnSuccessMessage('email verified successfully');
+        return $this->returnSuccessMessage('email verified successfully '.$request->auth()->user());
     }
 
     /**
@@ -48,6 +48,6 @@ trait VerificationController
 
         auth()->user()->sendEmailVerificationNotification();
 
-        return $this->returnSuccessMessage("Email verification link sent on your email id");
+        return $this->returnSuccessMessage("Email verification link sent on your email id ".auth()->user()->name);
     }
 }
