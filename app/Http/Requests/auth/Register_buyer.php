@@ -24,7 +24,8 @@ class Register_buyer extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'remember_token'=>"boolean",
             'email' => 'required|string|email:rfc,dns|unique:admins|max:255',
             'password' => ['required','confirmed','min:8','max:20','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/']
         ];

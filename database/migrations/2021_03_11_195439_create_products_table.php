@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->string("product_name");
             $table->text("product_description");
             $table->string("product_picture");
-            $table->double('amount', 8, 2);
+            $table->boolean('availability')->default(1);
             $table->timestamps();
         });
     }

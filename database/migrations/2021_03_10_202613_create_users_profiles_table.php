@@ -15,15 +15,19 @@ class CreateUsersProfilesTable extends Migration
     {
         Schema::create('users_profiles', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('admin_id');
-            $table->unsignedBigInteger('buyer_id');
-            $table->unsignedBigInteger('owner_id');
+            $table->unsignedBigInteger('admin_id')->nullable();
+            $table->unsignedBigInteger('buyer_id')->nullable();
+            $table->unsignedBigInteger('owner_id')->nullable();
             $table->foreign('admin_id')->references('id')->on('buyers');
             $table->foreign('buyer_id')->references('id')->on('owners');
             $table->foreign('owner_id')->references('id')->on('admins');
-            $table->string('picture');
-            $table->string('instagram');
-            $table->string('address');
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('picture')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('address')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('phone_verified_at')->nullable();
             $table->timestamps();
         });
     }

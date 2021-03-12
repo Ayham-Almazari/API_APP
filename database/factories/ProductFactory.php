@@ -27,7 +27,7 @@ class ProductFactory extends Factory
             "product_name"=>$this->faker->name,
             "product_description"=>$this->faker->text,
             "product_picture"=>Str::random(7).'/'.Str::random(7),
-            "amount"=>rand(1,50),
+            "availability"=>$this->faker->boolean,
         ];
     }
 }

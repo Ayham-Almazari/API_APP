@@ -8,6 +8,7 @@ use App\Http\Traits\auth\ChangePassword;
 use App\Http\Traits\auth\PasswordResetRequest;
 use App\Http\Traits\Responses_Trait;
 use App\Models\Factory;
+use App\Models\Owner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -33,7 +34,7 @@ class OwnerController extends Controller
      */
     public function register(Register_buyer $request) {
 
-        $user = new Factory([
+        $user = new Owner([
             'name'=>$request->name,
             'email'=>$request->email,
             'password'=>Hash::make($request->post('password'))
@@ -128,6 +129,6 @@ class OwnerController extends Controller
     //this is a function to get your email from database
     public function validateEmail($email)
     {
-        return !!Factory::where('email', $email)->first();
+        return !!Owner::where('email', $email)->first();
     }
 }

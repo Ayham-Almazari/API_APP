@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API\auth;
 
 use App\Models\Buyer;
+use App\Models\UsersProfiles;
+use Illuminate\Database\QueryException;
 use App\Http\Requests\auth\{Register_buyer, Login_buyer, UpdatePasswordRequest};
 use App\Http\Traits\Responses_Trait;
 use Illuminate\Support\Facades\Hash;
@@ -30,12 +32,17 @@ class BuyerController extends Controller
      */
     public function register(Register_buyer $request) {
 
-        $user = new Buyer([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=>Hash::make($request->post('password'))
-        ]);
-        $user->save();a
+            $user = Buyer::create([
+                'user_name'=>$request->user_name,
+                'email'=>$request->email,
+                'phone'=>$request->phone,
+                'password'=>Hash::make($request->post('password'))
+            ]);
+            $user->profile()->create([
+                'first_name'=>$request->first_name,
+                'last_name'=>$request->last_name
+                ]);
+
 
         return $this->returnSuccessMessage("the user registered successfully" );
     }

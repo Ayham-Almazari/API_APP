@@ -16,7 +16,8 @@ class Buyer extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name',
+        'user_name',
+        'phone',
         'email',
         'password',
     ];
@@ -27,7 +28,8 @@ class Buyer extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password',
+        'password',        'remember_token',
+
     ];
 
     // Rest omitted for brevity
@@ -52,5 +54,11 @@ class Buyer extends Authenticatable implements JWTSubject
         return [
             "role"=>'buyer'
         ];
+    }
+
+    //relations
+
+    public function profile(){
+        return $this->hasOne(UsersProfiles::class,'buyer_id');
     }
 }
