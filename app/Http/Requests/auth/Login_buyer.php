@@ -24,7 +24,7 @@ class Login_buyer extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|string|email|max:255',
+            'identifier' => 'required|string|max:255',
             'password' => 'required|min:8|max:20',
             'remember_me'=>'boolean'
         ];

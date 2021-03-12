@@ -25,8 +25,10 @@ class Register_buyer extends FormRequest
     {
         return [
             'first_name' => 'required|string|max:255',
-            'remember_token'=>"boolean",
-            'email' => 'required|string|email:rfc,dns|unique:admins|max:255',
+            'username' => 'required|string|max:255|unique:buyers',
+            'last_name' => 'required|string|max:255',
+            "phone"=>["required","min:10","numeric","unique:buyers","regex:/^\+9627[789]\d{7}$/"],
+            'email' => 'required|string|email|unique:buyers|max:255',
             'password' => ['required','confirmed','min:8','max:20','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/']
         ];
     }
@@ -39,7 +41,8 @@ class Register_buyer extends FormRequest
     public function messages()
     {
         return [
-            'password.regex' => ':attribute have at least 1 lowercase AND 1 u ppercase AND 1 number AND 1 symbol'
+            'password.regex' => ':attribute have at least 1 lowercase AND 1 u ppercase AND 1 number AND 1 symbol',
+            'phone.regex' => 'invalid :attribute number.'
         ];
     }
 }

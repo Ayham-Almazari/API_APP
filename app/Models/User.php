@@ -10,6 +10,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
+    protected $dateFormat="Y-m-d H:i:s";
 
     /**
      * The attributes that are mass assignable.

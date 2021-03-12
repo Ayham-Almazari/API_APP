@@ -12,6 +12,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class Admin extends  Authenticatable implements JWTSubject
 {
     use HasFactory,Notifiable,MustVerifyEmail;
+    protected $dateFormat="Y-m-d H:i:s";
 
     protected $table="admins";
 

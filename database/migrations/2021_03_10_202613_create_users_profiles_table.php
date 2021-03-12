@@ -18,9 +18,9 @@ class CreateUsersProfilesTable extends Migration
             $table->unsignedBigInteger('admin_id')->nullable();
             $table->unsignedBigInteger('buyer_id')->nullable();
             $table->unsignedBigInteger('owner_id')->nullable();
-            $table->foreign('admin_id')->references('id')->on('buyers');
-            $table->foreign('buyer_id')->references('id')->on('owners');
-            $table->foreign('owner_id')->references('id')->on('admins');
+            $table->foreign('admin_id')->references('id')->on('admins')->cascadeOnDelete();
+            $table->foreign('buyer_id')->references('id')->on('buyers')->cascadeOnDelete()->restrictOnDelete();
+            $table->foreign('owner_id')->references('id')->on('owners')->cascadeOnDelete();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('picture')->nullable();

@@ -15,13 +15,13 @@ class CreateOwnersTable extends Migration
     {
         Schema::create('owners', function (Blueprint $table) {
             $table->id();
-            $table->string('user_name')->unique();
+            $table->string('username')->unique();
             $table->string('property_image');
             $table->enum('account_verification',['canceled','confirmed','under verification'])->default('under verification');
             $table->string('email')->unique();
             $table->string('phone')->unique();
             $table->string('password');
-            $table->rememberToken();
+            $table->boolean("remember_me")->default(0);
             $table->timestamps();
         });
     }

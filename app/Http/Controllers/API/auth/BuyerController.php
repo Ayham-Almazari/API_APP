@@ -33,15 +33,17 @@ class BuyerController extends Controller
     public function register(Register_buyer $request) {
 
             $user = Buyer::create([
-                'user_name'=>$request->user_name,
+                'username'=>$request->username,
                 'email'=>$request->email,
                 'phone'=>$request->phone,
                 'password'=>Hash::make($request->post('password'))
             ]);
-            $user->profile()->create([
+            $profile= $user->profile()->create([
                 'first_name'=>$request->first_name,
                 'last_name'=>$request->last_name
-                ]);
+            ]);
+
+
 
 
         return $this->returnSuccessMessage("the user registered successfully" );
@@ -54,12 +56,38 @@ class BuyerController extends Controller
      */
     public function login(Login_buyer $request)
     {
-        $credentials = $request->only('email', 'password');
-        if (! $token = $this->guard()->claims((new Buyer())->getJWTCustomClaims())->attempt($credentials)) {
-            return response()->json(['error' => 'Invalid Email Or Password'], 401);
-        }
 
-        return $this->respondWithToken($token,auth()->user(),'successfully logged in');
+        $identifier=[
+            ['email','password'],
+            ['phone','password'],
+            ['username','password']
+        ];
+        for ($i=0;$i<=2;$i++){
+            //set identifier to loop
+            $credentials = array_combine($identifier[$i],array_values($request->only('identifier', 'password')));
+            //authenticate $credentials
+            $token = $this->guard()->setTTL($request->remember_me?1440:20160)->claims(
+                (new Buyer())->getJWTCustomClaims()
+            )->attempt($credentials);
+            //if authenticated
+            if ($token){
+                //data
+                $data=array_merge(
+                    ["user"=> auth()->user()->toArray()],
+                    [
+                        "profile"=>collect(auth()->user()->profile)->except('admin_id','owner_id'),
+                        'identifier'=>$identifier[$i][0]
+                    ]
+                );
+                return $this->respondWithToken($token ,$data,'successfully logged in');
+            }
+            if($i==2){
+                return response()->json([
+                    "state"=>false,
+                    "error" =>"Invalid Identifier Or Password",
+                ]);
+            }
+        }
     }
 
     /**
@@ -69,7 +97,7 @@ class BuyerController extends Controller
      */
     public function user(Request $request)
     {
-        return response()->json(['data'=>auth()->user()]);
+        return response()->json(['data'=>auth()->user()->profile]);
     }
 
     /**

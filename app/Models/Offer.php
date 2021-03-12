@@ -9,6 +9,8 @@ class Offer extends Model
 {
     use HasFactory;
 
+    protected $dateFormat="Y-m-d H:i:s";
+
     public function for_product() {
         return $this->belongsTo(Product::class,"product_id");
     }

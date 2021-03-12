@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
+    protected $dateFormat="Y-m-d H:i:s";
 
     public function sub_categories() {
         return $this->hasMany(Category::class);

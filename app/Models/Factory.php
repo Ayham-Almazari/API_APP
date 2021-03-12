@@ -9,6 +9,9 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class Factory extends Authenticatable implements JWTSubject
 {
     use HasFactory;
+
+    protected $dateFormat="Y-m-d H:i:s";
+
     /**
      * The attributes that are mass assignable.
      *

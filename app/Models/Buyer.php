@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-
+use Tymon\JWTAuth\Facades\JWTAuth;
 class Buyer extends Authenticatable implements JWTSubject
 {
     use HasFactory;
@@ -16,7 +16,7 @@ class Buyer extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'user_name',
+        'username',
         'phone',
         'email',
         'password',
@@ -28,10 +28,13 @@ class Buyer extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password',        'remember_token',
-
+        'password',
+        'remember_token',
+        'created_at',
+        "updated_at",
     ];
 
+    protected $dateFormat="Y-m-d H:i:s";
     // Rest omitted for brevity
 
     /**
@@ -52,7 +55,7 @@ class Buyer extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [
-            "role"=>'buyer'
+            "role"=>'buyer',
         ];
     }
 
