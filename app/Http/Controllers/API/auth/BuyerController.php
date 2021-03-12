@@ -71,15 +71,7 @@ class BuyerController extends Controller
             )->attempt($credentials);
             //if authenticated
             if ($token){
-                //data
-                $data=array_merge(
-                    ["user"=> auth()->user()->toArray()],
-                    [
-                        "profile"=>collect(auth()->user()->profile)->except('admin_id','owner_id'),
-                        'identifier'=>$identifier[$i][0]
-                    ]
-                );
-                return $this->respondWithToken($token ,$data,'successfully logged in');
+                return $this->respondWithToken($token ,$this->get_data(['identifier'],[$identifier[$i][0]]),'successfully logged in');
             }
             if($i==2){
                 return response()->json([
@@ -88,6 +80,7 @@ class BuyerController extends Controller
                 ]);
             }
         }
+
     }
 
     /**
@@ -97,7 +90,7 @@ class BuyerController extends Controller
      */
     public function user(Request $request)
     {
-        return response()->json(['data'=>auth()->user()->profile]);
+        return $this->returnData($this->get_data());
     }
 
     /**
@@ -138,7 +131,14 @@ class BuyerController extends Controller
         return Auth::guard(self::guard);
     }
 
+    public function get_data($kies=null,$values=null) {
+        return [
+            "user"=> auth()->user()->toArray(),
+             "profile"=>collect(auth()->user()->profile)->except('admin_id','owner_id'),
+             "additional_data"=> !isset($kies)||!isset($values)?null:array_combine($kies,$values)
+        ];
 
+    }
 
     // Reset password
     private function resetPassword($request) {
