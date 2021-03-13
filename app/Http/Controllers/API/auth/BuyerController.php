@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API\auth;
 use App\Models\Buyer;
 use App\Models\UsersProfiles;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\auth\{Register_buyer, Login_buyer, UpdatePasswordRequest};
 use App\Http\Traits\Responses_Trait;
 use Illuminate\Support\Facades\Hash;
@@ -42,8 +44,6 @@ class BuyerController extends Controller
                 'first_name'=>$request->first_name,
                 'last_name'=>$request->last_name
             ]);
-
-
 
 
         return $this->returnSuccessMessage("the user registered successfully" );
@@ -88,7 +88,7 @@ class BuyerController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function user(Request $request)
+    public function user()
     {
         return $this->returnData($this->get_data());
     }
@@ -113,7 +113,7 @@ class BuyerController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh(Request $request)
+    public function refresh()
     {
         $token= $this->guard()->claims((new Buyer())->getJWTCustomClaims())
             ->refresh();
@@ -121,7 +121,7 @@ class BuyerController extends Controller
                 $this->respondWithToken(
                     $token
                     ,
-                    JWTAuth::user()
+                    $this->get_data()
                 );
     }
 
@@ -141,12 +141,16 @@ class BuyerController extends Controller
     }
 
     // Reset password
-    private function resetPassword($request) {
+    public function resetPassword($request) {
         // find email
-        $userData = Buyer::whereEmail($request->email)->first();
+        $code = DB::table('password_resets')->where([
+            'code' => $request->code
+        ])->get();
+        $userData = Buyer::whereEmail($code[0]->email)->first();
         // update password
         $userData->update([
-            'password'=>bcrypt($request->password)
+            'password'=>bcrypt($request->password),
+            'password_reset_at'=>Carbon::now()
         ]);
         // remove verification data from db
         $this->updatePasswordRow($request)->delete();

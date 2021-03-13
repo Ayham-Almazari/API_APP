@@ -20,6 +20,7 @@ class Buyer extends Authenticatable implements JWTSubject
         'phone',
         'email',
         'password',
+        "password_reset_at"
     ];
 
     /**
@@ -32,6 +33,7 @@ class Buyer extends Authenticatable implements JWTSubject
         'remember_me',
         'created_at',
         "updated_at",
+        'password_reset_at'
     ];
 
     protected $dateFormat="Y-m-d H:i:s";

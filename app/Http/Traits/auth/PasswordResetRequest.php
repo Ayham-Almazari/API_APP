@@ -26,30 +26,30 @@ trait PasswordResetRequest
     //this is a function to send mail
     public function send($email)
     {
-        $token = $this->createToken($email);
+        $code = $this->createToken($email);
         // token is important in send mail
-        Mail::to($email)->send(new SendMailreset($token, $email));
+        Mail::to($email)->send(new SendMailreset($code));
     }
 
     public function createToken($email)  // this is a function to get your request email that there are or not to send mail
     {
-        $oldToken = DB::table('password_resets')->where('email', $email)->first();
+        $oldCode = DB::table('password_resets')->where('email', $email)->first();
 
-        if ($oldToken) {
-            return $oldToken->token;
+        if ($oldCode) {
+            return $oldCode->code;
         }
 
-        $token = Str::random(40);
-        $this->saveToken($token, $email);
-        return $token;
+        $code = Str::random(4);
+        $this->saveToken($code, $email);
+        return $code;
     }
 
 
-    public function saveToken($token, $email)  // this function save new password
+    public function saveToken($code, $email)  // this function save new password
     {
         DB::table('password_resets')->insert([
             'email' => $email,
-            'token' => $token,
+            'code' => $code,
             'created_at' => Carbon::now()
         ]);
     }
@@ -65,7 +65,7 @@ trait PasswordResetRequest
     {
         return response()->json([
             'status'=>false,
-            'error' => 'Email does\'t found on our database'
+            'error' => 'Email does\'t registered'
         ], Response::HTTP_NOT_FOUND);
     }
 

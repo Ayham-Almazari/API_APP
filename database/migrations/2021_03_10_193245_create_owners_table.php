@@ -21,7 +21,7 @@ class CreateOwnersTable extends Migration
             $table->string('email')->unique();
             $table->string('phone')->unique();
             $table->string('password');
-            $table->boolean("remember_me")->default(0);
+            $table->timestamp("password_reset_at")->nullable();
             $table->timestamps();
         });
     }
