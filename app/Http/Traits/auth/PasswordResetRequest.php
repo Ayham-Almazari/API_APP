@@ -26,12 +26,12 @@ trait PasswordResetRequest
     //this is a function to send mail
     public function send($email)
     {
-        $code = $this->createToken($email);
-        // token is important in send mail
+        $code = $this->createCode($email);
+        // code is important in send mail
         Mail::to($email)->send(new SendMailreset($code));
     }
 
-    public function createToken($email)  // this is a function to get your request email that there are or not to send mail
+    public function createCode($email)  // this is a function to get your request email that there are or not to send mail
     {
         $oldCode = DB::table('password_resets')->where('email', $email)->first();
 
@@ -39,13 +39,17 @@ trait PasswordResetRequest
             return $oldCode->code;
         }
 
-        $code = substr(number_format(time() * rand(),0,'',''),0,4);;
-        $this->saveToken($code, $email);
+        $code = substr(number_format(time() * rand(),0,'',''),0,4);
+       while ($ifExistCode = DB::table('password_resets')->where('code', $code)->first()){
+           $code = substr(number_format(time() * rand(),0,'',''),0,4);
+       }
+
+        $this->saveCode($code, $email);
         return $code;
     }
 
 
-    public function saveToken($code, $email)  // this function save new password
+    public function saveCode($code, $email)  // this function save new password
     {
         DB::table('password_resets')->insert([
             'email' => $email,
@@ -76,4 +80,6 @@ trait PasswordResetRequest
             'data' => 'Reset Email is send successfully, please check your inbox.'
         ], Response::HTTP_OK);
     }
+
+
 }

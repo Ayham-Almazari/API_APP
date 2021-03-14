@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class Owner extends Authenticatable implements JWTSubject
 {
-    use HasFactory;
+    use HasFactory,Notifiable,MustVerifyEmail;
     protected $dateFormat="Y-m-d H:i:s";
 
     /**

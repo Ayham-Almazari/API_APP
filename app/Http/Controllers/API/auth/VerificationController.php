@@ -1,13 +1,13 @@
 <?php
 
 
-namespace App\Http\Traits\auth;
+namespace App\Http\Controllers\API\auth;
 
 
 use App\Http\Traits\Responses_Trait;
 use Illuminate\Http\Request;
 
-trait VerificationController
+class VerificationController
 {
     use Responses_Trait;
     /**
@@ -32,7 +32,7 @@ trait VerificationController
             return \response([$e->getMessage()]);
         }
 
-        return $this->returnSuccessMessage('email verified successfully '.$request->auth()->user());
+        return $this->returnSuccessMessage('email verified successfully '.$request->user()->email);
     }
 
     /**
@@ -48,6 +48,11 @@ trait VerificationController
 
         auth()->user()->sendEmailVerificationNotification();
 
-        return $this->returnSuccessMessage("Email verification link sent on your email id ".auth()->user()->name);
+        return $this->returnSuccessMessage("Email verification link sent on your email : ".auth()->user()->email);
+    }
+
+    //notice
+    public function notice(){
+        return $this->returnError(['Email'=>'The user email must verified'],'Email verification error');
     }
 }

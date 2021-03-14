@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Tymon\JWTAuth\Facades\JWTAuth;
-class Buyer extends Authenticatable implements JWTSubject
+class Buyer extends Authenticatable implements JWTSubject,MustVerifyEmail
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
     /**
      * The attributes that are mass assignable.
      *
@@ -20,7 +22,7 @@ class Buyer extends Authenticatable implements JWTSubject
         'phone',
         'email',
         'password',
-        "password_reset_at"
+        "password_reset_at",'email_verified_at','phone_verified_at'
     ];
 
     /**
@@ -33,7 +35,7 @@ class Buyer extends Authenticatable implements JWTSubject
         'remember_me',
         'created_at',
         "updated_at",
-        'password_reset_at'
+        'password_reset_at','email_verified_at','phone_verified_at'
     ];
 
     protected $dateFormat="Y-m-d H:i:s";

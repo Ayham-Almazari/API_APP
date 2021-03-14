@@ -12,13 +12,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Password;
+
 
 class AdminController extends Controller
 {
-    use Responses_Trait,ChangePassword,PasswordResetRequest,VerificationController;
+    use Responses_Trait,ChangePassword,PasswordResetRequest;
     private const admin = 'admin';
     private $Email_verification_code;
 
@@ -34,8 +32,8 @@ class AdminController extends Controller
      */
     public function register(Register_buyer $request) {
         $user = new Admin([
-            'name'=>$request->name,
-            'email'=>$request->email,
+            'name'=>$request->first_name,
+            'email'=>$request->first_lastname,
             'password'=>Hash::make($request->post('password'))
         ]);
         $user->save();

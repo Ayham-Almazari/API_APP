@@ -95,7 +95,7 @@ class BuyerController extends Controller
             if($i==2){
                 $user=  Buyer::where('username' ,$request->identifier)->first();
                 if (!$user)
-                    return $this->returnError(['username'=>'Invalid username'],'','');
+                    return $this->returnError(['username'=>'Invalid username']);
                 if (!Hash::check($request->password,$user->password))
                     return $this->returnError(['password'=>'Invalid password']);
             }
@@ -110,7 +110,7 @@ class BuyerController extends Controller
      */
     public function user()
     {
-        return $this->returnData($this->get_data());
+        return $this->returnData($this->get_data(['identifier'],['token']));
     }
 
     /**
@@ -141,7 +141,7 @@ class BuyerController extends Controller
                 $this->respondWithToken(
                     $token
                     ,
-                    $this->get_data()
+                    $this->get_data(['identifier'],['token'])
                 );
     }
 
@@ -186,6 +186,9 @@ class BuyerController extends Controller
     {
         return !!Buyer::where('email', $email)->first();
     }
+
+
+
 
 
 

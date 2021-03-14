@@ -26,8 +26,6 @@ class CreateUsersProfilesTable extends Migration
             $table->string('picture')->nullable();
             $table->string('instagram')->nullable();
             $table->string('address')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->timestamp('phone_verified_at')->nullable();
             $table->timestamps();
         });
     }
