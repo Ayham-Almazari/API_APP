@@ -56,13 +56,29 @@ class BuyerController extends Controller
      */
     public function login(Login_buyer $request)
     {
-
         $identifier=[
             ['email','password'],
             ['phone','password'],
             ['username','password']
         ];
         for ($i=0;$i<=2;$i++){
+            if ($identifier[$i][0]==='email') {
+                if (filter_var((string)$request->identifier, FILTER_VALIDATE_EMAIL)) {
+                    $user=  Buyer::where('email' ,$request->identifier)->first();
+                  if (!$user)
+                      return $this->returnError('Invalid email');
+                        if (!Hash::check($request->password,$user->password))
+                            return $this->returnError('Invalid password');
+                }
+            }elseif ($identifier[$i][0]==='phone'){
+                if (preg_match('/^\+9627[789]\d{7}$/',$request->identifier) or preg_match('/^[0-9]*$/',$request->identifier) or preg_match('/^\+[0-9]*$/',$request->identifier)) {
+                $user=  Buyer::where('phone' ,$request->identifier)->first();
+                if (!$user)
+                    return $this->returnError('Invalid phone');
+                if (!Hash::check($request->password,$user->password))
+                    return $this->returnError('Invalid password');
+            }
+            }
             //set identifier to loop
             $credentials = array_combine($identifier[$i],array_values($request->only('identifier', 'password')));
             //authenticate $credentials
@@ -74,10 +90,11 @@ class BuyerController extends Controller
                 return $this->respondWithToken($token ,$this->get_data(['identifier'],[$identifier[$i][0]]),'successfully logged in');
             }
             if($i==2){
-                return response()->json([
-                    "state"=>false,
-                    "error" =>"Invalid Identifier Or Password",
-                ]);
+                $user=  Buyer::where('username' ,$request->identifier)->first();
+                if (!$user)
+                    return $this->returnError('Invalid phone');
+                if (!Hash::check($request->password,$user->password))
+                    return $this->returnError('Invalid password');
             }
         }
 

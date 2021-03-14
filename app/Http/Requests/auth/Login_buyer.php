@@ -7,6 +7,10 @@ use Illuminate\Foundation\Http\FormRequest;
 class Login_buyer extends FormRequest
 {
     /**
+     * @var mixed
+     */
+
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -25,7 +29,7 @@ class Login_buyer extends FormRequest
     {
         return [
             'identifier' => 'required|string|max:255',
-            'password' => 'required|min:8|max:20',
+            'password' => 'required|string',
             'remember_me'=>'boolean'
         ];
     }

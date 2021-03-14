@@ -39,7 +39,7 @@ trait PasswordResetRequest
             return $oldCode->code;
         }
 
-        $code = Str::random(4);
+        $code = substr(number_format(time() * rand(),0,'',''),0,4);;
         $this->saveToken($code, $email);
         return $code;
     }
