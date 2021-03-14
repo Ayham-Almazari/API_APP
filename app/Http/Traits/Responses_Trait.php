@@ -7,12 +7,13 @@ namespace App\Http\Traits;
 trait Responses_Trait
 {
 
-    public function returnError($msg,$errNum="E000")
+    public function returnError($errors,$message="The given data was invalid.",$errNum="E000")
     {
         return response()->json([
             'status' => false,
             'errNum' => $errNum,
-            'msg' => $msg
+            "message"=>$message,
+            'errors' => $errors
         ]);
     }
 

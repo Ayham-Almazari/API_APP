@@ -62,27 +62,30 @@ class BuyerController extends Controller
             ['username','password']
         ];
         for ($i=0;$i<=2;$i++){
+            //if the input email
             if ($identifier[$i][0]==='email') {
+                //if valid email
                 if (filter_var((string)$request->identifier, FILTER_VALIDATE_EMAIL)) {
+                    //get user
                     $user=  Buyer::where('email' ,$request->identifier)->first();
                   if (!$user)
-                      return $this->returnError('Invalid email');
+                      return $this->returnError(['email'=>'Invalid email']);
                         if (!Hash::check($request->password,$user->password))
-                            return $this->returnError('Invalid password');
+                            return $this->returnError(['password'=>'Invalid password']);
                 }
             }elseif ($identifier[$i][0]==='phone'){
                 if (preg_match('/^\+9627[789]\d{7}$/',$request->identifier) or preg_match('/^[0-9]*$/',$request->identifier) or preg_match('/^\+[0-9]*$/',$request->identifier)) {
                 $user=  Buyer::where('phone' ,$request->identifier)->first();
                 if (!$user)
-                    return $this->returnError('Invalid phone');
+                    return $this->returnError(['phone'=>'Invalid phone']);
                 if (!Hash::check($request->password,$user->password))
-                    return $this->returnError('Invalid password');
+                    return $this->returnError(['password'=>'Invalid password']);
             }
             }
             //set identifier to loop
             $credentials = array_combine($identifier[$i],array_values($request->only('identifier', 'password')));
             //authenticate $credentials
-            $token = $this->guard()->setTTL($request->remember_me?1440:20160)->claims(
+            $token = $this->guard()->setTTL($request->remember_me?20160:1440)->claims(
                 (new Buyer())->getJWTCustomClaims()
             )->attempt($credentials);
             //if authenticated
@@ -92,9 +95,9 @@ class BuyerController extends Controller
             if($i==2){
                 $user=  Buyer::where('username' ,$request->identifier)->first();
                 if (!$user)
-                    return $this->returnError('Invalid phone');
+                    return $this->returnError(['username'=>'Invalid username'],'','');
                 if (!Hash::check($request->password,$user->password))
-                    return $this->returnError('Invalid password');
+                    return $this->returnError(['password'=>'Invalid password']);
             }
         }
 
