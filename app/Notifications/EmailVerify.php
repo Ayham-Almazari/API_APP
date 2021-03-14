@@ -7,18 +7,21 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class EmailVerify extends Notification
+class EmailVerify extends Notification implements ShouldQueue
 {
     use Queueable;
+    private $profile;
+    private $code;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($profile,$code)
     {
-        //
+        $this->code=$code;
+        $this->profile=$profile;
     }
 
     /**
@@ -33,6 +36,19 @@ class EmailVerify extends Notification
     }
 
     /**
+     * Determine which queues should be used for each notification channel.
+     *
+     * @return array
+     */
+    public function viaQueues()
+    {
+        return [
+            'mail' => 'mail-queue',
+            'slack' => 'slack-queue',
+        ];
+    }
+
+    /**
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
@@ -41,9 +57,8 @@ class EmailVerify extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                   ->subject('Email verification code')
+                    ->markdown('Email.EmailVerification',['user'=>$this->profile,'code'=>$this->code]);
     }
 
     /**
