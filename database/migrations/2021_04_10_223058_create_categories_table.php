@@ -20,6 +20,7 @@ class CreateCategoriesTable extends Migration
             $table->string('category_name');
             $table->text('category_description')->nullable();
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

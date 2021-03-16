@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Admin;
+use App\Models\Buyer;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -65,7 +66,6 @@ class RouteServiceProvider extends ServiceProvider
         });
 
 
-        Route::model('admin', Admin::class);
 
 
     }

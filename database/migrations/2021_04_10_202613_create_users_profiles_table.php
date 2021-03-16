@@ -19,7 +19,7 @@ class CreateUsersProfilesTable extends Migration
             $table->unsignedBigInteger('buyer_id')->nullable();
             $table->unsignedBigInteger('owner_id')->nullable();
             $table->foreign('admin_id')->references('id')->on('admins')->cascadeOnDelete();
-            $table->foreign('buyer_id')->references('id')->on('buyers')->cascadeOnDelete()->restrictOnDelete();
+            $table->foreign('buyer_id')->references('id')->on('buyers')->cascadeOnDelete();
             $table->foreign('owner_id')->references('id')->on('owners')->cascadeOnDelete();
             $table->string('first_name');
             $table->string('last_name');
@@ -27,6 +27,7 @@ class CreateUsersProfilesTable extends Migration
             $table->string('instagram')->nullable();
             $table->string('address')->nullable();
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

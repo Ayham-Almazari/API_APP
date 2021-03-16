@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->string("product_picture");
             $table->boolean('availability')->default(1);
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

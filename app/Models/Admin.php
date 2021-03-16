@@ -32,6 +32,10 @@ class Admin extends  Authenticatable implements JWTSubject
      */
     protected $hidden = [
         'password',
+        'remember_me',
+        'created_at',
+        "updated_at",
+        'password_rested_at','email_verified_at','phone_verified_at'
     ];
 
     // Rest omitted for brevity
@@ -56,5 +60,11 @@ class Admin extends  Authenticatable implements JWTSubject
         return [
             "role"=>'admin'
         ];
+    }
+
+    //relations
+
+    public function profile(){
+        return $this->hasOne(UsersProfiles::class,'admin_id');
     }
 }

@@ -6,7 +6,6 @@ use App\Http\Requests\auth\Login_buyer;
 use App\Http\Requests\auth\Register_buyer;
 use App\Http\Traits\auth\ChangePassword;
 use App\Http\Traits\auth\PasswordResetRequest;
-use App\Http\Traits\Responses_Trait;
 use App\Models\Factory;
 use App\Models\Owner;
 use Illuminate\Http\Request;
@@ -18,7 +17,7 @@ use App\Http\Controllers\Controller;
 
 class OwnerController extends Controller
 {
-    use Responses_Trait,ChangePassword,PasswordResetRequest;
+    use ChangePassword,PasswordResetRequest;
 
     private const guard = 'owner';
 

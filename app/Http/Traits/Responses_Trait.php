@@ -4,17 +4,18 @@
 namespace App\Http\Traits;
 
 
+use Symfony\Component\HttpFoundation\Response;
+
 trait Responses_Trait
 {
 
-    public function returnError($errors,$message="The given data was invalid.",$errNum="E000")
+    public function returnError($errors,$message="The given data was invalid.",$HTTP=Response::HTTP_BAD_REQUEST)
     {
         return response()->json([
             'status' => false,
-            'errNum' => $errNum,
             "message"=>$message,
             'errors' => $errors
-        ]);
+        ],$HTTP);
     }
 
 

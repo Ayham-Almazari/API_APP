@@ -3,22 +3,18 @@
 namespace App\Http\Controllers\API\auth;
 
 use App\Models\Buyer;
-use App\Models\UsersProfiles;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\auth\{Register_buyer, Login_buyer, UpdatePasswordRequest};
-use App\Http\Traits\Responses_Trait;
+use Psy\Exception\TypeErrorException;
+use App\Http\Requests\auth\{Register_buyer, Login_buyer};
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Traits\auth\{ChangePassword,PasswordResetRequest};
 use Symfony\Component\HttpFoundation\Response;
 class BuyerController extends Controller
 {
-    use Responses_Trait, ChangePassword, PasswordResetRequest ;
+    use  ChangePassword, PasswordResetRequest ;
 
     private const guard = 'buyer';
 
@@ -33,20 +29,28 @@ class BuyerController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function register(Register_buyer $request) {
-
-            $user = Buyer::create([
-                'username'=>$request->username,
-                'email'=>$request->email,
-                'phone'=>$request->phone,
-                'password'=>Hash::make($request->post('password'))
-            ]);
-            $profile= $user->profile()->create([
-                'first_name'=>$request->first_name,
-                'last_name'=>$request->last_name
-            ]);
+        try {
+            $data=$request->only(['username','email','phone']);
+            $data['password']=Hash::make($request->post('password'));
+            Buyer::create($data);
+        }catch (TypeErrorException $e){
+                return $this->returnError(["server error"=>[$e->getMessage()]],'Internal server error',Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
 
         return $this->returnSuccessMessage("the user registered successfully" );
+    }
+
+    /**
+     * Handle the Buyer "created" event.
+     *
+     * @param \App\Models\Buyer $buyer
+     * @return void
+     */
+    public function created(Buyer $buyer)
+    {
+        $data=\request()->only(['first_name','last_name']);
+        $buyer->profile()->create($data);
     }
 
     /**

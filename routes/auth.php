@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\auth\{VerificationController as Email,BuyerController as BuyerAuth,OwnerController,AdminController};
+use App\Http\Controllers\API\auth\{VerificationController as Email,
+                                    BuyerController as BuyerAuth,
+                                    OwnerController as OwnerAuth,
+                                    AdminController as AdminAuth};
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,7 +22,7 @@ Route::group([
 
     //email verification routes
     Route::middleware(['Logged',"throttle:5,2"])->group(function (){
-        Route::get('email/verify', [Email::class,'verify'])->name('verification.verify');
+        Route::post('email/verify', [Email::class,'verify'])->name('verification.verify');
         Route::get('email/resend', [Email::class,'resend'])->name('verification.resend');
     });
     //if not verified
@@ -46,9 +49,32 @@ Route::group([
             Route::post('sendPasswordResetCode', [BuyerAuth::class,'sendEmail']);
             Route::post('resetPassword', [BuyerAuth::class,'passwordResetProcess']);
         });
-
     });
 
+    // ADMIN AUTH ROUTES
+    Route::group([
+        'prefix' => 'admin',
+    ],function (){
+        //rout without restricted access auth
+        Route::post('login'      , [AdminAuth::class,'login']   );
+        Route::get('register/{buyer:username}'   , [AdminAuth::class,'register'])
+            ->missing(function (){
+                return response()->json(['Undefined User Or Already has been defined as Admin .'],\Symfony\Component\HttpFoundation\Response::HTTP_NOT_FOUND);
+            });
+        //routes must have valid access token and user must logged in
+        Route::middleware(['auth:admin','jwt.verify:admin'])->group(function () {
+            //refresh token , logout , refresh
+            Route::post('logout'   , [AdminAuth::class,'logout']);
+            Route::get( 'user'    ,    [AdminAuth::class,'user']  );
+            Route::post('refresh'    , [AdminAuth::class,'refresh'] );
+        });
+        //admin reset password routes
+        //throttle
+        Route::middleware("throttle:5,2")->group(function (){
+            Route::post('sendPasswordResetLink', [AdminAuth::class,'sendEmail']);
+            Route::post('resetPassword', [AdminAuth::class,'passwordResetProcess']);
+        });
+    });
 
 
 

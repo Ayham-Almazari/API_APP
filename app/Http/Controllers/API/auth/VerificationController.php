@@ -4,15 +4,15 @@
 namespace App\Http\Controllers\API\auth;
 
 
-use App\Http\Traits\Responses_Trait;
 use App\Notifications\EmailVerify;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
 
-class VerificationController
+class VerificationController extends Controller
 {
-    use Responses_Trait;
     /**
      * Verify email
      *
@@ -21,12 +21,21 @@ class VerificationController
      * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function verify(Request $request) {
-
-
+        //validate code
+       $v= Validator::make(['code'=>$request->post('code')],['code'=>'required|string|min:4']);
+       if ($v->fails()) {
+           return $this->returnError($v->errors());
+       }
+        // check if code exists
+        $code = DB::table('email_verification')->where([
+            'code' => $request->code
+        ]);
         try {
-            if (! $request->hasValidSignature()) {
-                return $this->returnError('INVALID EMAIL VERIFICATION_URL');
+            if ($code->count() == 0) {
+                return $this->returnError(["code"=>['INVALID EMAIL VERIFICATION Code']]);
             }
+
+            $code->delete();
 
             if (!$request->user()->hasVerifiedEmail()) {
                 $request->user()->markEmailAsVerified();
@@ -44,6 +53,7 @@ class VerificationController
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function resend() {
+
         //user email
         $email=auth()->user()->email;
 
@@ -62,7 +72,7 @@ class VerificationController
         $ifExistCode?$ifExistCode->delete():null;
 
         //insert code
-        DB::table('password_resets')->insert([
+        DB::table('email_verification')->insert([
             'email' => $email,
             'code' => $code,
             'created_at' => Carbon::now()

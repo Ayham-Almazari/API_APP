@@ -24,6 +24,7 @@ class CreateFactoriesTable extends Migration
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->text('Description')->nullable();
+            $table->engine = 'InnoDB';
         });
     }
 

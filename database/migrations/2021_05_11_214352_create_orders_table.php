@@ -20,6 +20,7 @@ class CreateOrdersTable extends Migration
             $table->enum("status",["Shipped", "Cancelled", "In Process"])->default('In Process');
             $table->text("comment")->nullable();
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

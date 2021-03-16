@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\API\auth;
 
-use App\Http\Traits\auth\{ChangePassword, PasswordResetRequest, VerificationController};
-use App\Http\Traits\Responses_Trait;
+use App\Models\Buyer;
+use App\Http\Traits\auth\{ChangePassword, PasswordResetRequest};
 use App\Models\Admin;
 use App\Http\Requests\auth\{Register_buyer,Login_buyer};
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -16,10 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller
 {
-    use Responses_Trait,ChangePassword,PasswordResetRequest;
+    use ChangePassword,PasswordResetRequest;
     private const admin = 'admin';
-    private $Email_verification_code;
-
     public function __construct()
     {
         Auth::shouldUse(self::admin);
@@ -30,15 +27,22 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Register_buyer $request) {
-        $user = new Admin([
-            'name'=>$request->first_name,
-            'email'=>$request->first_lastname,
-            'password'=>Hash::make($request->post('password'))
-        ]);
-        $user->save();
-        return $this->returnSuccessMessage("the user registered successfully");
+    public function register(Request $request,Buyer $buyer) {//by username
+        $if_alredy_found=Admin::where('username',$buyer->username)->get();
+        if ($if_alredy_found->count() > 0) {
+            return $this->returnError(['username'=>['username has already been taken .']],'already registered',Response::HTTP_ALREADY_REPORTED);
+        }
+        //create Admin from buyer data
+        $admin=collect($buyer->getAttributes())->except('id','created_at','updated_at')->toArray();
+        //set temporary admin info to pass to an observer created method
+        $admin_profile=collect($buyer->profile)->except(['id','admin_id','owner_id','buyer_id'])->toArray();
+        \request()->profile=$admin_profile;
+        //delete buyer and his profile
+        $buyer->delete();
+        $admin= Admin::create($admin);
+        return $this->returnSuccessMessage('Admin registered successfully');
     }
+
 
     /**
      * Get a JWT via given credentials.

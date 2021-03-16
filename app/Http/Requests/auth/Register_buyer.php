@@ -25,10 +25,10 @@ class Register_buyer extends FormRequest
     {
         return [
             'first_name' => 'required|string|max:255|min:3',
-            'username' => 'required|string|min:5|max:255|unique:buyers|alpha_dash|regex:/[a-zA-Z]{3,}/',
+            'username' => 'required|string|min:5|max:255|unique:buyers|unique:admins|unique:owners|alpha_dash|regex:/[a-zA-Z]{3,}/',
             'last_name' => 'required|string|max:255|min:3',
-            "phone"=>["required","min:11","numeric","unique:buyers","regex:/^\+9627[789]\d{7}$/"],
-            'email' => 'required|string|email|unique:buyers|max:255',
+            "phone"=>["required","min:11","numeric","unique:buyers",'unique:admins','unique:owners',"regex:/^\+9627[789]\d{7}$/"],
+            'email' => 'required|string|email|unique:buyers|unique:admins|unique:owners|max:255',
             'password' => ['required','min:8','max:20','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/']
         ];
     }

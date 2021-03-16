@@ -19,10 +19,11 @@ class CreateBuyersTable extends Migration
             $table->string('phone')->unique();
             $table->string('username')->unique();
             $table->string('password');
-            $table->timestamp("password_reset_at")->nullable();
+            $table->timestamp("password_rested_at")->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 
