@@ -18,11 +18,17 @@ class UsersProfiles extends Model
         "phone_verified_at"
         ];
 
+
+    //relations
     public function buyer() {
         return $this->belongsTo(Buyer::class,'buyer_id');
     }
 
     public function admin() {
         return $this->belongsTo(Admin::class,'admin_id');
+    }
+
+    public function owner() {
+        return $this->belongsTo(Owner::class,'owner_id');
     }
 }

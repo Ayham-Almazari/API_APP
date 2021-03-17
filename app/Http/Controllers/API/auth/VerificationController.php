@@ -4,15 +4,28 @@
 namespace App\Http\Controllers\API\auth;
 
 
+use App\Http\Traits\auth\Auth;
 use App\Notifications\EmailVerify;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use Tymon\JWTAuth\JWTAuth;
 
 class VerificationController extends Controller
 {
+
+    public function __construct()
+    {
+       /* foreach (['buyer','admin','owner']as $guard){
+            $user=auth($guard)->user();
+            if ($user) {
+                \auth()->shouldUse($guard);
+                break;
+            }
+        } */
+    }
     /**
      * Verify email
      *
@@ -56,13 +69,12 @@ class VerificationController extends Controller
 
         //user email
         $email=auth()->user()->email;
-
+        //if verified
         if (auth()->user()->hasVerifiedEmail()) {
             return $this->returnSuccessMessage('EMAIL ALREADY VERIFIED');
         }
-
         //set Code
-        $code = substr(uniqid(),0,4);
+        $code = substr(number_format(time() * rand(),0,'',''),0,4);
         while ($ifExistCode = DB::table('email_verification')->where('code', $code)->first()){
             $code = substr(number_format(time() * rand(),0,'',''),0,4);
         }
@@ -78,9 +90,9 @@ class VerificationController extends Controller
             'created_at' => Carbon::now()
         ]);
 
-        auth()->user()->notify(new EmailVerify(auth()->user()->profile,$code));
+//        auth()->user()->notify(new EmailVerify(auth()->user()->profile,$code));
 
-        return $this->returnSuccessMessage("Email verification link sent on your email : ".auth()->user()->email);
+        return $this->returnSuccessMessage("Email verification link sent on your email : ".auth()->user()->email ."  $code");
     }
 
     //notice

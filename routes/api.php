@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\auth\BuyerController;
+use App\Http\Controllers\API\auth\BuyerAuth;
 /*
 |--------------------------------------------------------------------------
 | API Routes

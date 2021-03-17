@@ -18,9 +18,13 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name',
-        'email',
         'password',
+        'remember_me',
+        'created_at',
+        "updated_at",
+        'password_rested_at',
+        'email_verified_at',
+        'phone_verified_at'
     ];
 
 
@@ -31,7 +35,12 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        'remember_me',
+        'created_at',
+        "updated_at",
+        'password_rested_at',
+        'email_verified_at',
+        'phone_verified_at'
     ];
 
     /**

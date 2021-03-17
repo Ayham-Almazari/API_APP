@@ -2,9 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\auth\{VerificationController as Email,
-                                    BuyerController as BuyerAuth,
-                                    OwnerController as OwnerAuth,
-                                    AdminController as AdminAuth};
+                                    BuyerAuth ,
+                                    OwnerAuth as OwnerAuth,
+                                    AdminAuth};
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -40,8 +40,9 @@ Route::group([
         Route::middleware(['jwt.verify:buyer','auth:buyer'])->group(function () {
             //refresh token , logout , refresh
             Route::post('logout'   , [BuyerAuth::class,'logout']    );
-            Route::post( 'user'    ,    [BuyerAuth::class,'user']   );
             Route::post('refresh'    , [BuyerAuth::class,'refresh'] );
+            //get current authenticated user
+            Route::get( 'user'    ,    [BuyerAuth::class,'user']);
         });
         //buyer reset password routes
         //throttle
@@ -65,8 +66,9 @@ Route::group([
         Route::middleware(['auth:admin','jwt.verify:admin'])->group(function () {
             //refresh token , logout , refresh
             Route::post('logout'   , [AdminAuth::class,'logout']);
-            Route::get( 'user'    ,    [AdminAuth::class,'user']  );
             Route::post('refresh'    , [AdminAuth::class,'refresh'] );
+            //get current authotocated user
+            Route::get( 'user'    ,    [AdminAuth::class,'user']);
         });
         //admin reset password routes
         //throttle

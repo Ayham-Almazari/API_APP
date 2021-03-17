@@ -32,14 +32,14 @@ class Admin extends  Authenticatable implements JWTSubject
      */
     protected $hidden = [
         'password',
-        'remember_me',
         'created_at',
         "updated_at",
-        'password_rested_at','email_verified_at','phone_verified_at'
+        'password_rested_at',
+        'email_verified_at',
+        'phone_verified_at'
     ];
 
     // Rest omitted for brevity
-
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

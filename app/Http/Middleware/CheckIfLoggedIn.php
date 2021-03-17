@@ -18,9 +18,19 @@ class CheckIfLoggedIn
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!\auth()->check()){
-            return response()->json(["User Must Be Logged In"]);
+        $logged_flag=false;
+        foreach (['buyer','admin','owner'] as $guard){
+            $logged_flag=auth($guard)->check();
+            if ($logged_flag) {
+                \auth()->shouldUse($guard);
+                break;
+            }
         }
+
+        if($logged_flag == false){
+           return response()->json(["User Must Be Logged In"]);
+         }
+
         return $next($request);
     }
 }

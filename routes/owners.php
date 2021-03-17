@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\auth\OwnerController;
+use App\Http\Controllers\API\auth\OwnerAuth;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,14 +19,14 @@ Route::group([
     'prefix' => 'auth/owner',
 ],function (){
     //rout without restricted access auth
-    Route::post('login'      ,      [OwnerController::class,'login']    );
-    Route::post('register'   ,      [OwnerController::class,'register'] );
-    Route::post('sendPasswordResetLink', [OwnerController::class,'sendEmail']);
-    Route::post('resetPassword', [OwnerController::class,'passwordResetProcess']);
+    Route::post('login'      ,      [OwnerAuth::class,'login']    );
+    Route::post('register'   ,      [OwnerAuth::class,'register'] );
+    Route::post('sendPasswordResetLink', [OwnerAuth::class,'sendEmail']);
+    Route::post('resetPassword', [OwnerAuth::class,'passwordResetProcess']);
     Route::middleware(['auth:owner','jwt.verify:owner'])->group(function () {
-        Route::post('logout'   ,    [OwnerController::class,'logout']   );
-        Route::post( 'user'    ,    [OwnerController::class,'user']     );
-        Route::post('refresh'    ,  [OwnerController::class,'refresh']  );
+        Route::post('logout'   ,    [OwnerAuth::class,'logout']   );
+        Route::post( 'user'    ,    [OwnerAuth::class,'user']     );
+        Route::post('refresh'    ,  [OwnerAuth::class,'refresh']  );
     });
 });
 

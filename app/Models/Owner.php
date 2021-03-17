@@ -18,10 +18,7 @@ class Owner extends Authenticatable implements JWTSubject
      *
      * @var array
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
+    protected $guarded = [
     ];
 
     /**
@@ -31,6 +28,11 @@ class Owner extends Authenticatable implements JWTSubject
      */
     protected $hidden = [
         'password',
+        'created_at',
+        "updated_at",
+        'password_rested_at',
+        'email_verified_at',
+        'phone_verified_at'
     ];
 
     // Rest omitted for brevity
@@ -55,5 +57,11 @@ class Owner extends Authenticatable implements JWTSubject
         return [
             "role"=>'owner'
         ];
+    }
+
+    //relations
+
+    public function profile(){
+        return $this->hasOne(UsersProfiles::class,'owner_id');
     }
 }

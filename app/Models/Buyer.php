@@ -15,17 +15,11 @@ class Buyer extends Authenticatable implements JWTSubject,MustVerifyEmail
 {
     use HasFactory, Notifiable;
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are not mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'username',
-        'phone',
-        'email',
-        'password',
-        "password_reset_at",'email_verified_at','phone_verified_at'
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -34,10 +28,11 @@ class Buyer extends Authenticatable implements JWTSubject,MustVerifyEmail
      */
     protected $hidden = [
         'password',
-        'remember_me',
         'created_at',
         "updated_at",
-        'password_reset_at','email_verified_at','phone_verified_at'
+        'password_rested_at',
+        'email_verified_at',
+        'phone_verified_at'
     ];
 
     protected $dateFormat="Y-m-d H:i:s";

@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Http\Controllers\API\auth\BuyerController;
+use App\Http\Controllers\API\auth\BuyerAuth;
 use App\Http\Requests\auth\Login_buyer;
 use App\Http\Requests\auth\Register_buyer;
 use App\Models\Buyer;
@@ -11,8 +11,20 @@ use Psy\Exception\TypeErrorException;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class BuyerObserver extends BuyerController
+class BuyerObserver extends BuyerAuth
 {
+
+    /**
+     * Handle the Buyer "created" event.
+     *
+     * @param \App\Models\Buyer $buyer
+     * @return void
+     */
+    public function created(Buyer $buyer)
+    {
+        $data=\request()->only(['first_name','last_name']);
+        $buyer->profile()->create($data);
+    }
 
     /**
      * Handle the Buyer "updated" event.

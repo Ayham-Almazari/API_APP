@@ -2,10 +2,9 @@
 
 namespace App\Observers;
 
-use App\Http\Controllers\API\auth\AdminController;
 use App\Models\Admin;
 
-class AdminObserver extends AdminController
+class AdminObserver
 {
     /**
      * Handle the Admin "created" event.

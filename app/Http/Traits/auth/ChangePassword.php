@@ -15,7 +15,7 @@ trait ChangePassword
     public function passwordResetProcess(Request $request){
        $v= Validator::make($request->all(),[
            'code'=>'required|string|max:4',
-           'password' => ['required','confirmed','min:8','max:20','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/']
+           'password' => ['required','min:8','max:20','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/']
        ],[
            'password.regex' => ':attribute have at least 1 lowercase AND 1 uppercase AND 1 number AND 1 symbol'
        ]);
