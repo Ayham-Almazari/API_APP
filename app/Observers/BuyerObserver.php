@@ -4,14 +4,14 @@ namespace App\Observers;
 
 use App\Http\Controllers\API\auth\BuyerAuth;
 use App\Http\Requests\auth\Login_buyer;
-use App\Http\Requests\auth\Register_buyer;
+use App\Http\Requests\auth\Register_request;
 use App\Models\Buyer;
 use Illuminate\Http\Request;
 use Psy\Exception\TypeErrorException;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class BuyerObserver extends BuyerAuth
+class BuyerObserver
 {
 
     /**

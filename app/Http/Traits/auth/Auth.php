@@ -133,7 +133,7 @@ trait Auth
      */
     public function authenticate_user($model,$user,$credentials,$request) {
        return $token = $this->guard()->setTTL($request->remember_me ? 20160 : 1440)->claims([
-            $model->getJWTCustomClaims(),
+            'role'=>$model->getJWTCustomClaims(),
             "user" => is_object($user)?$user->profile->first_name . " " . $user->profile->last_name:null,
             "username"=>is_object($user)?$user->username:null
         ])->attempt($credentials);

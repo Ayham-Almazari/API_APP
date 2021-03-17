@@ -4,7 +4,7 @@ namespace App\Http\Requests\auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Register_buyer extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class Register_buyer extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules= [
             'first_name' => 'required|string|max:255|min:3',
             'username' => 'required|string|min:5|max:255|unique:buyers|unique:admins|unique:owners|alpha_dash|regex:/[a-zA-Z]{3,}/',
             'last_name' => 'required|string|max:255|min:3',
@@ -31,6 +31,10 @@ class Register_buyer extends FormRequest
             'email' => 'required|string|email|unique:buyers|unique:admins|unique:owners|max:255',
             'password' => ['required','min:8','max:20','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/']
         ];
+        if ($this->hasFile('property_image')) {
+            $rules=array_merge($rules,['property_image'=> 'file|max:5120|mimes:jpg,bmp,png,jpeg,pdf,pptx,doc,docx,rar,zip']);
+        }
+        return $rules;
     }
 
     /**

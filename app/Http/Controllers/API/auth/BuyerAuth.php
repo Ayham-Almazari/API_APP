@@ -6,7 +6,7 @@ use App\Models\Buyer;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Psy\Exception\TypeErrorException;
-use App\Http\Requests\auth\{LoginRequest, Register_buyer};
+use App\Http\Requests\auth\{LoginRequest, RegisterRequest};
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\API\auth\BaseAuth as Controller;
 use Illuminate\Support\Facades\Auth;
@@ -26,9 +26,10 @@ class BuyerAuth extends Controller
     /**
      * Get a JWT via given credentials.
      *
+     * @param RegisterRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Register_buyer $request) {
+    public function register(RegisterRequest $request) {
         try {
             $data=$request->only(['username','email','phone']);
             $data['password']=Hash::make($request->post('password'));
@@ -86,7 +87,16 @@ class BuyerAuth extends Controller
     }
 
 
+    /**
+     * Refresh a token.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh()
+    {
+        return $this->refresh_Token(new Buyer());
 
+    }
 
 
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\auth;
 
 use App\Http\Requests\auth\LoginRequest;
-use App\Http\Requests\auth\Register_buyer;
+use App\Http\Requests\auth\RegisterRequest;
 use App\Http\Traits\auth\ChangePassword;
 use App\Http\Traits\auth\PasswordResetRequest;
 use App\Models\Owner;
@@ -11,6 +11,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\API\auth\BaseAuth as Controller;
 
@@ -28,16 +29,23 @@ class OwnerAuth extends Controller
     /**
      * Get a JWT via given credentials.
      *
+     * @param Register_request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Register_buyer $request) {
-        $user = new Owner([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=>Hash::make($request->post('password'))
-        ]);
-        $user->save();
+    public function register(RegisterRequest $request) {
+        try {
+            $data=$request->only(['username','email','phone']);
+            $data['password']=Hash::make($request->post('password'));
+            if ($request->hasFile('property_image'))
+                if ($request->file('property_image')->isValid())
+                    $data['property_image'] = $request->file('property_image')->store('property_files');
+                else
+                    $this->returnError(['property_file'=>'Invalid file'],'The file uploaded invalid',Response::HTTP_BAD_REQUEST);
 
+//            Owner::create($data);
+        }catch (\Exception $e){
+            return $this->returnError(["server error"=>[$e->getMessage()]],'Internal server error',Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
         return $this->returnSuccessMessage("the user registered successfully");
     }
 
