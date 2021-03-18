@@ -6,8 +6,10 @@ namespace App\Http\Traits\auth;
 
 
 use App\Models\Buyer;
+use App\Models\Owner;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response;
 
 trait Auth
 {
@@ -33,15 +35,15 @@ trait Auth
         //if the input email
         if ($identifier === 'email')             //if valid email
             $user = $this->get_user_by_email($model, $request);
-            if ($user instanceof JsonResponse) return response($user->original);
-        //if the input phone
+            if ($user instanceof JsonResponse) return response($user->original,Response::HTTP_UNPROCESSABLE_ENTITY);
+            //if the input phone
         if ($identifier === 'phone')             //if valid phone
             $user = $this->get_user_by_phone($model, $request);
-        if ($user instanceof JsonResponse) return response($user->original);
+        if ($user instanceof JsonResponse) return response($user->original,Response::HTTP_UNPROCESSABLE_ENTITY);
         //if the input username
         if ($identifier === 'username')           //if valid username
             $user = $this->get_user_by_username($model, $request);
-        if ($user instanceof JsonResponse) return response($user->original);
+        if ($user instanceof JsonResponse) return response($user->original,Response::HTTP_UNPROCESSABLE_ENTITY);
         //set $credentials
         $credentials = array_combine([$identifier,$password], array_values($request->only('identifier', 'password')));
         //authenticate $credentials
@@ -76,10 +78,11 @@ trait Auth
      * @return \Illuminate\Http\JsonResponse or model object
      */
     public function get_user_by_email($model,$request){
-        $user='';
+        $user=false;
         if (filter_var((string)$request->identifier, FILTER_VALIDATE_EMAIL)||preg_match('/(.com)+/',(string)$request->identifier)) {
-            //get user
             $user=  $model::where('email' ,$request->identifier)->first();
+            $trasheduser=$model::withTrashed()->where('email' ,$request->identifier)->first();
+            if($trasheduser) return $this->if_not_authorize($request,$model,$trasheduser);
             if (!$user)
                 return $this->returnError(['email'=>'Invalid email']);
             if (!Hash::check($request->password,$user->password))
@@ -95,9 +98,11 @@ trait Auth
      * @return \Illuminate\Http\JsonResponse or model object
      */
     public function get_user_by_phone($model,$request){
-        $user='';
+        $user=false;
         if (preg_match('/^\+9627[789]\d{7}$/',$request->identifier) or preg_match('/^[0-9]*$/',$request->identifier) or preg_match('/^\+[0-9]*$/',$request->identifier)) {
             $user=  $model::where('phone' ,$request->identifier)->first();
+            $trasheduser=$model::withTrashed()->where('phone' ,$request->identifier)->first();
+            if($trasheduser) return $this->if_not_authorize($request,$model,$trasheduser);
             if (!$user)
                 return $this->returnError(['phone'=>'Invalid phone']);
             if (!Hash::check($request->password,$user->password))
@@ -113,10 +118,11 @@ trait Auth
      * @return \Illuminate\Http\JsonResponse or model object
      */
     public function get_user_by_username($model,$request){
-        $user='';
+        $user=false;
         $user=  $model::where('username' ,$request->identifier)->first();
-        if (!$user)
-            return $this->returnError(['username'=>'Invalid username']);
+        $trasheduser=$model::withTrashed()->where('username' ,$request->identifier)->first();
+        if($trasheduser) return $this->if_not_authorize($request,$model,$trasheduser);
+        if (!$user) return $this->returnError(['username'=>'Invalid username']);
         if (!Hash::check($request->password,$user->password))
             return $this->returnError(['password'=>'Invalid password']);
         return $user;
@@ -184,4 +190,20 @@ trait Auth
                 $this->get_data(['identifier'],['token'])
             );
     }
+
+    /**
+     * if the user authorize to login
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function if_not_authorize($request , $model,$userTrashed){
+        if ($userTrashed->trashed() &&
+            $userTrashed instanceof $model &&
+            ($userTrashed->account_verification == "under verification" ||
+                $userTrashed->account_verification == "canceled"))
+            return $this->
+            returnErrorMessage("Please wait to confirm your registration info , your account status : " .
+                $userTrashed->account_verification );
+    }
+
 }

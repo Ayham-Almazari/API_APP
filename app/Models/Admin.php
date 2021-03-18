@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class Admin extends  Authenticatable implements JWTSubject
 {
-    use HasFactory,Notifiable,MustVerifyEmail;
+    use HasFactory,Notifiable,MustVerifyEmail,SoftDeletes ;
     protected $dateFormat="Y-m-d H:i:s";
 
     protected $table="admins";
@@ -36,7 +37,8 @@ class Admin extends  Authenticatable implements JWTSubject
         "updated_at",
         'password_rested_at',
         'email_verified_at',
-        'phone_verified_at'
+        'phone_verified_at',
+        'deleted_at'
     ];
 
     // Rest omitted for brevity

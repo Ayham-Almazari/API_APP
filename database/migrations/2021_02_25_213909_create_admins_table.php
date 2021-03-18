@@ -22,6 +22,7 @@ class CreateAdminsTable extends Migration
             $table->timestamp("password_rested_at")->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
             $table->engine = 'InnoDB';
         });

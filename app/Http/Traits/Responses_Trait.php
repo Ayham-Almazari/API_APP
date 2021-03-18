@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 trait Responses_Trait
 {
 
-    public function returnError($errors,$message="The given data was invalid.",$HTTP=Response::HTTP_BAD_REQUEST)
+    public function returnError($errors,$message="The given data was invalid.",$HTTP=Response::HTTP_UNPROCESSABLE_ENTITY)
     {
         return response()->json([
             'status' => false,
@@ -25,6 +25,13 @@ trait Responses_Trait
             'status' => true,
             'msg' => $msg
         ]);
+    }
+    public function returnErrorMessage($msg = "",$HTTP=Response::HTTP_UNPROCESSABLE_ENTITY)
+    {
+        return response()->json([
+            'status' => false,
+            'msg' => $msg
+        ],$HTTP);
     }
 
     public function returnData( $value, $key='data',$msg = "")

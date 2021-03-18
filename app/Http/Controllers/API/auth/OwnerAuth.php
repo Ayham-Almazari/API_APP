@@ -36,13 +36,14 @@ class OwnerAuth extends Controller
         try {
             $data=$request->only(['username','email','phone']);
             $data['password']=Hash::make($request->post('password'));
-            if ($request->hasFile('property_image'))
-                if ($request->file('property_image')->isValid())
-                    $data['property_image'] = $request->file('property_image')->store('property_files');
+            if ($request->hasFile('property_file'))
+                if ($request->file('property_file')->isValid())
+                    $data['property_file'] = $request->file('property_file')->store('property_files');
                 else
                     $this->returnError(['property_file'=>'Invalid file'],'The file uploaded invalid',Response::HTTP_BAD_REQUEST);
 
-//            Owner::create($data);
+                   $user= Owner::create($data);
+                    $user->delete();
         }catch (\Exception $e){
             return $this->returnError(["server error"=>[$e->getMessage()]],'Internal server error',Response::HTTP_INTERNAL_SERVER_ERROR);
         }

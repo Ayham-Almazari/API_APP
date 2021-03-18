@@ -16,7 +16,7 @@ class CreateOwnersTable extends Migration
         Schema::create('owners', function (Blueprint $table) {
             $table->id();
             $table->string('username')->unique();
-            $table->string('property_image');
+            $table->string('property_file');
             $table->enum('account_verification',['canceled','confirmed','under verification'])->default('under verification');
             $table->string('email')->unique();
             $table->string('phone')->unique();
@@ -24,6 +24,7 @@ class CreateOwnersTable extends Migration
             $table->timestamp("password_rested_at")->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
             $table->engine = 'InnoDB';
         });

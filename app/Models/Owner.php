@@ -4,13 +4,15 @@ namespace App\Models;
 
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Support\Facades\Storage;
 
 class Owner extends Authenticatable implements JWTSubject
 {
-    use HasFactory,Notifiable,MustVerifyEmail;
+    use HasFactory,Notifiable,MustVerifyEmail,SoftDeletes;
     protected $dateFormat="Y-m-d H:i:s";
 
     /**
@@ -32,7 +34,8 @@ class Owner extends Authenticatable implements JWTSubject
         "updated_at",
         'password_rested_at',
         'email_verified_at',
-        'phone_verified_at'
+        'phone_verified_at',
+        'deleted_at'
     ];
 
     // Rest omitted for brevity
@@ -57,6 +60,18 @@ class Owner extends Authenticatable implements JWTSubject
         return [
             "role"=>'owner'
         ];
+    }
+
+    //accessors
+    /**
+     * Get the user's user name.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getPropertyFileAttribute($value)
+    {
+        return asset('storage/'.$value);
     }
 
     //relations

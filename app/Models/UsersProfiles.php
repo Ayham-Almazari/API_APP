@@ -31,4 +31,28 @@ class UsersProfiles extends Model
     public function owner() {
         return $this->belongsTo(Owner::class,'owner_id');
     }
+
+    //accessors
+    /**
+     * Get the user's first name.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getFirstNameAttribute($value)
+    {
+        return ucfirst($value);
+    }
+    /**
+     * Get the user's last name.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getLastNameAttribute($value)
+    {
+        return ucfirst($value);
+    }
+
+
 }
