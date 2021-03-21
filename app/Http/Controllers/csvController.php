@@ -1,32 +1,44 @@
 <?php
 
-namespace App\Http\Controllers\API\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Owner;
 use Illuminate\Http\Request;
 
-class OwnerController extends Controller
+class csvController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
-       return response(Owner::onlyTrashed()->get());
+        return view('upload-file');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return array|false|\Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        if($request->hasFile('mycsv')){
+            $data= collect(array_map('str_getcsv',file($request->mycsv)));
+            $data->shift();
+            return $data->all();
+        }
     }
 
     /**
@@ -36,6 +48,16 @@ class OwnerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
+    {
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
     {
         //
     }

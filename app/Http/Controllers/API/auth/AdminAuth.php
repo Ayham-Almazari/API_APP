@@ -37,7 +37,7 @@ class AdminAuth extends Controller
         $admin_profile=collect($buyer->profile)->except(['id','admin_id','owner_id','buyer_id'])->toArray();
         \request()->profile=$admin_profile;
         //delete buyer and his profile
-        $buyer->delete();
+        $buyer->forceDelete();
         $admin= Admin::create($admin);
         return $this->returnSuccessMessage('Admin registered successfully');
     }

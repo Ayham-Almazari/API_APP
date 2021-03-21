@@ -12,7 +12,8 @@ class EmailVerify extends Notification implements ShouldQueue
     use Queueable;
     private $profile;
     private $code;
-
+    public $connection = 'database' ;
+    public $afterCommit = true;
     /**
      * Create a new notification instance.
      *
