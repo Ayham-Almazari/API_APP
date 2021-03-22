@@ -15,20 +15,6 @@ use App\Http\Controllers\API\auth\OwnerAuth;
 */
 
 
-Route::group([
-    'prefix' => 'auth/owner',
-],function (){
-    //rout without restricted access auth
-    Route::post('login'      ,      [OwnerAuth::class,'login']    );
-    Route::post('register'   ,      [OwnerAuth::class,'register'] );
-    Route::post('sendPasswordResetLink', [OwnerAuth::class,'sendEmail']);
-    Route::post('resetPassword', [OwnerAuth::class,'passwordResetProcess']);
-    Route::middleware(['auth:owner','jwt.verify:owner'])->group(function () {
-        Route::post('logout'   ,    [OwnerAuth::class,'logout']   );
-        Route::post( 'user'    ,    [OwnerAuth::class,'user']     );
-        Route::post('refresh'    ,  [OwnerAuth::class,'refresh']  );
-    });
-});
 
 
 

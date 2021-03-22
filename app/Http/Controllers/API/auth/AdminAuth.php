@@ -89,16 +89,15 @@ class AdminAuth extends Controller
         $this->updatePasswordRow($request)->delete();
 
         // reset password response
-        return response()->json([
-            'data'=>'Password has been updated.'
-        ], Response::HTTP_CREATED);
+        return $this->returnSuccessMessage('Password has been updated successfully.',Response::HTTP_CREATED);
+
     }
 
 
     //this is a function to get your email from database
     public function validateEmail($email)
     {
-        return !!Admin::where('email', $email)->first();
+        return Admin::where('email', $email)->first();
     }
 
 

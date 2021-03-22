@@ -4,10 +4,19 @@ namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Owner;
+use App\Notifications\OwnerCanceled;
+use App\Notifications\OwnerConfirmed;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class OwnerController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth:admin','jwt.verify:admin']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +24,8 @@ class OwnerController extends Controller
      */
     public function index()
     {
-       return response(Owner::onlyTrashed()->get());
+        $Trashedwithrelation= Owner::with('profile')->onlyTrashed()->get();
+       return $this->returnData($Trashedwithrelation,'data','All Trashed owners');
     }
 
     /**
@@ -35,9 +45,9 @@ class OwnerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($owner)
     {
-        //
+        return $this->returnData($owner);
     }
 
     /**
@@ -47,9 +57,12 @@ class OwnerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update($owner){
+        $owner->restore();
+        $owner->account_verification='confirmed';
+        $owner->save();
+        $owner->notify(new OwnerConfirmed($owner));
+        return $this->returnSuccessMessage($owner->profile->first_name." ".$owner->profile->last_name. ' confirmed successfully');
     }
 
     /**
@@ -58,8 +71,10 @@ class OwnerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($owner)
     {
-        //
+        $owner->notify(new OwnerCanceled($owner));
+         $owner->forceDelete();
+        return $this->returnSuccessMessage($owner->profile->first_name." ".$owner->profile->last_name. ' Removed successfully');
     }
 }

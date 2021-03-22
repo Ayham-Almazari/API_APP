@@ -83,7 +83,7 @@ class BuyerAuth extends Controller
     //this is a function to get your email from database
     public function validateEmail($email)
     {
-        return !!Buyer::where('email', $email)->first();
+        return Buyer::where('email', $email)->first();
     }
 
 
@@ -95,7 +95,6 @@ class BuyerAuth extends Controller
     public function refresh()
     {
         return $this->refresh_Token(new Buyer());
-
     }
 
 

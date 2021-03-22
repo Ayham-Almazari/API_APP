@@ -2,8 +2,10 @@
 
 
 namespace App\Http\Traits\auth;
+use App\Notifications\PasswordReset;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Notification;
 use Symfony\Component\HttpFoundation\Response;
 use App\Mail\SendMailreset;
 use Illuminate\Support\Facades\Mail;
@@ -28,7 +30,11 @@ trait PasswordResetRequest
     {
         $code = $this->createCode($email);
         // code is important in send mail
-        Mail::to($email)->send(new SendMailreset($code));
+//        Mail::to($email)->send(new SendMailreset($code));
+        $user=$this->validateEmail($email);
+        $user->notify(new PasswordReset($code));
+
+//        return \response(['code'=>$code],Response::HTTP_OK);
     }
 
     public function createCode($email)  // this is a function to get your request email that there are or not to send mail

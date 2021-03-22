@@ -7,22 +7,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class EmailVerify extends Notification implements ShouldQueue
+class PasswordReset extends Notification implements ShouldQueue
 {
     use Queueable;
-    private $profile;
+
     private $code;
-   /* public $connection = 'database' ;
-    public $afterCommit = true;*/
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($profile,$code)
+    public function __construct($code)
     {
         $this->code=$code;
-        $this->profile=$profile;
     }
 
     /**
@@ -35,7 +33,6 @@ class EmailVerify extends Notification implements ShouldQueue
     {
         return ['mail'];
     }
-
     /**
      * Determine which queues should be used for each notification channel.
      *
@@ -48,7 +45,6 @@ class EmailVerify extends Notification implements ShouldQueue
             'slack' => 'slack-queue',
         ];
     }
-
     /**
      * Get the mail representation of the notification.
      *
@@ -57,9 +53,10 @@ class EmailVerify extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-                   ->subject('Email verification code')
-                    ->markdown('Email.EmailVerification',['user'=>$this->profile,'code'=>$this->code]);
+        return (new MailMessage())
+            ->subject('Password Reset code')
+            ->markdown('Email.passwordReset',['code'=>$this->code])
+                 ;
     }
 
     /**

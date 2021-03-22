@@ -19,12 +19,12 @@ trait Responses_Trait
     }
 
 
-    public function returnSuccessMessage($msg = "")
+    public function returnSuccessMessage($msg = "",$HTTP=Response::HTTP_OK)
     {
         return response()->json([
             'status' => true,
             'msg' => $msg
-        ]);
+        ],$HTTP);
     }
     public function returnErrorMessage($msg = "",$HTTP=Response::HTTP_UNPROCESSABLE_ENTITY)
     {

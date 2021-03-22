@@ -7,22 +7,19 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class EmailVerify extends Notification implements ShouldQueue
+class OwnerCanceled extends Notification
 {
     use Queueable;
-    private $profile;
-    private $code;
-   /* public $connection = 'database' ;
-    public $afterCommit = true;*/
+
+    private $owner;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($profile,$code)
+    public function __construct($owner)
     {
-        $this->code=$code;
-        $this->profile=$profile;
+        $this->owner=$owner;
     }
 
     /**
@@ -37,19 +34,6 @@ class EmailVerify extends Notification implements ShouldQueue
     }
 
     /**
-     * Determine which queues should be used for each notification channel.
-     *
-     * @return array
-     */
-    public function viaQueues()
-    {
-        return [
-            'mail' => 'mail-queue',
-            'slack' => 'slack-queue',
-        ];
-    }
-
-    /**
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
@@ -58,8 +42,12 @@ class EmailVerify extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                   ->subject('Email verification code')
-                    ->markdown('Email.EmailVerification',['user'=>$this->profile,'code'=>$this->code]);
+            ->subject('Canceled Account')
+            ->line('Welcome '.$this->owner->first_name.' '.$this->owner->first_name.' ,')
+            ->line('We apologize, your request was not accepted and this is related to the verification file .')
+            ->line('You can try again please .')
+            ->action('register', url('/'))
+                    ->line('Thank you for using our application!');
     }
 
     /**

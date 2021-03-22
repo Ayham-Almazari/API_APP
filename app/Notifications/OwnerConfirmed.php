@@ -7,22 +7,18 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class EmailVerify extends Notification implements ShouldQueue
+class OwnerConfirmed extends Notification implements ShouldQueue
 {
     use Queueable;
-    private $profile;
-    private $code;
-   /* public $connection = 'database' ;
-    public $afterCommit = true;*/
+    private $owner;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($profile,$code)
+    public function __construct($owner)
     {
-        $this->code=$code;
-        $this->profile=$profile;
+        $this->owner=$owner;
     }
 
     /**
@@ -35,7 +31,6 @@ class EmailVerify extends Notification implements ShouldQueue
     {
         return ['mail'];
     }
-
     /**
      * Determine which queues should be used for each notification channel.
      *
@@ -58,8 +53,11 @@ class EmailVerify extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                   ->subject('Email verification code')
-                    ->markdown('Email.EmailVerification',['user'=>$this->profile,'code'=>$this->code]);
+            ->subject('Confirmed Account')
+                    ->line('Welcome '.$this->owner->profile->first_name.' '.$this->owner->profile->last_name.' ,')
+                    ->line('Your data has been verified and now you can log in and we are happy to build your virtual factory on our platform.')
+                    ->action('Login', url('/'))
+                    ->line('Thank you for using our application!');
     }
 
     /**

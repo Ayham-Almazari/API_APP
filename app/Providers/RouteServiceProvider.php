@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Models\Admin;
 use App\Models\Buyer;
+use App\Models\Owner;
+use Illuminate\Support\Arr;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -65,7 +67,13 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
         });
 
-
+        Route::bind('underverification', function ($value){
+            $owner= Owner::with('profile')->onlyTrashed()->get()->find($value);
+            if ($owner) {
+               return $owner;
+            }else
+                return abort(404);
+        });
     }
 
     /**

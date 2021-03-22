@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\auth\{VerificationController as Email,
                                     BuyerAuth ,
-                                    OwnerAuth as OwnerAuth,
+                                    OwnerAuth ,
                                     AdminAuth};
 /*
 |--------------------------------------------------------------------------
@@ -40,7 +40,7 @@ Route::group([
         Route::middleware(['jwt.verify:buyer','auth:buyer'])->group(function () {
             //refresh token , logout , refresh
             Route::post('logout'   , [BuyerAuth::class,'logout']    );
-            Route::post('refresh'    , [BuyerAuth::class,'refresh'] );
+            Route::get('refresh'    , [BuyerAuth::class,'refresh'] );
             //get current authenticated user
             Route::get( 'user'    ,    [BuyerAuth::class,'user']);
         });
@@ -66,7 +66,7 @@ Route::group([
         Route::middleware(['auth:admin','jwt.verify:admin'])->group(function () {
             //refresh token , logout , refresh
             Route::post('logout'   , [AdminAuth::class,'logout']);
-            Route::post('refresh'    , [AdminAuth::class,'refresh'] );
+            Route::get('refresh'    , [AdminAuth::class,'refresh'] );
             //get current authotocated user
             Route::get( 'user'    ,    [AdminAuth::class,'user']);
         });
@@ -79,10 +79,26 @@ Route::group([
     });
 
 
-
-
-
-
+    // Owner AUTH ROUTES
+    Route::group([
+        'prefix' => 'owner',
+    ],function (){
+        //rout without restricted access auth
+        Route::post('login'      ,      [OwnerAuth::class,'login']    );
+        Route::post('register'   ,      [OwnerAuth::class,'register'] );
+        //routes must have valid access token and user must logged in
+        Route::middleware(['auth:owner','jwt.verify:owner'])->group(function () {
+            Route::post('logout'   ,    [OwnerAuth::class,'logout']   );
+            Route::get( 'user'    ,    [OwnerAuth::class,'user']     );
+            Route::get('refresh'    ,  [OwnerAuth::class,'refresh']  );
+        });
+        //Owner reset password routes
+        //throttle
+        Route::middleware("throttle:5,2")->group(function (){
+            Route::post('sendPasswordResetLink', [OwnerAuth::class,'sendEmail']);
+            Route::post('resetPassword', [OwnerAuth::class,'passwordResetProcess']);
+        });
+    });
 
 
 });

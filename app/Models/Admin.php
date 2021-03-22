@@ -24,7 +24,9 @@ class Admin extends  Authenticatable implements JWTSubject
      */
 
 
-    protected $guarded=[];
+    protected $guarded=[
+
+    ];
 
     /**
      * The attributes that should be hidden for arrays.

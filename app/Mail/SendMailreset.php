@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SendMailreset extends Mailable
+class SendMailreset extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
     public $code;
@@ -20,6 +20,8 @@ class SendMailreset extends Mailable
     {
         $this->code = $code;
     }
+
+
 
     /**
      * Build the message.

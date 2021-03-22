@@ -91,6 +91,16 @@ class OwnerAuth extends Controller
     //this is a function to get your email from database
     public function validateEmail($email)
     {
-        return !!Owner::where('email', $email)->first();
+        return Owner::where('email', $email)->first();
+    }
+
+    /**
+     * Refresh a token.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh()
+    {
+        return $this->refresh_Token(new Owner());
     }
 }
