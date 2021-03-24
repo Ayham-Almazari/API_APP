@@ -18,7 +18,7 @@ class OwnerConfirmed extends Notification implements ShouldQueue
      */
     public function __construct($owner)
     {
-        $this->owner=$owner;
+        $this->owner=$owner->profile;
     }
 
     /**
@@ -54,7 +54,7 @@ class OwnerConfirmed extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->subject('Confirmed Account')
-                    ->line('Welcome '.$this->owner->profile->first_name.' '.$this->owner->profile->last_name.' ,')
+                    ->line('Welcome '.$this->owner->first_name.' '.$this->owner->last_name.' ,')
                     ->line('Your data has been verified and now you can log in and we are happy to build your virtual factory on our platform.')
                     ->action('Login', url('/'))
                     ->line('Thank you for using our application!');

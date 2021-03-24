@@ -76,7 +76,8 @@ class BuyerAuth extends Controller
 
         // reset password response
         return response()->json([
-            'data'=>'Password has been updated.'
+            'status'=>true,
+            'message'=>'Password has been updated.'
         ], Response::HTTP_CREATED);
     }
 

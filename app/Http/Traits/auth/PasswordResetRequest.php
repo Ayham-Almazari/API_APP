@@ -41,15 +41,16 @@ trait PasswordResetRequest
     {
         $oldCode = DB::table('password_resets')->where('email', $email)->first();
 
-        if ($oldCode) {
-            return $oldCode->code;
-        }
-
         $code = substr(number_format(time() * rand(),0,'',''),0,4);
        while ($ifExistCode = DB::table('password_resets')->where('code', $code)->first()){
            $code = substr(number_format(time() * rand(),0,'',''),0,4);
        }
-
+        if ($oldCode) {
+            DB::table('password_resets')->where('email', $email)->update([
+                'code'=>$code
+            ]);
+            return $code;
+        }
         $this->saveCode($code, $email);
         return $code;
     }
