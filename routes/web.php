@@ -17,4 +17,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/upload',csvController::class);
+//Route::resource('/upload',csvController::class);

@@ -31,8 +31,8 @@ class RegisterRequest extends FormRequest
             'email' => 'required|string|email|unique:buyers|unique:admins|unique:owners|max:255',
             'password' => ['required','min:8','max:20','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/']
         ];
-        if ($this->hasFile('property_image')) {
-            $rules=array_merge($rules,['property_image'=> 'file|max:5120|mimes:jpg,bmp,png,jpeg,pdf,pptx,doc,docx,rar,zip']);
+        if ($this->hasFile('property_file')) {
+            $rules=array_merge($rules,['property_file'=> 'file|max:5120|mimes:jpg,bmp,png,jpeg,pdf,pptx,doc,docx,rar,zip']);
         }
         return $rules;
     }

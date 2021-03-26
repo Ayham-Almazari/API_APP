@@ -17,10 +17,14 @@ trait PasswordResetRequest
 {
     public function sendEmail(Request $request)  // this is most important function to send mail and inside of that there are another function
     {
-        if (!$this->validateEmail($request->email)) {  // this is validate to fail send mail or true
+        $email="";
+        if(is_array($request->email)) $email=$request->email['email'];
+        if(is_string($request->email)) $email=$request->email;
+
+        if (!$this->validateEmail($email)) {  // this is validate to fail send mail or true
             return $this->failedResponse();
         }
-        $this->send($request->email);  //this is a function to send mail
+        $this->send($email);  //this is a function to send mail
         return $this->successResponse();
     }
 

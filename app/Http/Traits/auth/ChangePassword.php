@@ -11,9 +11,8 @@ use Illuminate\Support\Facades\DB;
 trait ChangePassword
 {
 
-
     public function passwordResetProcess(Request $request){
-       $v= Validator::make($request->all(),[
+        $v= Validator::make($request->all(),[
            'code'=>'required|string|max:4',
            'password' => ['required','min:8','max:20','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/']
        ],[
@@ -21,7 +20,9 @@ trait ChangePassword
        ]);
 
         if ($v->fails()) {
-            return \response([$v->errors()]);
+            return \response([
+                $v->errors()
+                ],422);
         }
         return $this->updatePasswordRow($request)->count() > 0 ? $this->resetPassword($request) : $this->tokenNotFoundError();
     }

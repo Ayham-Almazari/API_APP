@@ -9,7 +9,7 @@ use App\Notifications\OwnerConfirmed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
-class OwnerController extends Controller
+class UnderVerificationOwnerController extends Controller
 {
 
     public function __construct()

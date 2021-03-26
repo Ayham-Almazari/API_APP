@@ -35,7 +35,7 @@ class Owner extends Authenticatable implements JWTSubject
         'password_rested_at',
         'email_verified_at',
         'phone_verified_at',
-        'deleted_at'
+        'deleted_at',
     ];
 
     // Rest omitted for brevity
@@ -78,5 +78,9 @@ class Owner extends Authenticatable implements JWTSubject
 
     public function profile(){
         return $this->hasOne(UsersProfiles::class,'owner_id');
+    }
+
+    public function factories(){
+        return $this->hasMany(Factory::class,'owner_id');
     }
 }

@@ -9,8 +9,8 @@ use App\Http\Traits\Responses_Trait;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-
-class BaseAuth
+use App\Http\Controllers\Controller;
+class BaseAuth extends Controller
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests,Responses_Trait,Locally_Auth;
+    use Locally_Auth;
 }

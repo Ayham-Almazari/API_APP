@@ -51,7 +51,7 @@ trait Auth
             $token = $this->authenticate_user($model, $user, $credentials, $request,$identifier);//authenticate
             //if authenticated
             if ($token) // if user exists
-                return $this->respondWithToken($token, $this->get_data(['identifier'], [$identifier]), 'successfully logged in');
+                return $this->respondWithToken($token, $this->get_data(['identifier','expire'], [$identifier,$request->remember_me ? 20160 : 1440]), 'successfully logged in');
         endforeach;
     }
 
@@ -121,7 +121,6 @@ trait Auth
     public function authenticate_user($model, $user, $credentials, $request,$identifier)
     {
         return $token = $this->guard()->setTTL($request->remember_me ? 20160 : 1440)->claims([
-            $model->getJWTCustomClaims(),
             'identifier'=>$identifier,
             "user" => is_object($user) ? $user->profile->first_name . " " . $user->profile->last_name : null,
             "username" => is_object($user) ? $user->username : null

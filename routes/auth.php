@@ -46,10 +46,10 @@ Route::group([
         });
         //buyer reset password routes
         //throttle
-        Route::middleware("throttle:5,2")->group(function (){
+//        Route::middleware("throttle:5,2")->group(function (){
             Route::post('sendPasswordResetCode', [BuyerAuth::class,'sendEmail']);
             Route::post('resetPassword', [BuyerAuth::class,'passwordResetProcess']);
-        });
+//        });
     });
 
     // ADMIN AUTH ROUTES
