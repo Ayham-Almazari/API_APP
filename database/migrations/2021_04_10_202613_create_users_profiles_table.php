@@ -25,6 +25,7 @@ class CreateUsersProfilesTable extends Migration
             $table->string('last_name');
             $table->string('picture')->nullable();
             $table->string('instagram')->nullable();
+            $table->string('facebook')->nullable();
             $table->string('address')->nullable();
             $table->timestamps();
             $table->engine = 'InnoDB';

@@ -4,13 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Factory extends Model
 {
-    use HasFactory;
+    use HasFactory , SoftDeletes;
 
     protected $dateFormat="Y-m-d H:i:s";
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+        'deleted_at' => "datetime:Y-m-d H:i:s"
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -25,13 +36,29 @@ class Factory extends Model
      * @var array
      */
     protected $hidden = [
-        'password'
+        'password',
+        'owner_id'
     ];
+        //accessors
+    /**
+     * Get the user's user name.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getPropertyFileAttribute($value)
+    {
+        return asset('storage/'.$value);
+    }
 
 //    protected $with ='owner.profile';
 
     //relations
     public function owner() {
         return $this->belongsTo(Owner::class,'owner_id');
+    }
+
+    public function categories() {
+        return $this->hasMany(Category::class,'factory_id');
     }
 }

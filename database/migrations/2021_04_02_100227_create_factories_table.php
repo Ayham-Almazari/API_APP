@@ -15,10 +15,11 @@ class CreateFactoriesTable extends Migration
     {
         Schema::create('factories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('owner_id')->constrained('owners');
+            $table->foreignId('owner_id')->constrained('owners')->cascadeOnDelete();
             $table->string('factory_name')->nullable();
             $table->string('logo')->nullable();
             $table->string('cover_photo')->nullable();
+            $table->string('property_file')->nullable();
             $table->string('facebook')->nullable();
             $table->string('instagram')->nullable();
             $table->string('phone')->nullable();

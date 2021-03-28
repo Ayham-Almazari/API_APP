@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Admin;
 use App\Models\Buyer;
+use App\Models\Factory;
 use App\Models\Owner;
 use Illuminate\Support\Arr;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -59,7 +60,7 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::prefix('api/v1')
                 ->middleware(['api'])
-                ->namespace($this->namespace.'\\API\\FactoryControllers')
+                ->namespace($this->namespace.'\\API\\OwnerOfFactoryControllers')
                 ->group(base_path('routes/factory.php'));
 
             Route::middleware('web')
@@ -67,13 +68,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
         });
 
-        Route::bind('underverification', function ($value){
-            $owner= Owner::with('profile')->onlyTrashed()->get()->find($value);
-            if ($owner) {
-               return $owner;
-            }else
-                return abort(404);
-        });
+
     }
 
     /**

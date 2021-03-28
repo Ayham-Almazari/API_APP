@@ -47,7 +47,12 @@ class UnderVerificationOwnerController extends Controller
      */
     public function show($owner)
     {
-        return $this->returnData($owner);
+        $owner= Owner::with('profile')->onlyTrashed()->get()->find($owner);
+        if ($owner) {
+            return $this->returnData($owner);
+        }else
+            return abort(404);
+
     }
 
     /**
@@ -58,11 +63,16 @@ class UnderVerificationOwnerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update($owner){
-        $owner->restore();
-        $owner->account_verification='confirmed';
-        $owner->save();
-        $owner->notify(new OwnerConfirmed($owner));
-        return $this->returnSuccessMessage($owner->profile->first_name." ".$owner->profile->last_name. ' confirmed successfully');
+        $owner= Owner::with('profile')->onlyTrashed()->get()->find($owner);
+        if ($owner) {
+            $owner->restore();
+            $owner->account_verification='confirmed';
+            $owner->save();
+            $owner->notify(new OwnerConfirmed($owner));
+            return $this->returnSuccessMessage($owner->profile->first_name." ".$owner->profile->last_name. ' confirmed successfully');
+        }else
+            return abort(404);
+
     }
 
     /**
@@ -73,8 +83,13 @@ class UnderVerificationOwnerController extends Controller
      */
     public function destroy($owner)
     {
-        $owner->notify(new OwnerCanceled($owner));
-         $owner->forceDelete();
-        return $this->returnSuccessMessage($owner->profile->first_name." ".$owner->profile->last_name. ' Removed successfully');
+        $owner= Owner::with('profile')->onlyTrashed()->get()->find($owner);
+        if ($owner) {
+            $owner->notify(new OwnerCanceled($owner));
+            $owner->forceDelete();
+            return $this->returnSuccessMessage($owner->profile->first_name." ".$owner->profile->last_name. ' Removed successfully');
+        }else
+            return abort(404);
+
     }
 }
