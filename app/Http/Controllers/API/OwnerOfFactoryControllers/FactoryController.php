@@ -6,6 +6,7 @@ use App\Http\Resources\FactoryCollection;
 use App\Http\Resources\Factoryresource;
 use App\Models\Factory;
 use App\Models\Owner;
+use App\Notifications\DeleteFactory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -99,6 +100,12 @@ class FactoryController extends Controller
      */
     public function destroy(Factory $factory)
     {
-
+        $messageInfo=[
+            "owner"=>$factory->owner->profile->first_name.' '.$factory->owner->profile->last_name,
+            "factory_name"=>$factory->factory_name,
+        ];
+        $factory->owner->notify(new DeleteFactory($messageInfo));
+        $factory->delete();
+       return $this->returnSuccessMessage("{$messageInfo['owner']} your factory {$messageInfo['factory_name']} under deleting . It will be deleted after a week during this period. You can contact us if you have decided to return to deleting your factory .",Response::HTTP_OK);
     }
 }

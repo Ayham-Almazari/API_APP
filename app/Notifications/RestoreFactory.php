@@ -7,9 +7,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class FactoryConfirm extends Notification implements ShouldQueue
+class RestoreFactory extends Notification implements ShouldQueue
 {
     use Queueable;
+
     private $factory;
     private $name;
     private $factory_name;
@@ -18,7 +19,7 @@ class FactoryConfirm extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($factory )
+    public function __construct($factory)
     {
         $this->factory=$factory;
         $this->name=$this->factory->owner->profile->first_name.' '.$this->factory->owner->profile->last_name;
@@ -35,6 +36,7 @@ class FactoryConfirm extends Notification implements ShouldQueue
     {
         return ['mail'];
     }
+
     /**
      * Determine which queues should be used for each notification channel.
      *
@@ -47,7 +49,6 @@ class FactoryConfirm extends Notification implements ShouldQueue
             'slack' => 'slack-queue',
         ];
     }
-
     /**
      * Get the mail representation of the notification.
      *
@@ -56,14 +57,14 @@ class FactoryConfirm extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-            return (new MailMessage)
-                ->subject('Confirmed Factory')
-                ->line('Welcome '. $this->name .' , ')
-                ->line('Your factory '.$this->factory_name.' data has been verified, and your factory has been successfully built on our platform,
-             and now you can access it and start adding categories and products to display and sell.')
-                ->action('your factory', url('/'))
-                ->line('Thank you for using our application!')
-                ->line('Welcome to TallyBills');
+        return (new MailMessage)
+            ->subject('Restore Factory')
+            ->line('Hello '. $this->name .' ,')
+            ->line('Your factory ' . $this->factory_name . '
+                 Your factory has been restored, thank you for trusting our platform and we are happy to stay with us .')
+            ->action('your factory', url('/'))
+            ->line('Thank you for using our application!')
+            ->line('Welcome to TallyBills');
     }
 
     /**

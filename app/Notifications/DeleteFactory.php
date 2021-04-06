@@ -7,22 +7,19 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class FactoryConfirm extends Notification implements ShouldQueue
+class DeleteFactory extends Notification implements  ShouldQueue
 {
     use Queueable;
-    private $factory;
-    private $name;
-    private $factory_name;
+    private $messageInfo;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($factory )
+    public function __construct($message_info)
     {
-        $this->factory=$factory;
-        $this->name=$this->factory->owner->profile->first_name.' '.$this->factory->owner->profile->last_name;
-        $this->factory_name=$factory->factory_name;
+        $this->messageInfo=$message_info;
     }
 
     /**
@@ -35,6 +32,7 @@ class FactoryConfirm extends Notification implements ShouldQueue
     {
         return ['mail'];
     }
+
     /**
      * Determine which queues should be used for each notification channel.
      *
@@ -56,14 +54,11 @@ class FactoryConfirm extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-            return (new MailMessage)
-                ->subject('Confirmed Factory')
-                ->line('Welcome '. $this->name .' , ')
-                ->line('Your factory '.$this->factory_name.' data has been verified, and your factory has been successfully built on our platform,
-             and now you can access it and start adding categories and products to display and sell.')
-                ->action('your factory', url('/'))
-                ->line('Thank you for using our application!')
-                ->line('Welcome to TallyBills');
+        return (new MailMessage)
+            ->subject("Factory Under Deleting")
+            ->line("{$this->messageInfo['owner']} your factory {$this->messageInfo['factory_name']} under deleting . It will be deleted after a week during this period. You can contact us if you have decided to return to deleting your factory .")
+            ->line("Notice ! All categories and products that belong to it will be deleted .")
+            ->line('Thank you for using our application!');
     }
 
     /**

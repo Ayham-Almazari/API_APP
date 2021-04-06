@@ -16,11 +16,6 @@ use App\Http\Controllers\API\auth\BuyerAuth;
 
 
 
-/*
-Route::apiResource('posts',PostController::class);
-
-Route::apiResource('manufactor',ManufactorsController::class);
-*/
 
 
 

@@ -90,6 +90,5 @@ class UnderVerificationOwnerController extends Controller
             return $this->returnSuccessMessage($owner->profile->first_name." ".$owner->profile->last_name. ' Removed successfully');
         }else
             return abort(404);
-
     }
 }

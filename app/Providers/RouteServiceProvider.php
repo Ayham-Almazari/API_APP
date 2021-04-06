@@ -63,6 +63,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace.'\\API\\OwnerOfFactoryControllers')
                 ->group(base_path('routes/factory.php'));
 
+            Route::prefix('api/v1')
+                ->middleware(['api'])
+                ->namespace($this->namespace.'\\API\\CategoriesOfFactoriesControllers')
+                ->group(base_path('routes/category.php'));
+
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
