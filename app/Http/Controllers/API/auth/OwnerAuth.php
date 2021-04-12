@@ -33,18 +33,17 @@ class OwnerAuth extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function register(RegisterRequest $request) {
-        $request->validate(['property_file'=>"required"]);
+        $request->validate(['property_file'=> 'required|sometimes|file|max:5120|mimes:jpg,bmp,png,jpeg,pdf,pptx,doc,docx,rar,zip']);
         try {
             $data=$request->only(['username','email','phone']);
             $data['password']=Hash::make($request->post('password'));
-            if ($request->hasFile('property_file'))
-                if ($request->file('property_file')->isValid())
-                    $data['property_file'] = $request->file('property_file')->store('property_files/owners');
-                else
-                    $this->returnError(['property_file'=>'Invalid file'],'The file uploaded invalid',Response::HTTP_BAD_REQUEST);
-
-                    $user= Owner::create($data);
-                    $user->delete();
+            if ($request->hasFile('property_file')){
+                $data['property_file'] = $request->file('property_file')->store('property_files/owners');
+                if (!$request->file('property_file')->isValid())
+                    $this->returnError(['property_file'=>'Invalid file'],'The file uploaded invalid',Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+            $user= Owner::create($data);
+            $user->delete();
         }catch (\Exception $e){
             return $this->returnError(["server error"=>[$e->getMessage()]],'Internal server error',Response::HTTP_INTERNAL_SERVER_ERROR);
         }

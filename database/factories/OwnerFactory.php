@@ -22,7 +22,11 @@ class OwnerFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'email'=>$this->faker->email,
+            "phone"=>$this->faker->phoneNumber,
+            'username'=>$this->faker->userName,
+            'property_file'=>$this->faker->imageUrl(),
+            'password'=>bcrypt('MRmazari98=')
         ];
     }
 }

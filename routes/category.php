@@ -15,4 +15,4 @@ use App\Http\Controllers\API\auth\OwnerAuth;
 */
 
 
-Route::apiResource('factories.Categories',FactoryCategories::class);
+//Route::apiResource('factories.Categories',FactoryCategories::class);

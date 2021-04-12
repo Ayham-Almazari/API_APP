@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\Manufactor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ManufactorFactory extends Factory
+class FactoryFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
@@ -22,7 +22,9 @@ class ManufactorFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'factory_name'=>$this->faker->name,
+            'logo'=>$this->faker->fileExtension,
+            'property_file'=>$this->faker->filePath()
         ];
     }
 }

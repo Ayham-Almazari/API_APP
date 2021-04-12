@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\OwnerOfFactoryControllers;
+namespace App\Http\Controllers\API\OwnerControllers;
 
 use App\Http\Resources\FactoryCollection;
 use App\Http\Resources\Factoryresource;
@@ -29,10 +29,8 @@ class FactoryController extends Controller
 
     public function index()
     {
-        $owner_factories= auth()->user()->with(['profile','factories'=>function($query){
-            $query->orderby('created_at');
-        }])->get();
-        return (new FactoryCollection($owner_factories));
+        $owner_factories= auth()->user()->factories()->get(['id','factory_name','address','logo']);
+        return (Factoryresource::collection($owner_factories));
     }
 
     /**
@@ -73,10 +71,14 @@ class FactoryController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Factory  $factory
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Factory $factory)
     {
+      $factory=  auth()->user()->factories()->where('id',$factory->id)->first(['id','factory_name','address','logo']) ;
+       if (!$factory) {
+           return $this->returnErrorMessage('The factory not found oe inaccessible');
+       }
         return (new Factoryresource($factory->load('categories.products')));
     }
 

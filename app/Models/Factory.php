@@ -37,7 +37,6 @@ class Factory extends Model
      */
     protected $hidden = [
         'password',
-        'owner_id'
     ];
         //accessors
     /**

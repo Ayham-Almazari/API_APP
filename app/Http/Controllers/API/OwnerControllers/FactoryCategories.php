@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\CategoriesOfFactoriesControllers;
+namespace App\Http\Controllers\API\OwnerControllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Factoryresource;
@@ -121,7 +121,7 @@ class FactoryCategories extends Controller
 
         Validation_Request:{
         $v = Validator::make($request->only(['category_name', 'category_description']), [
-            'category_name' => 'string|max:3|max:255|required|alpha_dash',
+            'category_name' => 'string|min:3|max:255|required|alpha_dash',
             'category_description' => 'string|max:1000'
         ]);
         if ($v->fails()) {

@@ -23,7 +23,7 @@ class RegisterRequest extends FormRequest
      */
     public function rules()
     {
-        $rules= [
+        return [
             'first_name' => 'required|string|max:255|min:3',
             'username' => 'required|string|min:5|max:255|unique:buyers|unique:admins|unique:owners|alpha_dash|regex:/[a-zA-Z]{3,}/',
             'last_name' => 'required|string|max:255|min:3',
@@ -31,10 +31,7 @@ class RegisterRequest extends FormRequest
             'email' => 'required|string|email|unique:buyers|unique:admins|unique:owners|max:255',
             'password' => ['required','min:8','max:20','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/']
         ];
-        if ($this->hasFile('property_file')) {
-            $rules=array_merge($rules,['property_file'=> 'file|max:5120|mimes:jpg,bmp,png,jpeg,pdf,pptx,doc,docx,rar,zip']);
-        }
-        return $rules;
+
     }
 
     /**

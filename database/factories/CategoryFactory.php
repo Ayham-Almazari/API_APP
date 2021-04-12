@@ -22,9 +22,7 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            "factory_id"=>rand(1,50),
-            "category_id"=>rand(1,50),
-            "category_name"=>$this->faker->name,
+            "category_name"=>$this->faker->word,
             "category_description"=>$this->faker->text,
         ];
     }
