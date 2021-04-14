@@ -37,7 +37,7 @@ Route::group([
         Route::post('login'      , [BuyerAuth::class,'login']       );
         Route::post('register'   , [BuyerAuth::class,'register']    );
         //routes must have valid access token and user must logged in
-        Route::middleware(['jwt.verify:buyer','auth:buyer'])->group(function () {
+        Route::middleware(['auth:buyer'])->group(function () {
             //refresh token , logout , refresh
             Route::post('logout'   , [BuyerAuth::class,'logout']    );
             Route::get('refresh'    , [BuyerAuth::class,'refresh'] );
@@ -63,7 +63,7 @@ Route::group([
                 return response()->json(['Undefined User Or Already has been defined as Admin .'],\Symfony\Component\HttpFoundation\Response::HTTP_NOT_FOUND);
             });
         //routes must have valid access token and user must logged in
-        Route::middleware(['auth:admin','jwt.verify:admin'])->group(function () {
+        Route::middleware(['auth:admin'])->group(function () {
             //refresh token , logout , refresh
             Route::post('logout'   , [AdminAuth::class,'logout']);
             Route::get('refresh'    , [AdminAuth::class,'refresh'] );
@@ -87,7 +87,7 @@ Route::group([
         Route::post('login'      ,      [OwnerAuth::class,'login']    );
         Route::post('register'   ,      [OwnerAuth::class,'register'] );
         //routes must have valid access token and user must logged in
-        Route::middleware(['auth:owner','jwt.verify:owner'])->group(function () {
+        Route::middleware(['auth:owner'])->group(function () {
             Route::post('logout'   ,    [OwnerAuth::class,'logout']   );
             Route::get( 'user'    ,    [OwnerAuth::class,'user']     );
             Route::get('refresh'    ,  [OwnerAuth::class,'refresh']  );

@@ -51,7 +51,7 @@ trait Auth
             $token = $this->authenticate_user($model, $user, $credentials, $request,$identifier);//authenticate
             //if authenticated
             if ($token) // if user exists
-                return $this->respondWithToken($token, $this->get_data(['identifier','expire'], [$identifier,$request->remember_me ? 20160 : 1440]), 'successfully logged in');
+                return $this->respondWithToken($token, $this->get_data(['identifier','expire','role'], [$identifier,$request->remember_me ? 20160 : 1440,$model->getJWTCustomClaims()['role']]), 'successfully logged in');
         endforeach;
     }
 

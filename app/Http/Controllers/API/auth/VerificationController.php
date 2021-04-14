@@ -92,7 +92,7 @@ class VerificationController extends Controller
 
         auth()->user()->notify(new EmailVerify(auth()->user()->profile,$code));
 
-        return $this->returnSuccessMessage("Email verification link sent on your email : ".auth()->user()->email ."  $code");
+        return $this->returnSuccessMessage("Email verification link sent on your email : ".auth()->user()->email ."  $code ");
     }
 
     //notice
