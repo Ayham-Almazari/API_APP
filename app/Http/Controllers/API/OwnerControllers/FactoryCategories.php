@@ -23,7 +23,6 @@ class FactoryCategories extends Controller
     public function __construct()
     {
         $this->middleware(['auth:owner']);
-        Auth::shouldUse('owner');
         $this->owner = auth()->user();
     }
 
