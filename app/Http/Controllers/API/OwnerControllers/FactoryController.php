@@ -23,9 +23,9 @@ class FactoryController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth:owner','jwt.verify:owner']);
-        Auth::shouldUse('owner');
+        $this->middleware(['auth:owner']);
     }
+
 
     public function index()
     {
@@ -53,7 +53,7 @@ class FactoryController extends Controller
             return $this->returnError($v->errors());
         }
         }
-        Uoload_property_file:{
+        Upload_property_file:{
         if ($request->hasFile('property_file'))
             if ($request->file('property_file')->isValid())
                 $data['property_file'] = $request->file('property_file')->store('property_files/factories');

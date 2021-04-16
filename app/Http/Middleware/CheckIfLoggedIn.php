@@ -22,13 +22,13 @@ class CheckIfLoggedIn
         foreach (['buyer','admin','owner'] as $guard){
             $logged_flag=auth($guard)->check();
             if ($logged_flag) {
-                \auth()->shouldUse($guard);
+                Auth::shouldUse($guard);
                 break;
             }
         }
 
         if($logged_flag == false){
-           return response()->json(["User Must Be Logged In"]);
+           return response()->json(["unauthenticated ."]);
          }
 
         return $next($request);

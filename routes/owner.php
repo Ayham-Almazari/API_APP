@@ -14,5 +14,5 @@ use App\Http\Controllers\API\auth\OwnerAuth;
 |
 */
 
-Route::apiResource('factories',FactoryController::class);
+Route::apiResource('factories',FactoryController::class)->shallow();
 Route::apiResource('factories.Categories',FactoryCategories::class);

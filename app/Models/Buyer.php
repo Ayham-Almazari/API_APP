@@ -57,7 +57,16 @@ class Buyer extends Authenticatable implements JWTSubject,MustVerifyEmail
             "role"=>'buyer',
         ];
     }
-
+    //scopes
+    public function isAdmin(){
+        return false;
+    }
+    public function isOwner(){
+        return false;
+    }
+    public function isBuyer(){
+        return true;
+    }
     //relations
 
     public function profile(){

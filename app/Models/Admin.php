@@ -66,6 +66,18 @@ class Admin extends  Authenticatable implements JWTSubject
         ];
     }
 
+    //scopes
+    public function isAdmin(){
+        return true;
+    }
+
+    public function isOwner(){
+        return false;
+    }
+    public function isBuyer(){
+        return false;
+    }
+
     //relations
 
     public function profile(){

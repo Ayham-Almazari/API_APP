@@ -73,7 +73,16 @@ class Owner extends Authenticatable implements JWTSubject
     {
         return asset('storage/'.$value);
     }
-
+    //scopes
+    public function isAdmin(){
+        return false;
+    }
+    public function isOwner(){
+        return true;
+    }
+    public function isBuyer(){
+        return false;
+    }
     //relations
 
     public function profile(){

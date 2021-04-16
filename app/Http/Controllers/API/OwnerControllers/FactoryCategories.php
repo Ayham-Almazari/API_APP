@@ -22,7 +22,7 @@ class FactoryCategories extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth:owner', 'jwt.verify:owner']);
+        $this->middleware(['auth:owner']);
         Auth::shouldUse('owner');
         $this->owner = auth()->user();
     }
@@ -69,7 +69,7 @@ class FactoryCategories extends Controller
             return $this->returnError($v->errors());
         }
     }
-        if_category_exists:{
+        if_category_exists_returnError_or_create:{
         if (array_search($request->category_name, $factory->categories()->pluck('category_name')->toArray()) !== false) :
             return $this->returnError([
                 'category_name' => ['category_name has already been taken .']
@@ -156,12 +156,12 @@ class FactoryCategories extends Controller
         if_unauthorized:{
         $factory = $this->factory($factory);
         if (!$factory)
-            return $this->returnErrorMessage('factory not found or inaccessible', 404);
+            return $this->returnErrorMessage('Factory not found or inaccessible', 404);
         $category = $factory->categories()->where('id', $category)->first();
         if (empty($category))
-            return $this->returnErrorMessage('category not found', 404);
+            return $this->returnErrorMessage('Category not found', 404);
     }
         $category->delete();
-        return $this->returnSuccessMessaroge('Category deleted successfully .');
+        return $this->returnSuccessMessage('Category deleted successfully .');
     }
 }

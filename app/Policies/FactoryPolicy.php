@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Buyer;
 use App\Models\Factory;
+use App\Models\Owner;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class FactoryPolicy
@@ -11,14 +12,27 @@ class FactoryPolicy
     use HandlesAuthorization;
 
     /**
+     * Perform pre-authorization checks.
+     *
+     * @param  \App\Models\buyer|owner|admin  $user
+     * @param  string  $ability
+     * @return void|bool
+     */
+    public function before( $user ){
+        if ($user->isAdmin()) {
+            return true;
+        }
+    }
+
+    /**
      * Determine whether the user can view any models.
      *
      * @param  \App\Models\Buyer  $buyer
      * @return mixed
      */
-    public function viewAny(Buyer $buyer)
+    public function viewAny( $user)
     {
-        return false ;
+        return $user->isOwner();
     }
 
     /**
