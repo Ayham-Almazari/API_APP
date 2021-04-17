@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers\API\OwnerControllers;
 
+use App\Exceptions\CategoryNotFoundException;
+use App\Exceptions\FactoryNotFoundException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Owner_Factories_CMS\CreateCategoryRequest;
+use App\Http\Requests\Owner_Factories_CMS\UpdateCategoryRequest;
 use App\Http\Resources\Factoryresource;
 use App\Models\Category;
 use App\Models\Factory;
+use App\Rules\UniqueCategoryName;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use function auth;
 
 class FactoryCategories extends Controller
 {
@@ -23,6 +29,7 @@ class FactoryCategories extends Controller
     public function __construct()
     {
         $this->middleware(['auth:owner']);
+        auth()->shouldUse('owner');
         $this->owner = auth()->user();
     }
 
@@ -33,15 +40,18 @@ class FactoryCategories extends Controller
      */
     public function index($factory)
     {
-        $factory_categories = $this->factory($factory);
-        if (!$factory_categories)
-            return $this->returnErrorMessage('factory not found or inaccessible', 404);
-        return new Factoryresource($factory_categories->load('categories'));
+        return  Factoryresource::collection($this->factory($factory)->categories);
     }
 
+    /**
+     * @throws FactoryNotFoundException
+     */
     private function factory($id)
     {
         $factory = $this->owner->factories()->where('id', $id)->first(['id', 'factory_name']);
+        if (!$factory) {
+            throw new FactoryNotFoundException('factory not found or inaccessible');
+        }
         return $factory;
     }
 
@@ -52,51 +62,33 @@ class FactoryCategories extends Controller
      * @param Factory $factory
      * @return Response
      */
-    public function store(Request $request, $factory)
+    public function store(CreateCategoryRequest $request, $factory)
     {
-        if_owner_of_this_factory:{
-        $factory = $this->factory($factory);
-        if (!$factory)
-            return $this->returnErrorMessage('factory not found or inaccessible', 404);
-    }
-        Validation_Request:{
-        $v = Validator::make($request->only(['category_name', 'category_description']), [
-            'category_name' => 'string|max:255|required',
-            'category_description' => 'string|max:255|required'
-        ]);
-        if ($v->fails()) {
-            return $this->returnError($v->errors());
-        }
-    }
-        if_category_exists_returnError_or_create:{
-        if (array_search($request->category_name, $factory->categories()->pluck('category_name')->toArray()) !== false) :
-            return $this->returnError([
-                'category_name' => ['category_name has already been taken .']
-            ]);
-        else :
-            $category = $factory->categories()->create($v->validated());
-            return $this->returnSuccessMessage("Category '{$category->category_name}' for $factory->factory_name factory created successfully .", \Symfony\Component\HttpFoundation\Response::HTTP_CREATED);
-        endif;
-    }
-
+        $category = $request->factory->categories()->create($request->validated());
+        return $this->returnSuccessMessage("Category '{$category->category_name}' for '{$request->factory->factory_name}' factory created successfully .", \Symfony\Component\HttpFoundation\Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      *
      * @param Category $category
-     * @return Category
+     * @return Factoryresource
+     * @throws CategoryNotFoundException
      */
     public function show($factory, $category)
     {
-        $factory = $this->factory($factory);
-        if (!$factory)
-            return $this->returnErrorMessage('factory not found or inaccessible', 404);
-        $category = $factory->categories->only($category)->toArray();
-        if (empty($category))
-            return $this->returnErrorMessage('category not found', 404);
+        return new Factoryresource($this->category($this->factory($factory), $category));
+    }
 
-        return new Factoryresource($category);
+    /**
+     * @throws FactoryNotFoundException
+     */
+    private function category($factory, $category)
+    {
+        $category = $factory->categories()->find($category);
+        if (empty($category))
+            throw new CategoryNotFoundException('category not found');
+        return $category;
     }
 
     /**
@@ -104,43 +96,17 @@ class FactoryCategories extends Controller
      *
      * @param Request $request
      * @param Category $category
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public
-    function update( $factory, $category , Request $request)
+    function update($factory, $category, UpdateCategoryRequest $request)
     {
-        if_unauthorized:{
-        $factory = $this->factory($factory);
-        if (!$factory)
-            return $this->returnErrorMessage('factory not found or inaccessible', 404);
-        $category = $factory->categories()->where('id', $category)->first();
-        if (empty($category))
-            return $this->returnErrorMessage('category not found', 404);
+        update_category:{
+        $request->category->update(
+            $request->validated()
+        );
     }
-
-        Validation_Request:{
-        $v = Validator::make($request->only(['category_name', 'category_description']), [
-            'category_name' => 'string|min:3|max:255|required|alpha_dash',
-            'category_description' => 'string|max:1000'
-        ]);
-        if ($v->fails()) {
-            return $this->returnError($v->errors());
-        }
-    }
-        duplicate_entry_category_exists:{
-        if (array_search($request->category_name, $factory->categories()->pluck('category_name')->toArray()) !== false) :
-            return $this->returnError([
-                'category_name' => ['category_name has already been taken .']
-            ]);
-        else :
-            update_category:{
-            $category->update(
-                $v->validated()
-            );
-        }
-        endif;
-    }
-        return $this->returnData( $category , 'data', 'Category updated successfully .' );
+        return (new Factoryresource($request->category))->additional(['msg'=>'Category updated successfully .','status'=>true]);
     }
 
     /**
@@ -154,11 +120,7 @@ class FactoryCategories extends Controller
     {
         if_unauthorized:{
         $factory = $this->factory($factory);
-        if (!$factory)
-            return $this->returnErrorMessage('Factory not found or inaccessible', 404);
-        $category = $factory->categories()->where('id', $category)->first();
-        if (empty($category))
-            return $this->returnErrorMessage('Category not found', 404);
+        $category = $this->category($factory, $category);
     }
         $category->delete();
         return $this->returnSuccessMessage('Category deleted successfully .');

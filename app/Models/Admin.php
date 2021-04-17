@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-
+use Spatie\Permission\Traits\HasRoles;
 class Admin extends  Authenticatable implements JWTSubject
 {
-    use HasFactory,Notifiable,MustVerifyEmail,SoftDeletes ;
+    use HasFactory,Notifiable,MustVerifyEmail,SoftDeletes,HasRoles ;
     protected $dateFormat="Y-m-d H:i:s";
 
     protected $table="admins";
