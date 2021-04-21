@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Manufactor;
+use App\Models\Factory as model;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class FactoryFactory extends Factory
@@ -12,7 +12,7 @@ class FactoryFactory extends Factory
      *
      * @var string
      */
-    protected $model = \App\Models\Factory::class;
+    protected $model = model::class;
 
     /**
      * Define the model's default state.
@@ -22,7 +22,7 @@ class FactoryFactory extends Factory
     public function definition()
     {
         return [
-            'factory_name'=>$this->faker->name,
+            'factory_name'=>$this->faker->word,
             'logo'=>$this->faker->fileExtension,
             'property_file'=>$this->faker->filePath()
         ];

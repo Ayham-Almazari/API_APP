@@ -4,6 +4,9 @@
 namespace App\Http\Traits;
 
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Intervention\Image\Image;
 use Symfony\Component\HttpFoundation\Response;
 
 trait Responses_Trait
@@ -45,7 +48,7 @@ trait Responses_Trait
 
 
     //////////////////
-    public function returnValidationError($code = "E001", $validator)
+    public function returnValidationError( $validator,$code = "E001")
     {
         return $this->returnError( $validator->errors(),$code);
     }
@@ -67,5 +70,46 @@ trait Responses_Trait
             '_token' => $token,
             'token_type' => 'bearer',
         ],200);
+    }
+
+    /**
+     * upload base64 image .
+     *
+     * @param  string $token
+     *
+     * @return Image
+     */
+   public function upload_base64_image($directory, $base64, $disk='public', $quality=100) : Image
+   {
+       Storage::disk($disk)->exists($directory)?null:Storage::disk($disk)->makeDirectory($directory);
+       switch ($disk):
+           case 'local':  $disk=storage_path('app');break;
+           default :$disk=storage_path('app/public');
+       endswitch;
+       $image_name=uniqid().'-'.now()->timestamp;
+       $extension = Str::between($base64, '/', ';base64');
+       $upload_path=$disk.'/'.$directory.'/'.$image_name.'.'.$extension;
+       $img=  \Image::make($base64)
+           ->save($upload_path,  $quality);
+       $img->uploaded_image=$directory.'/'.$image_name.'.'.$extension;
+           return $img;
+    }
+
+    /**
+     * upload base64 image .
+     *
+     * @param  string $token
+     *
+     * @return Image
+     */
+    public function update_image($image_db,$directory,$base64)
+    {
+        if ($base64) :
+            Storage::disk('public')->delete(Str::after( $image_db,'/storage/'));
+            return $this->upload_base64_image($directory,base64: $base64);
+        else:
+            Storage::disk('public')->delete(Str::after( $image_db,'/storage/'));
+            return null;
+        endif;
     }
 }

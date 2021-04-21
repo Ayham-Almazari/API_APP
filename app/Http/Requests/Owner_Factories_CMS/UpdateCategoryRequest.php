@@ -20,15 +20,12 @@ class UpdateCategoryRequest extends FormRequest
     public function authorize()
     {
         $factories=auth()->user()->factories;
-        $factory=false;
         $category=false;
-        if (!$factory=$factories->find(Str::between($this->getRequestUri(),'/api/v1/factories/','/Categories'))) {
+        if (!$this->factory=$factories->find(Str::between($this->getRequestUri(),'/api/v1/factories/','/categories'))) {
             return  false;
-        }elseif(!$category=$factories->find(Str::between($this->getRequestUri(),'/api/v1/factories/','/Categories'))->categories->find(Str::after($this->getRequestUri(),'Categories/'))){
+        }elseif(!$this->category=$this->factory->categories->find(Str::after($this->getRequestUri(),'Categories/'))){
             return  false;
         }
-        $this->factory=$factory;
-        $this->category=$category;
         return true;
     }
 

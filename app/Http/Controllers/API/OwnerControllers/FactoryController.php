@@ -23,7 +23,6 @@ class FactoryController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth:owner']);
     }
 
 
@@ -46,7 +45,7 @@ class FactoryController extends Controller
         }
         Validate_request:{
         $v =  Validator::make($data,[
-            "factory_name"=>'required|min:3|string',
+            "factory_name"=>'required|min:3|string|alpha_dash',
             'property_file'=> 'required|file|max:5120|mimes:jpg,bmp,png,jpeg,pdf,pptx,doc,docx,rar,zip'
         ]);
         if ($v->fails()) {

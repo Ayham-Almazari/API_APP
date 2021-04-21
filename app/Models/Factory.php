@@ -40,7 +40,7 @@ class Factory extends Model
     ];
         //accessors
     /**
-     * Get the user's user name.
+     * Get prperty file from public.
      *
      * @param  string  $value
      * @return string

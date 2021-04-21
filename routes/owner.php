@@ -14,5 +14,12 @@ use App\Http\Controllers\API\auth\OwnerAuth;
 |
 */
 
-Route::apiResource('factories',FactoryController::class)->shallow();
-Route::apiResource('factories.Categories',FactoryCategories::class);
+Route::middleware(['auth:owner'])->group(function () {
+    Route::apiResources([
+        'factories'           =>FactoryController::class,
+        'factories.Categories'=>FactoryCategories::class,
+        'factories.products'  =>FactoryProducts::class,
+    ]);
+});
+
+

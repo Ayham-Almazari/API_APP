@@ -31,8 +31,8 @@ class CreateCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'category_name' => ['string','alpha_dash' ,'max:255', 'required', new UniqueCategoryName($this->factory)],
-            'category_description' => 'string|max:996|required'
+            'category_name' => ['string','alpha_dash' ,'min:3','max:255', 'required', new UniqueCategoryName($this->factory)],
+            'category_description' => 'string|max:996'
         ];
     }
 }

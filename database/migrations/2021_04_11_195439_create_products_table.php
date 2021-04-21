@@ -17,8 +17,9 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
             $table->string("product_name");
-            $table->text("product_description");
-            $table->string("product_picture");
+            $table->decimal("price",'10','2',1);
+            $table->text("product_description")->nullable();
+            $table->string("product_picture")->nullable();
             $table->boolean('availability')->default(1);
             $table->timestamps();
             $table->engine = 'InnoDB';

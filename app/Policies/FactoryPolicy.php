@@ -19,9 +19,7 @@ class FactoryPolicy
      * @return void|bool
      */
     public function before( $user ){
-        if ($user->isAdmin()) {
-            return true;
-        }
+
     }
 
     /**
@@ -30,9 +28,9 @@ class FactoryPolicy
      * @param  \App\Models\Buyer  $buyer
      * @return mixed
      */
-    public function viewAny( $user)
+    public function viewAny($owner,$factory)
     {
-        return $user->isOwner();
+        return $owner->id==$factory->owner_id;
     }
 
     /**
@@ -42,9 +40,9 @@ class FactoryPolicy
      * @param  \App\Models\Factory  $factory
      * @return mixed
      */
-    public function view(Buyer $buyer, Factory $factory)
+    public function view(Owner $owner, Factory $factory)
     {
-        //
+        return $owner->id===$factory->owner_id;
     }
 
     /**
@@ -53,9 +51,9 @@ class FactoryPolicy
      * @param  \App\Models\Buyer  $buyer
      * @return mixed
      */
-    public function create(Buyer $buyer)
+    public function create($owner,$factory)
     {
-        //
+        return $owner->id==$factory->owner_id;
     }
 
     /**
@@ -65,9 +63,9 @@ class FactoryPolicy
      * @param  \App\Models\Factory  $factory
      * @return mixed
      */
-    public function update(Buyer $buyer, Factory $factory)
+    public function update($owner, Factory $factory)
     {
-        //
+        return $owner->id==$factory->owner_id;
     }
 
     /**
@@ -77,9 +75,9 @@ class FactoryPolicy
      * @param  \App\Models\Factory  $factory
      * @return mixed
      */
-    public function delete(Buyer $buyer, Factory $factory)
+    public function delete($owner, Factory $factory)
     {
-        //
+        return $owner->id==$factory->owner_id;
     }
 
     /**
@@ -104,5 +102,16 @@ class FactoryPolicy
     public function forceDelete(Buyer $buyer, Factory $factory)
     {
         //
+    }
+
+    /**
+     * Determine whether the user can view any models.
+     *
+     * @param  \App\Models\Buyer  $buyer
+     * @return mixed
+     */
+    public function OwnerOwnFactory($owner,$factory)
+    {
+        return $owner->id==$factory->owner_id;
     }
 }

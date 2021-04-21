@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Factory;
+use App\Models\Product;
 use App\Policies\FactoryPolicy;
+use App\Policies\ProductPolicy;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -18,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
          Factory::class => FactoryPolicy::class,
+         Product::class => ProductPolicy::class,
     ];
 
     /**
@@ -34,5 +37,8 @@ class AuthServiceProvider extends ServiceProvider
        /* Gate::define('view-factory',function ($user,$fac){
         return $user->isOwner()&&($user->id==$fac->owner->id);
           });*/
+
+        Gate::define('authorize-owner-product',[ProductPolicy::class,'AuthorizeProductForOwner']);
+        Gate::define('authorize-owner-factory',[FactoryPolicy::class,'OwnerOwnFactory']);
     }
 }
