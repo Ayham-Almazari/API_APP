@@ -2,11 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Admin;
-use App\Models\Buyer;
-use App\Models\Factory;
-use App\Models\Owner;
-use Illuminate\Support\Arr;
+use App\Models\Category;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;

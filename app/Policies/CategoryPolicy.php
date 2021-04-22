@@ -3,24 +3,14 @@
 namespace App\Policies;
 
 use App\Models\Buyer;
+use App\Models\Category;
 use App\Models\Factory;
-use App\Models\Owner;
+use App\Models\Product;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class FactoryPolicy
+class CategoryPolicy
 {
     use HandlesAuthorization;
-
-    /**
-     * Perform pre-authorization checks.
-     *
-     * @param  \App\Models\buyer|owner|admin  $user
-     * @param  string  $ability
-     * @return void|bool
-     */
-    public function before( $user ){
-
-    }
 
     /**
      * Determine whether the user can view any models.
@@ -28,21 +18,21 @@ class FactoryPolicy
      * @param  \App\Models\Buyer  $buyer
      * @return mixed
      */
-    public function viewAny($owner,$factory)
+    public function viewAny(Buyer $buyer)
     {
-        return $owner->id==$factory->owner_id;
+        //
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\Buyer  $buyer
-     * @param  \App\Models\Factory  $factory
+     * @param  \App\Models\Category  $category
      * @return mixed
      */
-    public function view(Owner $owner, Factory $factory)
+    public function view(Buyer $buyer, Category $category)
     {
-        return $owner->id===$factory->owner_id;
+        //
     }
 
     /**
@@ -51,43 +41,43 @@ class FactoryPolicy
      * @param  \App\Models\Buyer  $buyer
      * @return mixed
      */
-    public function create($owner,$factory)
+    public function create(Buyer $buyer)
     {
-        return $owner->id==$factory->owner_id;
+        //
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\Buyer  $buyer
-     * @param  \App\Models\Factory  $factory
+     * @param  \App\Models\Category  $category
      * @return mixed
      */
-    public function update($owner, Factory $factory)
+    public function update(Buyer $buyer, Category $category)
     {
-        return $owner->id==$factory->owner_id;
+        //
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\Buyer  $buyer
-     * @param  \App\Models\Factory  $factory
+     * @param  \App\Models\Category  $category
      * @return mixed
      */
-    public function delete($owner, Factory $factory)
+    public function delete(Buyer $buyer, Category $category)
     {
-        return $owner->id==$factory->owner_id;
+        //
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\Buyer  $buyer
-     * @param  \App\Models\Factory  $factory
+     * @param  \App\Models\Category  $category
      * @return mixed
      */
-    public function restore(Buyer $buyer, Factory $factory)
+    public function restore(Buyer $buyer, Category $category)
     {
         //
     }
@@ -96,22 +86,23 @@ class FactoryPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\Buyer  $buyer
-     * @param  \App\Models\Factory  $factory
+     * @param  \App\Models\Category  $category
      * @return mixed
      */
-    public function forceDelete(Buyer $buyer, Factory $factory)
+    public function forceDelete(Buyer $buyer, Category $category)
     {
         //
     }
 
     /**
-     * Determine whether the user can view any models.
+     * Determine whether the owner can work the model.
      *
-     * @param  \App\Models\Buyer  $buyer
+     * @param  \App\Models\Buyer
+     * @param  \App\Models\Product  $product
      * @return mixed
      */
-    public function AuthorizeFactoryForOwner($owner,$factory)
+    public function AuthorizeCategoryForOwner($owner,Factory $factory, Category $category)
     {
-        return $owner->id==$factory->owner_id;
+        return $factory->id===$category->factory_id;
     }
 }

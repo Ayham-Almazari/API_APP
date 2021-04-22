@@ -37,22 +37,12 @@ class FactoryCategories extends Controller
      *
      * @return Response
      */
-    public function index($factory)
+    public function index(Factory $factory)
     {
-        return  Factoryresource::collection($this->factory($factory)->categories);
+        $this->authorize('authorize-owner-factory', $factory);
+        return  Factoryresource::collection($factory->categories()->paginate(6));
     }
 
-    /**
-     * @throws FactoryNotFoundException
-     */
-    private function factory($id)
-    {
-        $factory = $this->owner->factories()->where('id', $id)->first(['id', 'factory_name']);
-        if (!$factory) {
-            throw new FactoryNotFoundException('factory not found or inaccessible');
-        }
-        return $factory;
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -61,9 +51,10 @@ class FactoryCategories extends Controller
      * @param Factory $factory
      * @return Response
      */
-    public function store(CreateCategoryRequest $request, $factory)
+    public function store(CreateCategoryRequest $request,Factory $factory)
     {
-        $category = $request->factory->categories()->create($request->validated());
+        $this->authorize('authorize-owner-factory', $factory);
+        $category = $factory->categories()->create($request->validated());
         return $this->returnSuccessMessage("Category '{$category->category_name}' for '{$request->factory->factory_name}' factory created successfully .", \Symfony\Component\HttpFoundation\Response::HTTP_CREATED);
     }
 
@@ -74,21 +65,13 @@ class FactoryCategories extends Controller
      * @return Factoryresource
      * @throws CategoryNotFoundException
      */
-    public function show($factory, $category)
+    public function show(Factory $factory,Category $category)
     {
-        return new Factoryresource($this->category($this->factory($factory), $category));
+        $this->authorize('authorize-owner-factory', $factory);
+        $this->authorize('authorize-owner-category', [$factory,$category]);
+        return new Factoryresource($category);
     }
 
-    /**
-     * @throws FactoryNotFoundException
-     */
-    private function category($factory, $category)
-    {
-        $category = $factory->categories()->find($category);
-        if (empty($category))
-            throw new CategoryNotFoundException('category not found');
-        return $category;
-    }
 
     /**
      * Update the specified resource in storage.
@@ -98,14 +81,16 @@ class FactoryCategories extends Controller
      * @return JsonResponse
      */
     public
-    function update($factory, $category, UpdateCategoryRequest $request)
+    function update(Factory $factory,Category $category, CreateCategoryRequest $request)
     {
+        $this->authorize('authorize-owner-factory', $factory);
+        $this->authorize('authorize-owner-category', [$factory,$category]);
         update_category:{
-        $request->category->update(
+        $category->update(
             $request->validated()
         );
     }
-        return (new Factoryresource($request->category))->additional(['msg'=>'Category updated successfully .','status'=>true]);
+        return (new Factoryresource($category))->additional(['msg'=>'Category updated successfully .','status'=>true]);
     }
 
     /**
@@ -115,12 +100,10 @@ class FactoryCategories extends Controller
      * @return Response
      */
     public
-    function destroy($factory, $category)
+    function destroy(Factory $factory,Category $category)
     {
-        if_unauthorized:{
-        $factory = $this->factory($factory);
-        $category = $this->category($factory, $category);
-    }
+        $this->authorize('authorize-owner-factory', $factory);
+        $this->authorize('authorize-owner-category', [$factory,$category]);
         $category->delete();
         return $this->returnSuccessMessage('Category deleted successfully .');
     }

@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers\API\OwnerControllers;
 
-use App\Http\Resources\FactoryCollection;
+use App\Http\Requests\Owner_Factories_CMS\CreateFactoryRequest;
 use App\Http\Resources\Factoryresource;
 use App\Models\Factory;
-use App\Models\Owner;
 use App\Notifications\DeleteFactory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class FactoryController extends Controller
@@ -28,7 +24,7 @@ class FactoryController extends Controller
 
     public function index()
     {
-        $owner_factories= auth()->user()->factories()->get(['id','factory_name','address','logo']);
+        $owner_factories = auth()->user()->factories()->get(['id','factory_name','address','logo']);
         return (Factoryresource::collection($owner_factories));
     }
 
@@ -38,29 +34,13 @@ class FactoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateFactoryRequest $request)
     {
-        Data_FOR_VALIDATE_STORE:{
-        $data=$request->only('factory_name','property_file');
-        }
-        Validate_request:{
-        $v =  Validator::make($data,[
-            "factory_name"=>'required|min:3|string|alpha_dash',
-            'property_file'=> 'required|file|max:5120|mimes:jpg,bmp,png,jpeg,pdf,pptx,doc,docx,rar,zip'
-        ]);
-        if ($v->fails()) {
-            return $this->returnError($v->errors());
-        }
-        }
         Upload_property_file:{
-        if ($request->hasFile('property_file'))
-            if ($request->file('property_file')->isValid())
-                $data['property_file'] = $request->file('property_file')->store('property_files/factories');
-            else
-                $this->returnError(['property_file'=>'Invalid file'],'The file uploaded invalid',Response::HTTP_BAD_REQUEST);
+            $img = $this->upload_base64_image('factories/property-files',base64: $request->property_file);
         }
         Create_factory_and_trash_it_for_confirmed:{
-        $created_factory =  auth() -> user() -> factories() -> create($data);
+        $created_factory =  auth() -> user() -> factories() -> create(array_merge($request->validated(),['property_file'=>$img->uploaded_image]));
         $created_factory -> delete();
         }
         return $this->returnSuccessMessage('please wait to confirm your new factory '. $created_factory->factory_name ,Response::HTTP_CREATED);
@@ -74,10 +54,7 @@ class FactoryController extends Controller
      */
     public function show(Factory $factory)
     {
-      $factory=  auth()->user()->factories()->where('id',$factory->id)->first(['id','factory_name','address','logo']) ;
-       if (!$factory) {
-           return $this->returnErrorMessage('The factory not found oe inaccessible');
-       }
+        $this->authorize('authorize-owner-factory', $factory);
         return (new Factoryresource($factory->load('categories.products')));
     }
 
@@ -88,9 +65,21 @@ class FactoryController extends Controller
      * @param  \App\Models\Factory  $factory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Factory $factory)
+    public function update(CreateFactoryRequest $request, Factory $factory)
     {
-        //
+        $this->authorize('authorize-owner-factory', $factory);
+        $data=$request->validated();
+        updated_images:{
+        $update_image=$this->update_image($factory->logo,'factories/logos',$request->logo);
+        $data['logo']= $update_image ? $update_image->uploaded_image :null;
+        $update_image=$this->update_image($factory->cover_photo,'factories/cover_photos',$request->cover_photo);
+        $data['cover_photo']= $update_image ? $update_image->uploaded_image :null;
+         }
+        $factory->update($data);
+        return (new Factoryresource($factory))->additional([
+            'status'=>true,
+            'msg'=>"{$factory->factory_name} Updated Successfully ."
+        ]);
     }
 
     /**
@@ -101,9 +90,10 @@ class FactoryController extends Controller
      */
     public function destroy(Factory $factory)
     {
+        $this->authorize('authorize-owner-factory', $factory);
         $messageInfo=[
             "owner"=>$factory->owner->profile->first_name.' '.$factory->owner->profile->last_name,
-            "factory_name"=>$factory->factory_name,
+            "factory_name"=>$factory->factory_name
         ];
         $factory->owner->notify(new DeleteFactory($messageInfo));
         $factory->delete();

@@ -71,11 +71,13 @@ class UnderVerificationFactoryController extends Controller
         $factory=  Factory::onlyTrashed()->get()->find($id);
         if ($factory) {
             $factory->restore();
-            if ($restoreAction)
+            if ($restoreAction):
                 $factory->owner->notify(new RestoreFactory($factory));
-            else
+                return $this->returnSuccessMessage($factory->owner->profile->first_name." ".$factory->owner->profile->last_name. ' restored successfully');
+            else:
                 $factory->owner->notify(new FactoryConfirm($factory));
-            return $this->returnSuccessMessage($factory->owner->profile->first_name." ".$factory->owner->profile->last_name. ' confirmed successfully');
+                return $this->returnSuccessMessage($factory->owner->profile->first_name." ".$factory->owner->profile->last_name. ' confirmed successfully');
+            endif;
         }else
             return abort(404);
     }

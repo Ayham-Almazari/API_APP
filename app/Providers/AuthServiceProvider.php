@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
 use App\Models\Factory;
 use App\Models\Product;
+use App\Policies\CategoryPolicy;
 use App\Policies\FactoryPolicy;
 use App\Policies\ProductPolicy;
 use Illuminate\Auth\Access\Response;
@@ -21,6 +23,7 @@ class AuthServiceProvider extends ServiceProvider
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
          Factory::class => FactoryPolicy::class,
          Product::class => ProductPolicy::class,
+         Category::class => CategoryPolicy::class,
     ];
 
     /**
@@ -39,6 +42,7 @@ class AuthServiceProvider extends ServiceProvider
           });*/
 
         Gate::define('authorize-owner-product',[ProductPolicy::class,'AuthorizeProductForOwner']);
-        Gate::define('authorize-owner-factory',[FactoryPolicy::class,'OwnerOwnFactory']);
+        Gate::define('authorize-owner-factory',[FactoryPolicy::class,'AuthorizeFactoryForOwner']);
+        Gate::define('authorize-owner-category',[CategoryPolicy::class,'AuthorizeCategoryForOwner']);
     }
 }

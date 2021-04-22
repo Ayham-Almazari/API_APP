@@ -23,7 +23,6 @@ class OfferFactory extends Factory
     public function definition()
     {
         return [
-            'product_id'=>rand(1,50),
             'offer_value'=>50,
             'offer_description'=>$this->faker->text,
             'offer_title'=>Str::random(20)

@@ -18,8 +18,7 @@ class CreateCategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        $factories=auth()->user()->factories;
-        return $this->factory=$factories->find(Str::between($this->getRequestUri(),'/api/v1/factories/','/Categories'));
+        return $this->factory=auth()->user()->factories->find($this->route('factory'));
     }
 
 

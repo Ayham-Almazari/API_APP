@@ -4,6 +4,8 @@
 namespace App\Http\Traits;
 
 
+use App\Exceptions\CategoryNotFoundException;
+use http\Exception\InvalidArgumentException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Image;
@@ -96,20 +98,32 @@ trait Responses_Trait
     }
 
     /**
-     * upload base64 image .
+     * update base64 image .
      *
      * @param  string $token
      *
      * @return Image
      */
-    public function update_image($image_db,$directory,$base64)
+    public function update_image($image_db,$directory,$base64,$disk='public',$after='/storage/',$quality=100)
     {
         if ($base64) :
-            Storage::disk('public')->delete(Str::after( $image_db,'/storage/'));
-            return $this->upload_base64_image($directory,base64: $base64);
+                $this->delete_image($image_db,$disk,$after);
+                return $this->upload_base64_image($directory,base64: $base64,disk: $disk,quality: $quality);
         else:
-            Storage::disk('public')->delete(Str::after( $image_db,'/storage/'));
+            $this->delete_image($image_db,$disk,$after);
             return null;
         endif;
+    }
+
+    /**
+     * delete base64 image .
+     *
+     * @param  string $token
+     *
+     * @return Image
+     */
+    public function delete_image($image_db,$disk='public',$after='/storage/')
+    {
+      return  Storage::disk($disk)->delete(Str::after( $image_db,$after));
     }
 }

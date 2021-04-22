@@ -24,7 +24,11 @@ class UsersProfilesFactory extends Factory
     {
         return [
             'first_name'=>$this->faker->firstName,
-            'last_name'=>$this->faker->lastName
+            'last_name'=>$this->faker->lastName,
+            'picture'=>$this->faker->imageUrl('286','180','TallyBills'),
+            'instagram'=>$this->faker->url,
+            'facebook'=>$this->faker->url,
+            'address'=>$this->faker->address
         ];
     }
 }
