@@ -7,6 +7,7 @@ use App\Models\Factory;
 use App\Models\Product;
 use App\Policies\CategoryPolicy;
 use App\Policies\FactoryPolicy;
+use App\Policies\OfferPolicy;
 use App\Policies\ProductPolicy;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -44,5 +45,6 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('authorize-owner-product',[ProductPolicy::class,'AuthorizeProductForOwner']);
         Gate::define('authorize-owner-factory',[FactoryPolicy::class,'AuthorizeFactoryForOwner']);
         Gate::define('authorize-owner-category',[CategoryPolicy::class,'AuthorizeCategoryForOwner']);
+        Gate::define('authorize-owner-offer',[OfferPolicy::class,'AuthorizeOfferForOwner']);
     }
 }

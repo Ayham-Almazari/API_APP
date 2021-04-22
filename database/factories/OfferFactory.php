@@ -25,7 +25,8 @@ class OfferFactory extends Factory
         return [
             'offer_value'=>50,
             'offer_description'=>$this->faker->text,
-            'offer_title'=>Str::random(20)
+            'offer_title'=>Str::random(20),
+            'offer_price'=>$this->faker->randomFloat(5,3,2)
         ];
     }
 }

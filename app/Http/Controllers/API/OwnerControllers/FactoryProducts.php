@@ -35,7 +35,10 @@ class FactoryProducts extends Controller
             $categories_count=$categories->count();
             $categories_ids=$categories->pluck('id');
             //products
-            $products = Product::whereIn('category_id', $categories_ids)->orderBy('id')->paginate(6);
+            $products = Product::whereIn('category_id', $categories_ids)->orderBy('id')->paginate(6)->
+            each(function ($model) use ($factory){
+                $model->factory_id=$factory->id;
+            });
             $products_count=$products->count();
             $products_ids=$products->pluck('id');
     }

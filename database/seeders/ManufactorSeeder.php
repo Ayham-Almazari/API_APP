@@ -24,7 +24,7 @@ class ManufactorSeeder extends Seeder
                 Factory::factory(2)->create(['owner_id' => $user->id])->each(function ($factory) {
                     Category::factory(5)->create(['factory_id' => $factory->id])->each(function ($category) {
                         Product::factory(3)->create(['category_id' => $category->id])->each(
-                            fn($product)=>Offer::factory(1)
+                            fn($product)=>Offer::factory(1)->create(['product_id'=>$product->id])
                         );
                     });
                 });
