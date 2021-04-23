@@ -15,7 +15,7 @@ class CreateOffersTable extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
             $table->decimal("offer_value",5,2,1);
             $table->decimal("offer_price",10,2,1);
             $table->text('offer_description')->nullable();

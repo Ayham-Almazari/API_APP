@@ -14,13 +14,13 @@ use App\Http\Controllers\API\auth\OwnerAuth;
 |
 */
 
-Route::middleware(['auth:owner'])->group(function () {
+Route::middleware(['auth:owner'])->prefix('owner_cms')->group(function () {
     Route::apiResources([
         'factories'           =>FactoryController::class,
         'factories.categories'=>FactoryCategories::class,
         'factories.products'  =>FactoryProducts::class,
     ]);
-    Route::get('api/v1/factories/{factory}/offers',[\App\Http\Controllers\API\OwnerControllers\FactoryOffers::class,'index'])->name('factories.products.Offers.index');
+    Route::get('factories/{factory}/offers',[\App\Http\Controllers\API\OwnerControllers\FactoryOffers::class,'index'])->name('factories.products.Offers.index');
     Route::apiResource('factories.products.offers'  ,FactoryOffers::class)->except(['index']);
 });
 

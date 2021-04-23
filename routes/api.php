@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\auth\BuyerAuth;
+use App\Http\Controllers\API\Global\ViewFactoriesResources;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,7 +14,11 @@ use App\Http\Controllers\API\auth\BuyerAuth;
 */
 
 
-
+Route::get('factories',[ViewFactoriesResources::class,'allfactories']);
+Route::get('factories/{factory}',[ViewFactoriesResources::class,'showfactory']);
+Route::get('factories/{factory}/categories',[ViewFactoriesResources::class,'allcategries']);
+Route::get('factories/{factory}/products_without_offers',[ViewFactoriesResources::class,'allproductswithoutoffers']);
+Route::get('factories/{factory}/products_with_offers',[ViewFactoriesResources::class,'allproductswithoffers']);
 
 
 

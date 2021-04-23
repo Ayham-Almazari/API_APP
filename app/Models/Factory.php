@@ -36,7 +36,7 @@ class Factory extends Model
      * @var array
      */
     protected $hidden = [
-        'password',
+        'password','property_file'
     ];
         //accessors
     /**
@@ -48,6 +48,18 @@ class Factory extends Model
     public function getPropertyFileAttribute($value)
     {
         return asset('storage/'.$value);
+    }
+    public function getCoverPhotoAttribute($value)
+    {
+        if (!is_null($value)) {
+            return asset('storage/'.$value);
+        }
+    }
+    public function getLogoAttribute($value)
+    {
+        if (!is_null($value)) {
+            return asset('storage/'.$value);
+        }
     }
 
 //    protected $with ='owner.profile';

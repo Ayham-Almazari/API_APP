@@ -8,6 +8,9 @@ use App\Models\Factory;
 use App\Notifications\DeleteFactory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Intervention\Image\Exception\NotReadableException;
+use Intervention\Image\Exception\NotSupportedException;
+use Intervention\Image\Exception\NotWritableException;
 use Symfony\Component\HttpFoundation\Response;
 
 class FactoryController extends Controller
@@ -36,6 +39,7 @@ class FactoryController extends Controller
      */
     public function store(CreateFactoryRequest $request)
     {
+        try{
         Upload_property_file:{
             $img = $this->upload_base64_image('factories/property-files',base64: $request->property_file);
         }
@@ -43,6 +47,13 @@ class FactoryController extends Controller
         $created_factory =  auth() -> user() -> factories() -> create(array_merge($request->validated(),['property_file'=>$img->uploaded_image]));
         $created_factory -> delete();
         }
+    } catch (NotReadableException $e) {
+return $this->returnError(['product_picture' => [$e->getMessage() . " {NotReadable}"]]);
+} catch (NotWritableException $e){
+    return $this->returnError(['product_picture' => [$e->getMessage() . " {NotWritable}"]]);
+}catch (NotSupportedException $e){
+    return $this->returnError(['product_picture' => [$e->getMessage() . " {NotSupported}"]]);
+}
         return $this->returnSuccessMessage('please wait to confirm your new factory '. $created_factory->factory_name ,Response::HTTP_CREATED);
     }
 
@@ -67,6 +78,7 @@ class FactoryController extends Controller
      */
     public function update(CreateFactoryRequest $request, Factory $factory)
     {
+        try{
         $this->authorize('authorize-owner-factory', $factory);
         $data=$request->validated();
         updated_images:{
@@ -76,6 +88,13 @@ class FactoryController extends Controller
         $data['cover_photo']= $update_image ? $update_image->uploaded_image :null;
          }
         $factory->update($data);
+    } catch (NotReadableException $e) {
+return $this->returnError(['product_picture' => [$e->getMessage() . " {NotReadable}"]]);
+} catch (NotWritableException $e){
+    return $this->returnError(['product_picture' => [$e->getMessage() . " {NotWritable}"]]);
+}catch (NotSupportedException $e){
+    return $this->returnError(['product_picture' => [$e->getMessage() . " {NotSupported}"]]);
+}
         return (new Factoryresource($factory))->additional([
             'status'=>true,
             'msg'=>"{$factory->factory_name} Updated Successfully ."
