@@ -22,7 +22,10 @@ class BuyerFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'email' => $this->faker->email,
+            'username' => $this->faker->userName,
+            'phone' => $this->faker->phoneNumber,
+            'password' => bcrypt('123456789')
         ];
     }
 }

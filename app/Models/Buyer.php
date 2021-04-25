@@ -72,4 +72,11 @@ class Buyer extends Authenticatable implements JWTSubject,MustVerifyEmail
     public function profile(){
         return $this->hasOne(UsersProfiles::class,'buyer_id');
     }
+    public function Cart(){
+        return $this->belongsToMany(Product::class,'carts','buyer_id','product_id')
+            ->using(Cart::class)
+            ->as('cart')
+            ->withPivot('quantity')
+            ->withTimestamps();
+    }
 }

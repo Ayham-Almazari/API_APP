@@ -13,7 +13,9 @@ use App\Models\Factory;
 use App\Rules\UniqueCategoryName;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use function auth;
 
@@ -28,8 +30,7 @@ class FactoryCategories extends Controller
      */
     public function __construct()
     {
-        auth()->shouldUse('owner');
-        $this->owner = auth()->user();
+
     }
 
     /**
@@ -40,7 +41,10 @@ class FactoryCategories extends Controller
     public function index(Factory $factory)
     {
         $this->authorize('authorize-owner-factory', $factory);
-        return  Factoryresource::collection($factory->categories()->paginate(6));
+        return  Factoryresource::collection(
+        $factory->categories->each(function ($category) use ($factory) {
+            $category->makeHidden(['category_description']);
+        }));
     }
 
 
@@ -69,9 +73,36 @@ class FactoryCategories extends Controller
     {
         $this->authorize('authorize-owner-factory', $factory);
         $this->authorize('authorize-owner-category', [$factory,$category]);
-        return new Factoryresource($category);
+        return new Factoryresource( $category->makeVisible(['created_at','updated_at']));
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param Category $category
+     * @return Factoryresource
+     * @throws CategoryNotFoundException
+     */
+    public function ShowCategoryProducts(Factory $factory,Category $category)
+    {
+        // TODO filter products by category
+        // TODO filter products by availability
+        $this->authorize('authorize-owner-factory', $factory);
+        $this->authorize('authorize-owner-category', [$factory,$category]);
+        query:{
+//            $products = Product::select('id','product_name','product_picture','availability')->whereIn('category_id', $categories_ids)->with('under_category:id,factory_id,category_name')->orderBy('id')->paginate(6);
+        $products =DB::table('products as p') ->select(
+            'p.id','p.category_id','c.factory_id',
+            'p.product_name','p.product_picture','p.product_picture','p.availability','c.category_name')
+            ->join('categories as c', function ($join) use ($factory,$category) {
+                $join->on('p.category_id', '=', 'c.id')
+                    ->where('p.category_id','=',$category->id)
+                    ->where('c.factory_id','=',$factory->id );
+            })->orderBy('p.id')
+            ->paginate(10);
+    }
+        return  response()->json( $products);
+    }
 
     /**
      * Update the specified resource in storage.

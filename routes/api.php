@@ -17,8 +17,7 @@ use App\Http\Controllers\API\Global\ViewFactoriesResources;
 Route::get('factories',[ViewFactoriesResources::class,'allfactories']);
 Route::get('factories/{factory}',[ViewFactoriesResources::class,'showfactory']);
 Route::get('factories/{factory}/categories',[ViewFactoriesResources::class,'allcategries']);
-Route::get('factories/{factory}/products_without_offers',[ViewFactoriesResources::class,'allproductswithoutoffers']);
-Route::get('factories/{factory}/products_with_offers',[ViewFactoriesResources::class,'allproductswithoffers']);
-
+Route::get('factories/{factory}/products',[ViewFactoriesResources::class,'allproducts']);
+Route::get('factory/{factory}/category/{category}/products',[ViewFactoriesResources::class,'ShowCategoryProducts']);
 
 

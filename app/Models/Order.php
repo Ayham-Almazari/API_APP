@@ -11,4 +11,7 @@ class Order extends Model
 
     protected $dateFormat="Y-m-d H:i:s";
 
+    function OrderDetails() {
+        return $this->hasMany(OrderDetails::class,'order_id');
+    }
 }

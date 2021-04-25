@@ -5,44 +5,44 @@ namespace App\Http\Controllers\API\OwnerControllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Owner_Factories_CMS\CreateOfferRequest;
 use App\Http\Resources\Factoryresource;
+use App\Http\Resources\OfferResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Factory;
 use App\Models\Offer;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
-
+use App\Http\Resources\FactoryCollection;
 class FactoryOffers extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Factory $factory)
     {
         $this->authorize('authorize-owner-factory',  $factory);
-        declare__:{
-        //categories
-        $categories=$factory->categories()->get();
-        $categories_count=$categories->count();
-        $categories_ids=$categories->pluck('id');
-        //products
-        $products = Product::whereIn('category_id', $categories_ids)->has('offer')->orderBy('id')->with('offer')->paginate(6)
-            ->
-            each(function ($model) use ($factory){
-                $model->factory_id=$factory->id;
-            });
-        $products_count=$products->count();
-        $products_ids=$products->pluck('id');
-    }
-        return ProductResource::collection($products)->additional([
-            'categories_count'=> $categories_count==0?'No Categories Yet .':$categories_count,
-            'categories_ids'=>$categories_ids,
-            'products_count'=> $products_count==0?'No Products Yet .':$products_count,
-            'products_ids'=>$products_ids
-        ]);
+//        $products = Product::whereIn('category_id', $categories_ids)->has('offer')->orderBy('id')->with('offer')->paginate(6)
+
+        query:{
+//            $products = Product::select('id','product_name','product_picture','availability')->whereIn('category_id', $categories_ids)->with('under_category:id,factory_id,category_name')->orderBy('id')->paginate(6);
+        $products =DB::table('products as p') ->select(
+            'p.id','p.category_id','c.factory_id','o.id as offer_id',
+            'p.product_name','p.product_picture','p.product_picture','p.availability','c.category_name','o.')
+            ->join('categories as c', function ($join) use ($factory) {
+                $join->on('p.category_id', '=', 'c.id')
+                    ->where('c.factory_id','=',$factory->id );
+            })->Join('offers as o', function ($join) use ($factory) {
+                $join->on('p.id', '=', 'o.product_id');
+            })->orderBy('p.id')
+            ->paginate(10);
+         }
+//        return  OfferResource::collection($products);
+        return response()->json($products);
     }
 
     /**

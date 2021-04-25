@@ -20,7 +20,11 @@ class Product extends Model
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
-
+    protected $hidden=[
+        "availability",
+        "created_at",
+        "updated_at"
+    ];
     //accessors
     /**
      * Get the user's user name.
@@ -41,5 +45,14 @@ class Product extends Model
     }
     public function offer() {
         return $this->hasOne(Offer::class);
+    }
+    public function BuyersAddMeToCarts()
+    {
+       return
+       $this->belongsToMany(Buyer::class,'carts','buyer_id','product_id')
+            ->using(Cart::class)
+            ->as('cart')
+            ->withPivot('quantity')
+            ->withTimestamps();
     }
 }

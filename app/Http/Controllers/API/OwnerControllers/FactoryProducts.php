@@ -10,6 +10,7 @@ use App\Http\Resources\ProductResource;
 use App\Models\Factory;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\Exception\NotReadableException;
 use Intervention\Image\Exception\NotSupportedException;
 use Intervention\Image\Exception\NotWritableException;
@@ -29,25 +30,19 @@ class FactoryProducts extends Controller
     public function index(Factory $factory)
     {
         $this->authorize('authorize-owner-factory',  $factory);
-        declare__:{
-            //categories
-            $categories=$factory->categories()->get();
-            $categories_count=$categories->count();
-            $categories_ids=$categories->pluck('id');
-            //products
-            $products = Product::whereIn('category_id', $categories_ids)->orderBy('id')->paginate(6)->
-            each(function ($model) use ($factory){
-                $model->factory_id=$factory->id;
-            });
-            $products_count=$products->count();
-            $products_ids=$products->pluck('id');
-    }
-        return ProductResource::collection($products)->additional([
-            'categories_count'=> $categories_count==0?'No Categories Yet':$categories_count,
-            'categories_ids'=>$categories_ids,
-            'products_count'=> $products_count==0?'No Products Yet':$products_count,
-            'products_ids'=>$products_ids
-        ]);
+        query:{
+//            $products = Product::select('id','product_name','product_picture','availability')->whereIn('category_id', $categories_ids)->with('under_category:id,factory_id,category_name')->orderBy('id')->paginate(6);
+                 $products =DB::table('products as p') ->select(
+                     'p.id','p.category_id','c.factory_id',
+                 'p.product_name','p.product_picture','p.product_picture','p.availability','c.category_name')
+                  ->join('categories as c', function ($join) use ($factory) {
+                    $join->on('p.category_id', '=', 'c.id')
+                        ->where('c.factory_id','=',$factory->id );
+                  })->orderBy('p.id')
+                    ->paginate(10);
+            }
+        return response()->json($products);
+
     }
 
     /**
@@ -95,7 +90,7 @@ class FactoryProducts extends Controller
     public function show(Factory $factory, Product $product)
     {
         $this->authorize('authorize-owner-product',[$factory,$product]);
-        return new ProductResource($product->withoutRelations('under_category'));
+        return new ProductResource($product->makeHidden(['category_id'])->makeVisible(['created_at','updated_at']));
     }
 
     /**

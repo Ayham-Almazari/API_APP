@@ -39,35 +39,36 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
+
             Route::prefix('api/v1')
                 ->middleware('api')
-                ->namespace($this->namespace)
+                ->namespace($this->namespace . '\\API\\Global')
                 ->group(base_path('routes/api.php'));
+
+            Route::prefix('api/v1')
+                ->middleware('api')
+                ->namespace($this->namespace . '\\API\\auth')
+                ->group(base_path('routes/auth.php'));
 
             Route::prefix('api/v1/dashboard')
                 ->middleware('api')
-                ->namespace($this->namespace.'\\API\\Admin')
+                ->namespace($this->namespace . '\\API\\Admin')
                 ->group(base_path('routes/admins.php'));
 
             Route::prefix('api/v1')
-                ->middleware('api')
-                ->namespace($this->namespace.'\\API\\Global')
-                ->group(base_path('routes/auth.php'));
-
-            Route::prefix('api/v1')
                 ->middleware(['api'])
-                ->namespace($this->namespace.'\\API\\OwnerOfFactoryControllers')
-                ->group(base_path('routes/factory.php'));
-
-            Route::prefix('api/v1')
-                ->middleware(['api'])
-                ->namespace($this->namespace.'\\API\\CategoriesOfFactoriesControllers')
-                ->group(base_path('routes/category.php'));
-
-            Route::prefix('api/v1')
-                ->middleware(['api'])
-                ->namespace($this->namespace.'\\API\\OwnerControllers')
+                ->namespace($this->namespace . '\\API\\OwnerControllers')
                 ->group(base_path('routes/owner.php'));
+
+            Route::prefix('api/v1')
+                ->middleware(['api'])
+                ->namespace($this->namespace . '\\API\\buyer')
+                ->group(base_path('routes/buyer.php'));
+
+            Route::prefix('api/v1')
+                ->middleware(['api'])
+                ->namespace($this->namespace . '\\API\\CategoriesOfFactoriesControllers')
+                ->group(base_path('routes/category.php'));
 
             Route::middleware('web')
                 ->namespace($this->namespace)
@@ -76,7 +77,6 @@ class RouteServiceProvider extends ServiceProvider
 
 
     }
-
     /**
      * Configure the rate limiters for the application.
      *

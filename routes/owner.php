@@ -21,6 +21,7 @@ Route::middleware(['auth:owner'])->prefix('owner_cms')->group(function () {
         'factories.products'  =>FactoryProducts::class,
     ]);
     Route::get('factories/{factory}/offers',[\App\Http\Controllers\API\OwnerControllers\FactoryOffers::class,'index'])->name('factories.products.Offers.index');
+    Route::get('factory/{factory}/category/{category}/products',[\App\Http\Controllers\API\OwnerControllers\FactoryCategories::class,'ShowCategoryProducts'])->name('factories.products.Offers.index');
     Route::apiResource('factories.products.offers'  ,FactoryOffers::class)->except(['index']);
 });
 

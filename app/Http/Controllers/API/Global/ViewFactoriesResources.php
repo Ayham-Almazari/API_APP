@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\API\Global;
 
+use App\Exceptions\CategoryNotFoundException;
 use App\Http\Resources\Factoryresource;
+use App\Models\Category;
 use App\Models\Factory;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
+
 class ViewFactoriesResources extends Controller
 {
     /**
@@ -28,34 +33,26 @@ class ViewFactoriesResources extends Controller
     {
         return Factoryresource::collection($factory->categories->makeHidden(['created_at', 'updated_at']));
     }
-
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return \Illuminate\Http\Response
      */
-    public function allproductswithoutoffers(Factory $factory)
+    public function allproducts(Factory $factory)
     {
-        return Factoryresource::collection(
-            Product::whereIn('category_id', $factory->categories->pluck('id'))->doesntHave('offer')->orderBy('id')->paginate(6)->
-        each(function ($model) use ($factory){
-                $model->makeHidden(['created_at', 'updated_at']);
-            $model->factory_id=$factory->id;
-        }));
+        query:{
+//            $products = Product::select('id','product_name','product_picture','availability')->whereIn('category_id', $categories_ids)->with('under_category:id,factory_id,category_name')->orderBy('id')->paginate(6);
+        $products =DB::table('products as p') ->select(
+            'p.id','p.category_id','c.factory_id',
+            'p.product_name','p.product_picture','p.product_picture','p.product_description','p.price','c.category_name')
+            ->join('categories as c', function ($join) use ($factory) {
+                $join->on('p.category_id', '=', 'c.id')
+                    ->where('c.factory_id','=',$factory->id )
+                    ->where('p.availability','=',1);
+            })->orderBy('p.id')
+            ->paginate(10);
     }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-     */
-    public function allproductswithoffers(Factory $factory)
-    {
-        return Factoryresource::collection(
-            Product::makeHidden(['created_at', 'updated_at'])->whereIn('category_id', $factory->categories->pluck('id'))->has('offer')->orderBy('id')->paginate(6)->
-            each(function ($model) use ($factory){
-                $model->factory_id=$factory->id;
-            }));
+        return response()->json($products);
     }
 
     /**
@@ -68,38 +65,60 @@ class ViewFactoriesResources extends Controller
     {
         return new Factoryresource($factory);
     }
+    /**
+     * Display the specified resource.
+     *
+     * @param Category $category
+     * @return Factoryresource
+     * @throws CategoryNotFoundException
+     */
+    public function ShowCategoryProducts(Factory $factory,Category $category)
+    {
+        query:{
+//            $products = Product::select('id','product_name','product_picture','availability')->whereIn('category_id', $categories_ids)->with('under_category:id,factory_id,category_name')->orderBy('id')->paginate(6);
+        $products =DB::table('products as p') ->select(
+            'p.id','p.category_id','c.factory_id',
+            'p.product_name','p.product_picture','p.product_picture','p.product_description','p.price','c.category_name')
+            ->join('categories as c', function ($join) use ($factory,$category) {
+                $join->on('p.category_id', '=', 'c.id')
+                    ->where('p.category_id','=',$category->id)
+                    ->where('c.factory_id','=',$factory->id )
+                    ->where('p.availability','=',1);
+                ;
+            })->orderBy('p.id')
+            ->paginate(10);
+    }
+        return  response()->json( $products);
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    /*public function allproductswithoutoffers(Factory $factory)
+    {
+        return Factoryresource::collection(
+            Product::whereIn('category_id', $factory->categories->pluck('id'))->doesntHave('offer')->orderBy('id')->paginate(6)->
+        each(function ($model) use ($factory){
+                $model->makeHidden(['created_at', 'updated_at']);
+            $model->factory_id=$factory->id;
+        }));
+    }*/
 
     /**
-     * Show the form for editing the specified resource.
+     * Display a listing of the resource.
      *
-     * @param  \App\Models\Factory  $factory
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function edit(Factory $factory)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Factory  $factory
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Factory $factory)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Factory  $factory
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Factory $factory)
-    {
-        //
-    }
+    /* public function allproductswithoffers(Factory $factory)
+     {
+         $products= Product::whereIn('category_id', $factory->categories->pluck('id'))
+             ->has('offer')
+             ->orderBy('id')
+             ->paginate(10);
+         foreach ($products as $product){
+             $product->factory_id=$factory->id;
+         }
+         return Factoryresource::collection($products);
+     }*/
 }

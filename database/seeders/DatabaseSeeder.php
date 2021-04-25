@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
         OfferSeeder::class,
         OrdersSeeder::class,
         OrderDetailsSeeder::class*/
-        ManufactorSeeder::class
+        ManufactorSeeder::class,
+        BuyerSeeder::class
     ]);
     }
 }

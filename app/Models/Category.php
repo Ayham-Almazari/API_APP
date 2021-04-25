@@ -21,7 +21,10 @@ class Category extends Model
         'updated_at' => 'datetime:Y-m-d H:i:s',
         'deleted_at' => "datetime:Y-m-d H:i:s"
     ];
-
+    protected $hidden=[
+        "created_at",
+        "updated_at"
+    ];
     public function products() {
         return $this->hasMany(Product::class);
     }

@@ -106,4 +106,26 @@ class ProductPolicy
     {
         return $factory->id===$product->under_category->factory_id;
     }
+
+    /**
+     * Determine whether the owner can work the model.
+     *
+     * @param  \App\Models\Buyer  $buyer
+     * @param  \App\Models\Product  $product
+     * @return mixed
+     */
+    public function AuthorizeProductForCart($owner,$factory, Product $product)
+    {
+        //if cart is empty authorized
+        if (is_null($factory)) {
+            return true;
+        }elseif ($factory->id !== $product->under_category->factory__->id) {
+            //if the buyer tried to add product from another factory then unauthorized
+            return false;
+        }
+        return true;
+        //cart= auth()->user()->cart()->orderby('created_at','desc')
+//        $cart->
+//        return $factory->id===$product->under_category->factory_id;
+    }
 }

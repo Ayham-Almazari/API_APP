@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Offer extends Model
+class Cart extends Pivot
 {
-    use HasFactory;
-
-    protected $dateFormat="Y-m-d H:i:s";
+    use HasFactory ;
     protected $guarded=[];
+    protected $table='carts';
+    protected $dateFormat="Y-m-d H:i:s";
     /**
      * The attributes that should be cast.
      *
@@ -20,12 +21,12 @@ class Offer extends Model
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s'
     ];
-    protected $hidden=[
-        "created_at",
-        "updated_at"
-    ];
-    public function for_product() {
-        return $this->belongsTo(Product::class,"product_id");
-    }
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = true;
 
 }
