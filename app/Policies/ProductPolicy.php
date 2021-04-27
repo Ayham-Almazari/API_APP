@@ -8,6 +8,7 @@ use App\Models\Product;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Auth\Access\Response;
 
 class ProductPolicy
 {
@@ -118,14 +119,11 @@ class ProductPolicy
     {
         //if cart is empty authorized
         if (is_null($factory)) {
-            return true;
+            return Response::allow();
         }elseif ($factory->id !== $product->under_category->factory__->id) {
             //if the buyer tried to add product from another factory then unauthorized
-            return false;
+            return Response::deny("There are items in your cart from {$factory->factory_name} . Clear your cart Or Order items in your cart to add items from another factory .");
         }
-        return true;
-        //cart= auth()->user()->cart()->orderby('created_at','desc')
-//        $cart->
-//        return $factory->id===$product->under_category->factory_id;
+        return Response::allow();
     }
 }

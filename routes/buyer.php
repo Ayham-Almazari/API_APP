@@ -14,10 +14,16 @@ use App\Http\Controllers\API\auth\OwnerAuth;
 |
 */
 
-Route::middleware(['auth:buyer'])->prefix('buyer/cart')->name('cart.')->group(function () {
-    Route::get('',[\App\Http\Controllers\API\buyer\CartController::class,'index'])->name('index');
-    Route::post('add/{product}',[\App\Http\Controllers\API\buyer\CartController::class,'store'])->name('store');
-    Route::delete('delete/{product}',[\App\Http\Controllers\API\buyer\CartController::class,'destroy'])->name('delete');
-    Route::delete('empty',[\App\Http\Controllers\API\buyer\CartController::class,'empty'])->name('empty');
+Route::middleware(['auth:buyer'])->prefix('buyer')->group(function () {
+    Route::prefix('cart')->name('cart.')->group(function (){
+        Route::get('',[\App\Http\Controllers\API\buyer\CartController::class,'index'])->name('index');
+        Route::post('add/{product}',[\App\Http\Controllers\API\buyer\CartController::class,'store'])->name('store');
+        Route::delete('delete/{product}',[\App\Http\Controllers\API\buyer\CartController::class,'destroy'])->name('delete');
+        Route::delete('empty',[\App\Http\Controllers\API\buyer\CartController::class,'empty'])->name('empty');
+    });
+    Route::prefix('order')->name('order.')->group(function () {
+        Route::get('make',[\App\Http\Controllers\API\buyer\OrderController::class,'MakeOrder'])->name('make');
+        Route::get('place',[\App\Http\Controllers\API\buyer\OrderController::class,'PlaceOrder'])->name('place');
+    });
 });
 

@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Models\Admin;
 use App\Models\Buyer;
+use App\Models\Order;
 use App\Models\Owner;
 use App\Observers\AdminObserver;
 use App\Observers\BuyerObserver;
+use App\Observers\OrderObserver;
 use App\Observers\OwnerObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -36,5 +38,6 @@ class EventServiceProvider extends ServiceProvider
         Buyer::observe(BuyerObserver::class);
         Admin::observe(AdminObserver::class);
         Owner::observe(OwnerObserver::class);
+        Order::observe(OrderObserver::class);
     }
 }

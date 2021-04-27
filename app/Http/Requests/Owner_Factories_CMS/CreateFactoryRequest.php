@@ -45,11 +45,12 @@ class CreateFactoryRequest extends FormRequest
         $update=array_merge($create,[
             'logo'         =>$validate_base64,
             'cover_photo'  =>$validate_base64,
-            'facebook'     =>'min:3|string|max:255',
-            'instagram'    =>'min:3|string|max:255',
-            "phone"        =>["min:11","numeric","regex:/^\+9627[789]\d{7}$/"],
-            'address'      =>'string|max:255',
-            'Description'  =>'string|max:996'
+            'facebook'     =>'nullable|min:3|string|max:255',
+            'instagram'    =>'nullable|min:3|string|max:255',
+            "phone"        =>["nullable","min:11","numeric","regex:/^\+9627[789]\d{7}$/"],
+            'address'      =>'nullable|string|max:255',
+            'email'        =>'nullable|string|email|max:255',
+            'Description'  =>'nullable|string|max:996'
         ]);
         if($this->isMethod('put'))
             return $update;

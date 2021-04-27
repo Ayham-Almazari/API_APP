@@ -74,7 +74,7 @@ return $this->returnError(['product_picture' => [$e->getMessage() . " {NotReadab
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Factory  $factory
-     * @return \Illuminate\Http\Response
+     * @return Factoryresource
      */
     public function update(CreateFactoryRequest $request, Factory $factory)
     {

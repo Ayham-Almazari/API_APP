@@ -22,6 +22,7 @@ class CreateFactoriesTable extends Migration
             $table->string('property_file')->nullable();
             $table->string('facebook')->nullable();
             $table->string('instagram')->nullable();
+            $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->text('Description')->nullable();

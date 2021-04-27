@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 
 class Factory extends Model
@@ -47,17 +48,25 @@ class Factory extends Model
      */
     public function getPropertyFileAttribute($value)
     {
-        return asset('storage/'.$value);
+        if (Str::contains($value,'https://')) {
+            return $value;
+        }else{
+            return asset('storage/'.$value);
+        }
     }
     public function getCoverPhotoAttribute($value)
     {
-        if (!is_null($value)) {
+        if (Str::contains($value,'https://')) {
+            return $value;
+        }else{
             return asset('storage/'.$value);
         }
     }
     public function getLogoAttribute($value)
     {
-        if (!is_null($value)) {
+        if (Str::contains($value,'https://')) {
+            return $value;
+        }else{
             return asset('storage/'.$value);
         }
     }
@@ -71,5 +80,13 @@ class Factory extends Model
 
     public function categories() {
         return $this->hasMany(Category::class,'factory_id');
+    }
+
+    public function BuyersOrderedFromMyFactory(){
+        return $this->belongsToMany(Buyer::class,'orders','factory_id','buyer_id')
+            ->using(Order::class)
+            ->as('order')
+            ->withPivot('id as order_id','status','comment','orderDate','requiredDate','shippedDate')
+            ->withTimestamps();
     }
 }
