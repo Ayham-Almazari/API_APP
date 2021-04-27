@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\API\auth\BaseAuth as Controller;
 
@@ -33,14 +34,12 @@ class OwnerAuth extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function register(RegisterRequest $request) {
-        $request->validate(['property_file'=> 'required|sometimes|file|max:5120|mimes:jpg,bmp,png,jpeg,pdf,pptx,doc,docx,rar,zip']);
         try {
             $data=$request->only(['username','email','phone']);
-            $data['password']=Hash::make($request->post('password'));
-            if ($request->hasFile('property_file')){
-                $data['property_file'] = $request->file('property_file')->store('property_files/owners');
-                if (!$request->file('property_file')->isValid())
-                    $this->returnError(['property_file'=>'Invalid file'],'The file uploaded invalid',Response::HTTP_UNPROCESSABLE_ENTITY);
+            $data['password']=bcrypt($request->password);
+            Upload_property_file:{
+                $img = $this->upload_base64_image('owners/property-files',base64: $request->property_file);
+                $data['property_file']=$img->uploaded_image;
             }
             $user= Owner::create($data);
             $user->delete();

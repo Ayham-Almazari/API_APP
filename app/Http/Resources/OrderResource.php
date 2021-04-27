@@ -21,7 +21,8 @@ class OrderResource extends JsonResource
                 'factory_address'  =>$this->factory_->address,
                 'factory_facebook' =>$this->factory_->facebook,
                 'factory_instagram'=>$this->factory_->instagram,
-                'logo'             =>$this->factory_->logo,
+                'factory_email'    =>$this->factory_->email,
+                'logo'             =>$this->factory_->logo
             ],
             'order'=>[
                 'order_id'        =>$this->id,

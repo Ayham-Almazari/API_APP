@@ -3,6 +3,7 @@
 namespace App\Http\Requests\auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class RegisterRequest extends FormRequest
 {
@@ -23,7 +24,7 @@ class RegisterRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $cross= [
             'first_name' => 'required|string|max:255|min:3',
             'username' => 'required|string|min:5|max:255|unique:buyers|unique:admins|unique:owners|alpha_dash|regex:/[a-zA-Z]{3,}/',
             'last_name' => 'required|string|max:255|min:3',
@@ -31,7 +32,16 @@ class RegisterRequest extends FormRequest
             'email' => 'required|string|email|unique:buyers|unique:admins|unique:owners|max:255',
             'password' => ['required','min:8','max:20','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/']
         ];
-
+        if ($this->is('api/v1/auth/owner/register'))
+           return array_merge($cross,['property_file'=>['bail','required','base64image',
+               function($attribute, $value, $fail){
+                   $extension = Str::between($value, '/', ';base64');
+                   if (!in_array($extension,['jpg','gif','jpeg','png','webp'])) {
+                       $fail("The $attribute must be a file of type: jpg,png,jpeg,webp,gif.");
+                   }
+               },'base64dimensions:min_width=100,min_height=200']]);
+        else
+            return $cross;
     }
 
     /**

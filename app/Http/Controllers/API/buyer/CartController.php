@@ -6,22 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CartResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-
     private  $factory = null;
     private  $buyer ;
-    private  $cart;
+    private  $cart ;
     private $RelationalCart;
     public function __construct()
     {
-        $this->buyer=auth()->user();
-        $this->cart=$this->buyer->Cart;
-        $this->RelationalCart=$this->buyer->Cart();
-        if ($this->cart->count() >= 1) {
-            $this->factory=$this->cart[0]->under_category->factory__;
-        }
+       if ($this->buyer=auth()->user()) {
+           $this->cart=$this->buyer->Cart;
+           $this->RelationalCart=$this->buyer->Cart();
+           if ($this->cart->count() >= 1) {
+               $this->factory=$this->cart[0]->under_category->factory__;
+           }
+       }
     }
 
     /**

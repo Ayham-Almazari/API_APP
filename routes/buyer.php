@@ -23,7 +23,7 @@ Route::middleware(['auth:buyer'])->prefix('buyer')->group(function () {
     });
     Route::prefix('order')->name('order.')->group(function () {
         Route::get('make',[\App\Http\Controllers\API\buyer\OrderController::class,'MakeOrder'])->name('make');
-        Route::get('place',[\App\Http\Controllers\API\buyer\OrderController::class,'PlaceOrder'])->name('place');
+        Route::post('place/{oder}',[\App\Http\Controllers\API\buyer\OrderController::class,'PlaceOrder'])->name('place');
     });
 });
 

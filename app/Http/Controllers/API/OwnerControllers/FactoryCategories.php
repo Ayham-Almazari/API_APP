@@ -101,7 +101,7 @@ class FactoryCategories extends Controller
             })->orderBy('p.id')
             ->paginate(10);
     }
-        return  response()->json( $products);
+        return  response()->json($products);
     }
 
     /**
