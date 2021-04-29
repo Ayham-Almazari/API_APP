@@ -2,13 +2,10 @@
 
 namespace App\Observers;
 
-use App\Http\Controllers\API\auth\BuyerAuth;
-use App\Http\Requests\auth\Login_buyer;
-use App\Http\Requests\auth\Register_request;
+
 use App\Models\Buyer;
-use Illuminate\Http\Request;
-use Psy\Exception\TypeErrorException;
-use Symfony\Component\HttpFoundation\Response;
+use App\Models\BuyerOrder;
+
 
 
 class BuyerObserver
@@ -33,8 +30,12 @@ class BuyerObserver
      * @return void
      */
     public function updated(Buyer $buyer)
-    {
-        //
+    {//TODO if set it to null
+        $order=BuyerOrder::where('buyer_id',$buyer->id)->get();
+        $order->update([//when update the profile of the user call update([])
+            'phone'        =>$buyer->phone??$order->phone,
+            'username'     =>$buyer->username??$order->username,
+        ]);
     }
 
     /**

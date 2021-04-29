@@ -15,8 +15,10 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('buyer_id')->constrained('buyers');
-            $table->foreignId('factory_id')->constrained('factories');
+            $table->unsignedBigInteger('buyer_id')->nullable();
+            $table->foreign('buyer_id')->references('id')->on('buyers')->cascadeOnDelete()->nullOnDelete();
+            $table->unsignedBigInteger('factory_id')->nullable();
+            $table->foreign('factory_id')->references('id')->on('factories')->cascadeOnDelete()->nullOnDelete();
             $table->enum("status",["Shipped", "Cancelled", "In Process"])->default('In Process');
             $table->text("comment")->nullable();
             $table->decimal('total_amount',8,2)->nullable();

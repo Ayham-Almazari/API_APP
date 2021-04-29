@@ -18,7 +18,7 @@ class CreateProductsTable extends Migration
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
             $table->string("product_name");
             $table->decimal("price",'10','2',1);
-            $table->text("product_description")->nullable();
+            $table->text("product_description");
             $table->string("product_picture")->nullable();
             $table->boolean('availability')->default(1);
             $table->timestamps();

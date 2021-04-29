@@ -16,7 +16,8 @@ class CreateBuyerOrdersTable extends Migration
         Schema::create('buyer_orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete();
-            $table->foreignId('buyer_id')->constrained('buyers')->cascadeOnDelete();
+            $table->unsignedBigInteger('buyer_id')->nullable();
+            $table->foreign('buyer_id')->references('id')->on('buyers')->cascadeOnUpdate()->cascadeOnDelete()->nullOnDelete();
             $table->string('phone');
             $table->string('username');
             $table->string('first_name');
@@ -26,6 +27,7 @@ class CreateBuyerOrdersTable extends Migration
             $table->string('facebook')->nullable();
             $table->string('address')->nullable();
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

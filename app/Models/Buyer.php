@@ -79,7 +79,7 @@ class Buyer extends Authenticatable implements JWTSubject,MustVerifyEmail
             ->withPivot('quantity')
             ->withTimestamps();
     }
-    public function OrderFromFactories(){
+    public function OrderWithFactories(){
         return $this->belongsToMany(Factory::class,'orders','buyer_id','factory_id')
             ->using(Order::class)
             ->as('order')

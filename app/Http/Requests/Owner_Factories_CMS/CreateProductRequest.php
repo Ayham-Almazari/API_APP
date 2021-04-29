@@ -29,7 +29,7 @@ class CreateProductRequest extends FormRequest
             'product_name' => ['string','alpha_dash' ,'max:255', 'required'],
             'price'=>'numeric|required',
             'category_id' => 'numeric|required',
-            'product_description' => 'string|max:996',
+            'product_description' => 'required|string|max:996',
             'product_picture' => ['bail','nullable','base64image',
                 function($attribute, $value, $fail){
                     $extension = Str::between($value, '/', ';base64');

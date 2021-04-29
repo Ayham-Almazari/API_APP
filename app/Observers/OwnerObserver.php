@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Owner;
+use App\Models\OwnerOrder;
 
 class OwnerObserver
 {
@@ -26,7 +27,10 @@ class OwnerObserver
      */
     public function updated(Owner $owner)
     {
-        //
+        OwnerOrder::where('owner_id',$owner->id)->update([//when update the profile of the user call update([])
+            'phone'        =>$owner->phone,
+            'username'     =>$owner->username,
+        ]);
     }
 
     /**

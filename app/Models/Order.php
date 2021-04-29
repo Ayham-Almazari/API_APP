@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\OrderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -36,12 +37,22 @@ class Order extends Pivot
     function Details() {
         return $this->hasMany(OrderDetails::class,'order_id');
     }
-
+    public function _factory(array $attributes = [])
+    {
+     return $this->belongsTo(Factory::class,'factory_id');
+    }
+    public function _buyer(array $attributes = [])
+    {
+    return $this->belongsTo(Buyer::class,'buyer_id');
+    }
     function factory_() {
-        return $this->belongsTo(Factory::class,'factory_id');
+        return $this->hasOne(FactoryOrder::class,'order_id');
     }
     function buyer_() {
-        return $this->belongsTo(Buyer::class,'buyer_id');
+        return $this->hasOne(BuyerOrder::class,'order_id');
+    }
+    function owner_() {
+        return $this->hasOne(OwnerOrder::class,'order_id');
     }
     //relations ----------------------------------------end--------------------------------------------
 

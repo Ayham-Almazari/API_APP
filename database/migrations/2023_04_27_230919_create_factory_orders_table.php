@@ -16,7 +16,8 @@ class CreateFactoryOrdersTable extends Migration
         Schema::create('factory_orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete();
-            $table->foreignId('factory_id')->constrained('factories');
+            $table->unsignedBigInteger('factory_id')->nullable();
+            $table->foreign('factory_id')->references('id')->on('factories')->cascadeOnUpdate()->cascadeOnDelete()->nullOnDelete();
             $table->string('factory_name')->nullable();
             $table->string('logo')->nullable();
             $table->string('facebook')->nullable();
@@ -25,6 +26,8 @@ class CreateFactoryOrdersTable extends Migration
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->timestamps();
+            $table->engine = 'InnoDB';
+
         });
     }
 

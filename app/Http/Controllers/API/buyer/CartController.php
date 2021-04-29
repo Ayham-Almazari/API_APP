@@ -34,9 +34,9 @@ class CartController extends Controller
     {
        return  CartResource::collection($this->cart)->additional([
            'factory'=>[
-               'factory_id'  =>$this->factory?$this->factory->id:null,
-               'factory_name'=>$this->factory?$this->factory->factory_name:null,
-               'logo'        =>$this->factory?$this->factory->logo:null
+               'factory_id'  =>$this->factory ? $this->factory->id:null,
+               'factory_name'=>$this->factory ? $this->factory->factory_name:null,
+               'logo'        =>$this->factory ? $this->factory->logo:null
            ]]);
     }
 
@@ -54,12 +54,13 @@ class CartController extends Controller
             return $this->returnErrorMessage($response->message());
         if ( $this->cart->find($product->id)) {
             $this->RelationalCart->updateExistingPivot($product->id,$request->only('quantity'));
+            return $this->returnSuccessMessage('Updated Successfully .',201);
         }else{
             $this->RelationalCart->attach($product->id,$request->only('quantity'));
+            return $this->returnSuccessMessage('Added Successfully .',201);
         }
         //if you need to return refreshed model
         //return auth()->user()->Cart()->where('product_id',$product->id)->get();
-        return $this->returnSuccessMessage('Added Successfully .',201);
     }
 
     /**
@@ -85,9 +86,11 @@ class CartController extends Controller
     public function empty()
     {
         // Detach all roles from the user...
-            if ($this->RelationalCart->detach())
-                return   $this->returnSuccessMessage('Emptied Successfully .');
-            else
+        (new OrderController)->EmptyOrder();
+
+        if ($this->RelationalCart->detach()) {
+                return $this->returnSuccessMessage('Emptied Successfully .');
+            }else
                 return   $this->returnErrorMessage('Something Error Or Already Emptied .');
     }
 }

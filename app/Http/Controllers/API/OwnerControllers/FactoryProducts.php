@@ -34,7 +34,7 @@ class FactoryProducts extends Controller
 //            $products = Product::select('id','product_name','product_picture','availability')->whereIn('category_id', $categories_ids)->with('under_category:id,factory_id,category_name')->orderBy('id')->paginate(6);
                  $products =DB::table('products as p') ->select(
                      'p.id','p.category_id','c.factory_id',
-                 'p.product_name','p.product_picture','p.product_picture','p.availability','c.category_name')
+                 'p.product_name','p.product_picture','p.product_picture','p.availability','c.category_name','p.price')
                   ->join('categories as c', function ($join) use ($factory) {
                     $join->on('p.category_id', '=', 'c.id')
                         ->where('c.factory_id','=',$factory->id );
