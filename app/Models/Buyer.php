@@ -8,9 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-class Buyer extends Authenticatable implements JWTSubject,MustVerifyEmail
+class Buyer extends Authenticatable implements JWTSubject , MustVerifyEmail
 {
-    use HasFactory, Notifiable ,SoftDeletes;
+    use HasFactory , Notifiable , SoftDeletes ;
     /**
      * The attributes that are not mass assignable.
      *

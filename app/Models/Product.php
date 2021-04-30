@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -34,7 +35,9 @@ class Product extends Model
      */
     public function getProductPictureAttribute($value)
     {
-        if (!is_null($value)) {
+        if (Str::contains($value,'https://')) {
+            return $value;
+        }else{
             return asset('storage/'.$value);
         }
     }

@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Factory;
 use App\Models\FactoryOrder;
+use App\Models\OrderDetails;
 
 class FactoriesObserver
 {
@@ -33,7 +34,6 @@ class FactoriesObserver
             'facebook'         =>$factory->facebook,
             'instagram'        =>$factory->instagram,
             'email'            =>$factory->email,
-            'logo'             =>$factory->logo
         ]);
     }
 

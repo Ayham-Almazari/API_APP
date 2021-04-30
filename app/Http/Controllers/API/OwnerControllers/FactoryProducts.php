@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Owner_Factories_CMS\CreateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Factory;
+use App\Models\OrderDetails;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -116,6 +117,11 @@ class FactoryProducts extends Controller
             }
             update_product:{
                 $product->update($data);
+                update_upload_image_for_order:
+                $orderdetails=OrderDetails::select('product_picture')->where('product_id',$product->id)->take(1)->get();
+                    $update_image= $this->update_image($orderdetails[0]->product_picture,'factories_orders/product-images',$request->product_picture);
+                    $data['product_picture']= $update_image ? $update_image->uploaded_image :null;
+                OrderDetails::where('product_id',$product->id)->update(\Arr::add(\Arr::only($data,['product_name','product_picture']),'category',$product->under_category->category_name));
             }
         } catch (NotReadableException $e) {
             return $this->returnError(['product_picture' => [$e->getMessage() . " {NotReadable}"]]);

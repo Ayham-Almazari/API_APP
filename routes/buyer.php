@@ -27,5 +27,6 @@ Route::middleware(['auth:buyer'])->prefix('buyer')->group(function () {
         Route::delete('{oder}/item/{item}/delete',[\App\Http\Controllers\API\buyer\OrderController::class,'DeleteItem'])->name('delete');
         Route::delete('cancel',[\App\Http\Controllers\API\buyer\OrderController::class,'EmptyOrder'])->name('delete');
     });
+    Route::get('orders',  BuyerOrdersController::class);
 });
 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API\OwnerControllers;
 use App\Http\Requests\Owner_Factories_CMS\CreateFactoryRequest;
 use App\Http\Resources\Factoryresource;
 use App\Models\Factory;
+use App\Models\FactoryOrder;
+use App\Models\OrderDetails;
 use App\Notifications\DeleteFactory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -87,8 +89,14 @@ return $this->returnError(['product_picture' => [$e->getMessage() . " {NotReadab
         $update_image=$this->update_image($factory->cover_photo,'factories/cover_photos',$request->cover_photo);
         $data['cover_photo']= $update_image ? $update_image->uploaded_image :null;
          }
+         update_factory:
         $factory->update($data);
-    } catch (NotReadableException $e) {
+        update_factory_logo_orders:
+            $orderfactory=FactoryOrder::select('logo')->where('factory_id',$factory->id)->take(1)->get();
+            $update_image= $this->update_image($orderfactory[0]->logo,'factories_orders/logos',$request->logo);
+            $update_image= $update_image ? $update_image->uploaded_image :null;
+            FactoryOrder::where('factory_id',$factory->id)->update(['logo'=>$update_image]);
+        } catch (NotReadableException $e) {
 return $this->returnError(['product_picture' => [$e->getMessage() . " {NotReadable}"]]);
 } catch (NotWritableException $e){
     return $this->returnError(['product_picture' => [$e->getMessage() . " {NotWritable}"]]);
@@ -108,7 +116,7 @@ return $this->returnError(['product_picture' => [$e->getMessage() . " {NotReadab
      * @return \Illuminate\Http\Response
      */
     public function destroy(Factory $factory)
-    {
+    {//TODO DELETE FACTORY LOGO AND COVER PHOTO IN ADMIN
         $this->authorize('authorize-owner-factory', $factory);
         $messageInfo=[
             "owner"=>$factory->owner->profile->first_name.' '.$factory->owner->profile->last_name,

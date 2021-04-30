@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class OrderDetails extends Model
 {
@@ -28,6 +29,10 @@ class OrderDetails extends Model
     return $this->belongsTo(Order::class,'order_id');
    }
 
+    function product_() {
+        return $this->belongsTo(Product::class,'order_id');
+    }
+
     //relations ----------------------------------------end--------------------------------------------
 
     //accessors ---------------------------------------start--------------------------------------------
@@ -40,6 +45,21 @@ class OrderDetails extends Model
     public function getTotalAmountAttribute($value)
     {
         return number_format($value,2);
+    }
+    //accessors
+    /**
+     * Get the user's user name.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getProductPictureAttribute($value)
+    {
+        if (Str::contains($value,'https://')) {
+            return $value;
+        }else{
+            return asset('storage/'.$value);
+        }
     }
     //accessors ----------------------------------------end--------------------------------------------
 
