@@ -66,9 +66,9 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/buyer.php'));
 
             Route::prefix('api/v1')
-                ->middleware(['api'])
-                ->namespace($this->namespace . '\\API\\CategoriesOfFactoriesControllers')
-                ->group(base_path('routes/category.php'));
+                ->middleware(['api','Logged'])
+                ->namespace($this->namespace . '\\API\\SharedUsers')
+                ->group(base_path('routes/shared.php'));
 
             Route::middleware('web')
                 ->namespace($this->namespace)

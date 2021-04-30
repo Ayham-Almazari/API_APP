@@ -6,7 +6,7 @@ use App\Models\BuyerOrder;
 use App\Models\OwnerOrder;
 use App\Models\UsersProfiles;
 
-class ProfilesObserver
+class UsersProfilesObserver
 {
     /**
      * Handle the UsersProfiles "created" event.

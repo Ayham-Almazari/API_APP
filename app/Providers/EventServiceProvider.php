@@ -14,7 +14,7 @@ use App\Observers\BuyerObserver;
 use App\Observers\FactoriesObserver;
 use App\Observers\OrderObserver;
 use App\Observers\OwnerObserver;
-use App\Observers\ProfilesObserver;
+use App\Observers\UsersProfilesObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -45,6 +45,6 @@ class EventServiceProvider extends ServiceProvider
         Owner::observe(OwnerObserver::class);
         Order::observe(OrderObserver::class);
         Factory::observe(FactoriesObserver::class);
-        UsersProfiles::observe(ProfilesObserver::class);
+        UsersProfiles::observe(UsersProfilesObserver::class);
     }
 }

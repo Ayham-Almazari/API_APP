@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Support\Facades\Storage;
 
@@ -62,18 +63,8 @@ class Owner extends Authenticatable implements JWTSubject
         ];
     }
 
-    //accessors
-    /**
-     * Get the user's user name.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getPropertyFileAttribute($value)
-    {
-        return asset('storage/'.$value);
-    }
-    //scopes
+
+    //scopes-----------------------------------------------------------------
     public function isAdmin(){
         return false;
     }
@@ -83,7 +74,7 @@ class Owner extends Authenticatable implements JWTSubject
     public function isBuyer(){
         return false;
     }
-    //relations
+    //relations-----------------------------------------------------------
 
     public function profile(){
         return $this->hasOne(UsersProfiles::class,'owner_id');
@@ -91,5 +82,21 @@ class Owner extends Authenticatable implements JWTSubject
 
     public function factories(){
         return $this->hasMany(Factory::class,'owner_id');
+    }
+
+    //accessors--------------------------------------------------------------------
+    /**
+     * Get the user's user name.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getPropertyFileAttribute($value)
+    {
+        if (Str::contains($value,'https://')) {
+            return $value;
+        }else{
+            return asset('storage/'.$value);
+        }
     }
 }

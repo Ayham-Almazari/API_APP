@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class UsersProfiles extends Model
 {
@@ -22,7 +23,7 @@ class UsersProfiles extends Model
         ];
 
 
-    //relations
+    //relations-------------------------------------------------------------------
     public function buyer() {
         return $this->belongsTo(Buyer::class,'buyer_id');
     }
@@ -35,7 +36,7 @@ class UsersProfiles extends Model
         return $this->belongsTo(Owner::class,'owner_id');
     }
 
-    //accessors
+    //accessors------------------------------------------------------------------
     /**
      * Get the user's first name.
      *
@@ -56,6 +57,13 @@ class UsersProfiles extends Model
     {
         return ucfirst($value);
     }
-
+    public function getPictureAttribute($value)
+    {
+        if (Str::contains($value,'https://')) {
+            return $value;
+        }else{
+            return asset('storage/'.$value);
+        }
+    }
 
 }

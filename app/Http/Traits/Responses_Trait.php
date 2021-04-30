@@ -39,13 +39,13 @@ trait Responses_Trait
         ],$HTTP);
     }
 
-    public function returnData( $value, $key='data',$msg = "")
+    public function returnData( $value, $key='data',$msg = "",$HTTP=Response::HTTP_OK)
     {
         return response()->json([
             'status' => true,
             'msg' => $msg,
             $key => $value
-        ]);
+        ],$HTTP);
     }
 
 

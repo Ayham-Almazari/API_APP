@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\SharedUsers\UsersProfilesController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\auth\OwnerAuth;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,5 +13,8 @@ use App\Http\Controllers\API\auth\OwnerAuth;
 |
 */
 
-
-//Route::apiResource('factories.Categories',FactoryCategories::class);
+Route::prefix('user')->group(function () {
+    Route::get('profile',[UsersProfilesController::class,'show']);
+    Route::put('profile',[UsersProfilesController::class,'update']);
+    Route::delete('profile',[UsersProfilesController::class,'destroy']);
+});

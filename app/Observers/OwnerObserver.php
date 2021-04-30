@@ -30,6 +30,12 @@ class OwnerObserver
         OwnerOrder::where('owner_id',$owner->id)->update([//when update the profile of the user call update([])
             'phone'        =>$owner->phone,
             'username'     =>$owner->username,
+            'address'      =>$owner->profile->address,
+            'facebook'     =>$owner->profile->facebook,
+            'instagram'    =>$owner->profile->instagram,
+            'first_name'   =>$owner->profile->first_name,
+            'last_name'    =>$owner->profile->last_name,
+            'picture'    =>$owner->profile->picture
         ]);
     }
 
