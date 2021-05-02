@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Intervention\Image\Exception\NotReadableException;
+use Intervention\Image\Exception\NotSupportedException;
+use Intervention\Image\Exception\NotWritableException;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\API\auth\BaseAuth as Controller;
 
@@ -45,6 +48,12 @@ class OwnerAuth extends Controller
             $user->delete();
         }catch (\Exception $e){
             return $this->returnError(["server error"=>[$e->getMessage()]],'Internal server error',Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (NotReadableException $e) {
+            return $this->returnError(['product_picture' => [$e->getMessage() . " {NotReadable}"]]);
+        } catch (NotWritableException $e) {
+            return $this->returnError(['product_picture' => [$e->getMessage() . " {NotWritable}"]]);
+        } catch (NotSupportedException $e) {
+            return $this->returnError(['product_picture' => [$e->getMessage() . " {NotSupported}"]]);
         }
         return $this->returnSuccessMessage("the user registered successfully");
     }

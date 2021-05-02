@@ -33,7 +33,7 @@ class RegisterRequest extends FormRequest
             'password' => ['required','min:8','max:20','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/']
         ];
         if ($this->is('api/v1/auth/owner/register'))
-           return array_merge($cross,['property_file'=>['bail','required','base64image',
+           return array_merge($cross,['property_file'=>['bail','string','required','base64image',
                function($attribute, $value, $fail){
                    $extension = Str::between($value, '/', ';base64');
                    if (!in_array($extension,['jpg','gif','jpeg','png','webp'])) {

@@ -10,11 +10,11 @@ class UnderVerificationDeleteOwnerFactoryController extends Controller
     public function __construct()
     {
         $this->factories= new UnderVerificationFactoryController();
-        $this->middleware(['auth:admin','jwt.verify:admin']);
+        $this->middleware(['auth:admin']);
     }
 
     public function index(){
-        return $this->factories->index();
+        return $this->factories->index(1);
     }
 
     public function DeleteFactory($id) {
@@ -22,6 +22,6 @@ class UnderVerificationDeleteOwnerFactoryController extends Controller
     }
 
     public function RestoreFactory($id) {
-        return $this->factories->update($id,1);
+        return $this->factories->show($id,1);
     }
 }

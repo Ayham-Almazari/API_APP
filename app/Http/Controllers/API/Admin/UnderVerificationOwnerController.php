@@ -28,32 +28,6 @@ class UnderVerificationOwnerController extends Controller
        return $this->returnData($Trashedwithrelation,'data','All Trashed owners');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($owner)
-    {
-        $owner= Owner::with('profile')->onlyTrashed()->get()->find($owner);
-        if ($owner) {
-            return $this->returnData($owner);
-        }else
-            return abort(404);
-
-    }
 
     /**
      * Update the specified resource in storage.
@@ -62,33 +36,26 @@ class UnderVerificationOwnerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($owner){
-        $owner= Owner::with('profile')->onlyTrashed()->get()->find($owner);
-        if ($owner) {
+    public function show($owner){
+        $owner= Owner::onlyTrashed()->findOrFail($owner);
             $owner->restore();
             $owner->account_verification='confirmed';
             $owner->save();
             $owner->notify(new OwnerConfirmed($owner));
             return $this->returnSuccessMessage($owner->profile->first_name." ".$owner->profile->last_name. ' confirmed successfully');
-        }else
-            return abort(404);
-
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($owner)
     {
-        $owner= Owner::with('profile')->onlyTrashed()->get()->find($owner);
-        if ($owner) {
-            $owner->notify(new OwnerCanceled($owner));
-            $owner->forceDelete();
-            return $this->returnSuccessMessage($owner->profile->first_name." ".$owner->profile->last_name. ' Removed successfully');
-        }else
-            return abort(404);
+        $owner= Owner::onlyTrashed()->findOrFail($owner);
+        $name =$owner->profile->first_name." ".$owner->profile->last_name;
+        $owner->forceDelete();
+        return $this->returnSuccessMessage($name. ' Removed successfully .');
     }
 }

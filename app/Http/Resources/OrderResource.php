@@ -13,7 +13,7 @@ class OrderResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [//TODO Add email to factory
+        return [
             'factory'=>[
                 'factory_id'     =>$this->factory_->factory_id,
                 'factory_name'     =>$this->factory_->factory_name,

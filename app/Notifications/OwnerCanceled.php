@@ -7,19 +7,19 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class OwnerCanceled extends Notification
+class OwnerCanceled extends Notification implements  ShouldQueue
 {
     use Queueable;
 
-    private $owner;
+    public string $name;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($owner)
+    public function __construct($name)
     {
-        $this->owner=$owner;
+        $this->name=$name;
     }
 
     /**
@@ -32,7 +32,18 @@ class OwnerCanceled extends Notification
     {
         return ['mail'];
     }
-
+    /**
+     * Determine which queues should be used for each notification channel.
+     *
+     * @return array
+     */
+    public function viaQueues()
+    {
+        return [
+            'mail' => 'mail-queue',
+            'slack' => 'slack-queue',
+        ];
+    }
     /**
      * Get the mail representation of the notification.
      *
@@ -43,7 +54,7 @@ class OwnerCanceled extends Notification
     {
         return (new MailMessage)
             ->subject('Canceled Account')
-            ->line('Welcome '.$this->owner->first_name.' '.$this->owner->first_name.' ,')
+            ->line("Welcome {$this->name} ,")
             ->line('We apologize, your request was not accepted and this is related to the verification file .')
             ->line('You can try again please .')
             ->action('register', url('/'))
@@ -59,7 +70,7 @@ class OwnerCanceled extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'name'=>$this->name
         ];
     }
 }

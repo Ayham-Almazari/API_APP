@@ -30,16 +30,10 @@ class BuyerObserver
      * @return void
      */
     public function updated(Buyer $buyer)
-    {//TODO if set it to null
+    {
         BuyerOrder::where('buyer_id',$buyer->id)->update([//when update the profile of the user call update([])
             'phone'        =>$buyer->phone??$order->phone,
             'username'     =>$buyer->username??$order->username,
-            'address'      =>$buyer->profile->address,
-            'facebook'     =>$buyer->profile->facebook,
-            'instagram'    =>$buyer->profile->instagram,
-            'first_name'   =>$buyer->profile->first_name,
-            'last_name'    =>$buyer->profile->last_name,
-            'picture'      =>$buyer->profile->picture
         ]);
     }
 

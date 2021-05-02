@@ -37,6 +37,7 @@ class Owner extends Authenticatable implements JWTSubject
         'email_verified_at',
         'phone_verified_at',
         'deleted_at',
+        'property_file'
     ];
 
     // Rest omitted for brevity

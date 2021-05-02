@@ -51,7 +51,6 @@ class OrderController extends Controller
 
     public function MakeOrder()
     {
-        //TODO when delete the factory or buyer associated with this order your must determine how access them
         //TODO ADD TAX
         //comment and status of order are added later
         if (is_null($this->factory)) return $this->returnErrorMessage('Your Cart Is Empty , No Items To Order .');

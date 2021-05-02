@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Admin;
 
+use App\Exceptions\FactoryNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FactoryCollection;
 use App\Http\Resources\Factoryresource;
@@ -18,7 +19,7 @@ class UnderVerificationFactoryController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth:admin','jwt.verify:admin']);
+        $this->middleware(['auth:admin']);
     }
 
     /**
@@ -26,11 +27,11 @@ class UnderVerificationFactoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($deleteAction=false)
     {
         //factories created and waiting to verify or canceled
-         $Trashedwithrelation= Factory::onlyTrashed()->with('owner.profile')->paginate(15);
-            return new FactoryCollection($Trashedwithrelation);
+         $Trashedwithrelation= Factory::onlyTrashed()->where('deleted_at',$deleteAction?'<>':'=','1998-12-30 23:00:00')->with('owner.profile')->paginate(15);
+            return new FactoryCollection($Trashedwithrelation->makeVisible('property_file'));
     }
 
     /**
@@ -44,20 +45,21 @@ class UnderVerificationFactoryController extends Controller
         //
     }
 
-    /**
+  /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Factoryresource
+     * @throws FactoryNotFoundException
      */
-    public function show($id)
+    /*public function show($id)
     {
-        $factory= Factory::onlyTrashed()->with('owner.profile')->find($id);
+        $factory= Factory::onlyTrashed()->where('deleted_at','1998-12-30 23:00:00')->with('owner.profile')->find($id);
         if ($factory) {
             return new Factoryresource($factory);
-        }else
-            return abort(404);
-    }
+        } else
+            throw new FactoryNotFoundException('Factory Not Found .');
+    }*/
 
     /**
      * Update the specified resource in storage.
@@ -66,9 +68,9 @@ class UnderVerificationFactoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id,$restoreAction=false)
+    public function show($id,$restoreAction=false)
     {
-        $factory=  Factory::onlyTrashed()->get()->find($id);
+        $factory=  Factory::onlyTrashed()->where('deleted_at',$restoreAction?'<>':'=','1998-12-30 23:00:00')->get()->find($id);
         if ($factory) {
             $factory->restore();
             if ($restoreAction):
@@ -79,7 +81,7 @@ class UnderVerificationFactoryController extends Controller
                 return $this->returnSuccessMessage($factory->owner->profile->first_name." ".$factory->owner->profile->last_name. ' confirmed successfully');
             endif;
         }else
-            return abort(404);
+            throw new FactoryNotFoundException('Factory Not Found .');
     }
 
     /**
@@ -90,7 +92,7 @@ class UnderVerificationFactoryController extends Controller
      */
     public function destroy($id,$deleteAction=false)
     {
-        $factory=  Factory::onlyTrashed()->get()->find($id);
+        $factory=  Factory::onlyTrashed()->where('deleted_at',$deleteAction?'<>':'=','1998-12-30 23:00:00')->get()->find($id);
         if ($factory) {
             $message_info=[
                 'factory_name'=>$factory->factory_name,
@@ -103,7 +105,8 @@ class UnderVerificationFactoryController extends Controller
             $factory->forceDelete();
             return $this->returnSuccessMessage("MR . ".$message_info['name']." factory '{$message_info['factory_name']}' canceled successfully");
         }else
-            return abort(404);
+            throw new FactoryNotFoundException('Factory Not Found .');
+
     }
 
 
