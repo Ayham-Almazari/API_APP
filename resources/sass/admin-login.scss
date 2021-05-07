@@ -1,0 +1,126 @@
+@import "mixins";
+body{
+    background-image:url("../imgs/adminbackimage.jpg") ;
+    background-position: center ;
+    background-repeat: no-repeat,repeat;
+    background-size: auto;
+}
+.__center{
+    position: absolute;
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%,-50%);
+}
+#loginForm{
+    margin-top: 20%;
+}
+.login-container{
+&{
+    border-top:4px solid cornflowerblue;
+    width: 500px ;height: 500px;
+    padding: 50px 15px 15px 15px;
+    background-color: rgba(white,.9);
+    font-weight: bold;
+}
+    input[type=text] , input[type=password]{
+    border:none;
+    background: none;
+        border-bottom:1px solid cornflowerblue;
+    }
+
+    #admin_login{
+        @extend %button-design;
+    }
+    .fa-user,.fa-lock{
+        position: relative;
+        top: -30px;
+        left: 94%;
+    }
+
+    #Invalid_User{
+        display: none;
+        text-align: center;
+        margin: 0 0 0 33%;
+        box-sizing: border-box;
+        font-weight: bold;
+        font-size: small;
+        padding: 3px !important;
+        position: relative;
+        top: -35px;
+        width: 210px;
+    }
+    .error{
+        color: red;
+        font-size: small;
+        font-weight: bold;
+    }
+    #loading-icon{
+        color: rgba(black,1);
+        z-index: 3;
+        margin-left: 3px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-size: xxx-large;
+        @include prefixer(animation,fadeout 2s infinite linear,webkit moz o);
+    }
+    @include keyframe(fadeout){
+        0% {
+            color: rgba(yellow,.6);
+            opacity: 1;
+            font-size: x-large;
+            @include prefixer(text-shadow, 3px 3px 1px 1px red,webkit moz o);
+        }
+        10%{
+            color: rgba(green,.6);
+            opacity: 0.5;
+            font-size: xx-large;
+            @include  fa-icon-rotate(150deg, 1);
+        }
+        30%{
+            color: rgba(black,.6);
+            opacity:1;
+            font-size: xxx-large;
+            @include  fa-icon-rotate(360deg, 1);
+        }
+        50% {
+            color: rgba(maroon,.6);
+            opacity: .5;
+            font-size: x-large;
+            @include  fa-icon-rotate(160deg, 1);
+        }
+        100% {
+            color: rgba(black,.6);
+            opacity: 1;
+            font-size: xxx-large;
+            @include  fa-icon-rotate(0deg, 1);
+        }
+    }
+
+}
+.plain-login{
+    background-color: rgba(cornflowerblue,1);
+    width: 350px;
+    height: 500px;
+    p{
+        font-size: large;
+        font-weight: bold ;
+        margin-top: 40%;
+    }
+
+    .btn-to-home{
+       @extend %button-design;
+    }
+}
+%button-design{
+    width: 30% ;
+    padding: 7px;
+    position: absolute;
+    left: 33%;
+    bottom: 5%;
+    border-radius: 31px;
+    transition: width .5s ease-in-out;
+    &:hover{
+        width: 40%;
+    }
+}

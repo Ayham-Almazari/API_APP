@@ -18,7 +18,7 @@ trait Auth
      *
      * @param $model
      * @param $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function Login_By_identifier($model, $request)
     {
@@ -41,8 +41,8 @@ trait Auth
             //if the input username
             if ($identifier === 'username')           //if valid username
                 $user = $this->get_user_by_username($model, $request);
-            //if any error
-            if ($user instanceof JsonResponse) return response($user->original, Response::HTTP_UNPROCESSABLE_ENTITY);
+            //if any error ///////////// return general error rather than ($user->original)
+            if ($user instanceof JsonResponse) return response(["general"=>"Invalid Username Or Password ."], Response::HTTP_UNPROCESSABLE_ENTITY);
 
 
             //set $credentials

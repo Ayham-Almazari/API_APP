@@ -1,0 +1,74 @@
+//hidden the element from specific screen
+@mixin ele-hidden($screen-size){
+  @if($screen-size==$sm) {
+    @media (max-width: $sm) {
+      display: none;
+    }
+    @media (min-width: $sm) and (max-width: $lg) {
+      display: block;
+    }
+    @media (min-width: $lg) {
+      display: block;
+    }
+  }@else if($screen-size==$md){
+    @media (max-width: $sm) {
+      display: block;
+    }
+    @media (min-width: $sm) and (max-width: $lg) {
+      display: none;
+    }
+    @media (min-width: $lg) {
+      display: block;
+    }
+  }@else if($screen-size==$lg){
+    @media (max-width: $sm) {
+      display: block;
+    }
+    @media (min-width: $sm) and (max-width: $lg) {
+      display: block;
+    }
+    @media (min-width: $lg) {
+      display: none;
+    }
+  }
+
+}
+//edit the element from specific screen
+@mixin ele-edit($screen-size){
+  @if($screen-size==$sm) {
+    @media (max-width: $sm) {
+      @content
+    }
+  }@else if($screen-size==$md){
+    @media (min-width: $sm) and (max-width: $lg) {
+      @content
+    }
+  }@else if($screen-size==$lg){
+    @media (min-width: $lg) {
+      @content
+    }
+  }
+}
+//overlay
+@mixin ele-overlay{
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  @content
+}
+//animation
+@mixin keyframe($animation-name){
+  @-webkit-keyframes #{$animation-name} {
+    @content;
+  }
+  @-moz-keyframes #{$animation-name} {
+    @content;
+  }
+  @keyframes #{$animation-name} {
+    @content;
+  }
+}
+
+

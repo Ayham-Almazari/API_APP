@@ -20,4 +20,3 @@ Route::get('factories/{factory}/categories',[ViewFactoriesResources::class,'allc
 Route::get('factories/{factory}/products',[ViewFactoriesResources::class,'allproducts']);
 Route::get('factory/{factory}/category/{category}/products',[ViewFactoriesResources::class,'ShowCategoryProducts']);
 
-

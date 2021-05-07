@@ -39,6 +39,16 @@ class CartController extends Controller
                'logo'        =>$this->factory ? $this->factory->logo:null
            ]]);
     }
+    /**
+     * show quantity of the product.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show(Product $product){
+        $cart=$this->RelationalCart->findOrFail($product->id);
+        return response()->json(['quantity' => $cart->cart->quantity]);
+    }
 
     /**
      * Store a newly created resource in storage.

@@ -20,11 +20,12 @@ Route::middleware(['auth:buyer'])->prefix('buyer')->group(function () {
         Route::post('add/{product}',[\App\Http\Controllers\API\buyer\CartController::class,'store'])->name('store');
         Route::delete('delete/{product}',[\App\Http\Controllers\API\buyer\CartController::class,'destroy'])->name('delete');
         Route::delete('empty',[\App\Http\Controllers\API\buyer\CartController::class,'empty'])->name('empty');
+        Route::get('show/quantity/{product}',[\App\Http\Controllers\API\buyer\CartController::class,'show'])->name('show');
     });
     Route::prefix('order')->name('order.')->group(function () {
         Route::get('make',[\App\Http\Controllers\API\buyer\OrderController::class,'MakeOrder'])->name('make');
         Route::post('{oder}/place',[\App\Http\Controllers\API\buyer\OrderController::class,'PlaceOrder'])->name('place');
-        Route::delete('{oder}/item/{item}/delete',[\App\Http\Controllers\API\buyer\OrderController::class,'DeleteItem'])->name('delete');
+//      Route::delete('{oder}/item/{item}/delete',[\App\Http\Controllers\API\buyer\OrderController::class,'DeleteItem'])->name('delete');
         Route::delete('cancel',[\App\Http\Controllers\API\buyer\OrderController::class,'EmptyOrder'])->name('delete');
     });
     Route::get('orders',  BuyerOrdersController::class);

@@ -11,7 +11,7 @@ use App\Http\Requests\auth\{LoginRequest};
 use App\Http\Controllers\API\auth\BaseAuth as Controller;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-
+use Illuminate\Http\Request;
 class AdminAuth extends Controller
 {
     use ChangePassword,PasswordResetRequest;
@@ -65,8 +65,6 @@ class AdminAuth extends Controller
         return $this->refresh_Token(new Admin());
 
     }
-
-
 
     public function guard(){
         return Auth::guard(self::admin);

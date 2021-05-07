@@ -57,7 +57,7 @@ Route::group([
         'prefix' => 'admin',
     ],function (){
         //rout without restricted access auth
-        Route::post('login'      , [AdminAuth::class,'login']   );
+        Route::post('login'      , [AdminAuth::class,'login']   )->name('admin.login');
         Route::get('register/{buyer:username}'   , [AdminAuth::class,'register'])
             ->missing(function (){
                 return response()->json(['Undefined User Or Already has been defined as Admin .'],\Symfony\Component\HttpFoundation\Response::HTTP_NOT_FOUND);

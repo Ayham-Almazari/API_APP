@@ -10,11 +10,26 @@
         "production": "mix --production"
     },
     "devDependencies": {
+        "@popperjs/core": "^2.9.2",
         "axios": "^0.21",
+        "bootstrap": "^5.0.0-beta3",
+        "bourbon": "^7.0.0",
+        "bourbon-neat": "^4.0.0",
         "browser-sync": "^2.26.13",
         "browser-sync-webpack-plugin": "^2.2.2",
+        "hover.css": "^2.3.2",
+        "jquery": "^3.6.0",
+        "jquery-ui": "^1.12.1",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
-        "postcss": "^8.1.14"
+        "normalize-scss": "^7.0.1",
+        "postcss": "^8.1.14",
+        "resolve-url-loader": "^3.1.2",
+        "sass": "^1.32.12",
+        "sass-loader": "^10.1.1"
+    },
+    "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.3",
+        "font-awesome-animation": "^1.1.1"
     }
 }

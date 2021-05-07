@@ -21,7 +21,7 @@
     </style>
 </head>
 <body>
-<form action="{{route('upload.store')}}" method="post" enctype="multipart/form-data">
+<form action="" method="post" enctype="multipart/form-data">
     @csrf
     <input type="file" name="mycsv" id="mycsv">
     <input type="submit" value="Upload">

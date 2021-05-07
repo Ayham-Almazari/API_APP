@@ -94,13 +94,13 @@ class OrderController extends Controller
     }
 
 
-    public function DeleteItem($order,OrderDetails $item) {
+   /* public function DeleteItem($order,OrderDetails $item) {
         $order = Order::findOrFail($order);
         if(($order->id !== $item->order_id ) || ($order->status === 'Shipped') ){
             throw new AuthorizationException('This action is unauthorized .');
         }
         $item->delete();
         return $this->returnSuccessMessage('The Item deleted successfully .');
-    }
+    }*/
 
 }
