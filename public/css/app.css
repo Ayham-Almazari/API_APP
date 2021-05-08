@@ -22822,11 +22822,8 @@ body {
 .navbar {
   margin-top: 0 !important;
   background: linear-gradient(120deg, #01356c 10%, #0d0d0d 50%, #01356c -50%, black 100%);
-  -webhit-position: -webkit-sticky;
-  -webhit-position: sticky;
-  -moz-position: sticky;
   position: -webkit-sticky;
-  position: sticky;
+  /* Safari */
   position: sticky;
   top: 0;
   z-index: 2;
@@ -23150,4 +23147,31 @@ body {
     -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";
     transform: rotate(0deg);
   }
+}
+.chip {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: inline-block;
+  padding: 0 25px;
+  height: 50px;
+  font-size: 16px;
+  line-height: 50px;
+  border-radius: 25px;
+  background-color: white;
+  box-sizing: border-box;
+  width: 200px;
+}
+.chip img {
+  position: absolute;
+  right: 0;
+  float: right;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+.chip span {
+  color: #0d0d0d;
+  position: absolute;
+  left: 5px;
 }

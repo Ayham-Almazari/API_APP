@@ -23,7 +23,7 @@ class CreateOrdersTable extends Migration
             $table->text("comment")->nullable();
             $table->decimal('total_amount',8,2)->nullable();
             $table->dateTime('orderDate')->nullable();
-            $table->date('requiredDate')->nullable();
+            $table->string('requiredDate')->nullable();
             $table->dateTime('shippedDate')->nullable();
             $table->timestamps();
             $table->engine = 'InnoDB';
