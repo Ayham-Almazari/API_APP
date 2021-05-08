@@ -2,5 +2,9 @@
     "/js/app.js": "/js/app.js",
     "/js/LoginAdmin.js": "/js/LoginAdmin.js",
     "/js/global.js": "/js/global.js",
-    "/css/app.css": "/css/app.css"
+    "/js/HomeAdmin.js": "/js/HomeAdmin.js",
+    "/js/nav-bar.js": "/js/nav-bar.js",
+    "/js/aside-nav-bar.js": "/js/aside-nav-bar.js",
+    "/css/app.css": "/css/app.css",
+    "/css/admin-login.css": "/css/admin-login.css"
 }

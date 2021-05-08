@@ -2,35 +2,6 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./resources/js/auth/middelwares/AdminRedirectToHomeIFAuthMeddleware.js":
-/*!******************************************************************************!*\
-  !*** ./resources/js/auth/middelwares/AdminRedirectToHomeIFAuthMeddleware.js ***!
-  \******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _global_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../global.js */ "./resources/js/global.js");
-// ------ ajax
-
-$.ajax({
-  url: _global_js__WEBPACK_IMPORTED_MODULE_0__.AdminAuthMiddelwareRoute,
-  //PHP file to execute
-  type: 'GET',
-  //method used POST or GET
-  dataType: "json",
-  headers: {
-    "Authorization": "Bearer " + localStorage.getItem('_token')
-  }
-}).done(function (result) {
-  localStorage.setItem('user', result.data.user.profile.first_name + " " + result.data.user.profile.last_name);
-  localStorage.setItem('picture', result.data.user.profile.picture);
-  window.location.href = _global_js__WEBPACK_IMPORTED_MODULE_0__.View_Admin_Home;
-}).fail(function (result) {
-  console.log(result.responseJSON.message);
-}).ajaxStop;
-
-/***/ }),
-
 /***/ "./resources/js/global.js":
 /*!********************************!*\
   !*** ./resources/js/global.js ***!
@@ -149,64 +120,14 @@ var $auth$clickAJAX = function $auth$clickAJAX($ele, $url) {
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!*****************************************!*\
-  !*** ./resources/js/auth/LoginAdmin.js ***!
-  \*****************************************/
+/*!**************************************************!*\
+  !*** ./resources/js/components/aside-nav-bar.js ***!
+  \**************************************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _middelwares_AdminRedirectToHomeIFAuthMeddleware_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./middelwares/AdminRedirectToHomeIFAuthMeddleware.js */ "./resources/js/auth/middelwares/AdminRedirectToHomeIFAuthMeddleware.js");
-/* harmony import */ var _global_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../global.js */ "./resources/js/global.js");
+/* harmony import */ var _global_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../global.js */ "./resources/js/global.js");
 
- // ------ ajax
-
-$("#admin_login").click(function (e) {
-  e.preventDefault();
-  var formData = new FormData($('#loginForm')[0]);
-  $.ajax({
-    url: _global_js__WEBPACK_IMPORTED_MODULE_1__.API_Admin_Login,
-    //PHP file to execute
-    type: 'POST',
-    //method used POST or GET
-    dataType: "json",
-    data: formData,
-    // Parameters passed to the PHP file
-    processData: false,
-    contentType: false,
-    cache: false,
-    // enctype:'multipart/form-data',
-    success: function success(result) {// Has to be there !
-      // console.log(result);
-    },
-    error: function error(result, status, _error) {// Handle errors
-    }
-  }).done(function (result) {
-    localStorage.setItem('_token', result._token);
-    $("#identifier_error").hide();
-    $("#password_error").hide();
-    $("#Invalid_User").hide();
-    window.location.href = _global_js__WEBPACK_IMPORTED_MODULE_1__.View_Admin_Home;
-  }).fail(function (result) {
-    if (result.responseJSON.hasOwnProperty('errors')) {
-      result.responseJSON.errors.hasOwnProperty("identifier") ? $("#identifier_error").text(result.responseJSON.errors.identifier[0]).show() : $("#identifier_error").css({
-        "display": 'none'
-      });
-      result.responseJSON.errors.hasOwnProperty("password") ? $("#password_error").text(result.responseJSON.errors.password[0]).show() : null;
-    } else {
-      $("#identifier_error").css({
-        "display": 'none'
-      });
-      $("#password_error").css({
-        "display": 'none'
-      });
-    }
-
-    result.responseJSON.hasOwnProperty("general") ? $("#Invalid_User").text(result.responseJSON.general).show() : $("#Invalid_User").hide();
-  }).always(function () {});
-});
-var $loading_icon = $('#loading-icon').hide();
-$(document).ajaxStart(function () {
-  $loading_icon.show();
-}).ajaxStop(function () {
-  $loading_icon.hide();
+$(document).ready(function () {
+  (0,_global_js__WEBPACK_IMPORTED_MODULE_0__.$auth$clickAJAX)('#Under_Verification_Factories', _global_js__WEBPACK_IMPORTED_MODULE_0__.View_Admin_unverified_factories);
 });
 })();
 

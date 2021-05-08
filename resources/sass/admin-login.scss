@@ -1,31 +1,56 @@
-@import "mixins";
+@import "helper/helper";
+$base-color:cornflowerblue;
+html{
+    height: 100%;
+    overflow-x: hidden;
+    -ms-overflow-x: hidden;
+}
 body{
-    background-image:url("../imgs/adminbackimage.jpg") ;
+    background-image:url("../imgs/2227044.jpg") ;
     background-position: center ;
-    background-repeat: no-repeat,repeat;
     background-size: auto;
+    height: 100%;
+    color: darken($base-color,100%);
+}
+h1{
+    border-bottom:2px solid black;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
 }
 .__center{
     position: absolute;
     top: 50%;
     left: 60%;
     transform: translate(-50%,-50%);
+
+    @include ele-edit($sm){
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 90%;
+        font-size: 3.2vw;
+    };
 }
 #loginForm{
     margin-top: 20%;
 }
 .login-container{
 &{
-    border-top:4px solid cornflowerblue;
+    border-top:4px solid $base-color;
     width: 500px ;height: 500px;
     padding: 50px 15px 15px 15px;
     background-color: rgba(white,.9);
     font-weight: bold;
+    @include ele-edit($md){
+        width:50%;
+    }
 }
     input[type=text] , input[type=password]{
     border:none;
     background: none;
-        border-bottom:1px solid cornflowerblue;
+        border-bottom:1px solid $base-color;
+
     }
 
     #admin_login{
@@ -99,13 +124,18 @@ body{
 
 }
 .plain-login{
-    background-color: rgba(cornflowerblue,1);
+    @include ele-edit($md){
+        width:50%;
+        font-size:3vw;
+    }
+    background-color: rgba($base-color,1);
     width: 350px;
     height: 500px;
     p{
         font-size: large;
         font-weight: bold ;
         margin-top: 40%;
+        text-indent: 8px;
     }
 
     .btn-to-home{
@@ -114,6 +144,7 @@ body{
 }
 %button-design{
     width: 30% ;
+    background-color: darken($base-color,100%) ;
     padding: 7px;
     position: absolute;
     left: 33%;

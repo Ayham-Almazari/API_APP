@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class AjaxLogin extends Component
+class aside_nav_bar extends Component
 {
     /**
      * Create a new component instance.
@@ -23,6 +23,6 @@ class AjaxLogin extends Component
      */
     public function render()
     {
-        return view('components.ajax-login');
+        return view('components.aside_nav_bar');
     }
 }

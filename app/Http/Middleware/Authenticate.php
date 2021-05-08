@@ -19,14 +19,12 @@ class Authenticate extends Middleware
         if($request->is('api/*'))
         {
             throw new HttpResponseException(
-                response()->make(["message"=> "Unauthenticated."])
+                response()->make(["message"=> "Unauthenticated."],\Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN)
             );
         }
 
         if (!$request->expectsJson()) {
-            // return route('login');
-            $request->headers->set('Accept', 'application/json');
-            return redirect("/login")->with("message", "Exceeded an inactivity period of over 15 mins. Kindly re-login to continue");
+             return route('view.admin.login');
         }
 
     }

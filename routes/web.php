@@ -12,9 +12,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+//-------------------admin
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route("view.admin.login");
 });
+
+
 
 //Route::resource('/upload',csvController::class);

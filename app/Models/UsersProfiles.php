@@ -59,8 +59,10 @@ class UsersProfiles extends Model
     }
     public function getPictureAttribute($value)
     {
-        if (Str::contains($value,'https://')) {
+        if (Str::contains($value, 'https://')) {
             return $value;
+        } elseif (is_null($value)){
+            return asset('myimage.jpg');
         }else{
             return asset('storage/'.$value);
         }

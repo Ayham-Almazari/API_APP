@@ -12,6 +12,8 @@ Route::prefix('api/v1/dashboard')->middleware(['auth:admin'])->group(function ()
     Route::delete('factories/underverificationfactoriesfordlete/{id}',[UnderVerificationDeleteOwnerFactoryController::class,'DeleteFactory']);
 });
 
-Route::prefix('api/v1/dashboard')->group(function () {
-    Route::view('login', 'pages.ajax-login');
+Route::prefix('tallybills/admins/dashboard')->name('view.')->group(function () {
+    Route::view('login', 'pages.ajax-login')->name("admin.login");
+    Route::view('home', 'pages.admin_home')->name("admin.home");
+    Route::view('unverified-factories', 'pages.unverified-factories')->name("admin.home");
 });

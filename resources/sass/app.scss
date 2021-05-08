@@ -1,13 +1,8 @@
 // resources/sass/app.scss
 @import "~normalize-scss/sass/normalize";
 @import '~jquery-ui/themes/base/all.css';
-@import '~@fortawesome/fontawesome-free/scss/fontawesome';
-@import "~@fortawesome/fontawesome-free/scss/regular";
-@import "~@fortawesome/fontawesome-free/scss/solid";
-@import "~@fortawesome/fontawesome-free/scss/brands";
-@import '~font-awesome-animation/font-awesome-animation';
 @import "~bootstrap/scss/bootstrap";
-@import "~bourbon/core/bourbon";
-@import "~bourbon-neat/core/neat";
 @import "~hover.css/scss/hover";
-@import "admin-login";
+@import "helper/helper";
+@import "aside_admin_nav";
+@import "header";

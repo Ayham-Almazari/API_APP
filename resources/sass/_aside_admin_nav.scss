@@ -1,0 +1,11 @@
+.admin-aside{
+    z-index: 1;
+    position: fixed;
+    @include ele-edit($lg){
+        z-index: 1;
+        position: fixed;
+        height: 100%;
+        width: 20%;
+    }
+
+}

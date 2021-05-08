@@ -65,7 +65,7 @@ Route::group([
         //routes must have valid access token and user must logged in
         Route::middleware(['auth:admin'])->group(function () {
             //refresh token , logout , refresh
-            Route::post('logout'   , [AdminAuth::class,'logout']);
+            Route::get('logout'   , [AdminAuth::class,'logout']);
             Route::get('refresh'    , [AdminAuth::class,'refresh'] );
             //get current authotocated user
             Route::get( 'user'    ,    [AdminAuth::class,'user']);

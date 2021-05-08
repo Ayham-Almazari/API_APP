@@ -39,9 +39,54 @@ var __webpack_exports__ = {};
   \********************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "path": () => (/* binding */ path)
+/* harmony export */   "$auth$clickAJAX": () => (/* binding */ $auth$clickAJAX),
+/* harmony export */   "API_Path": () => (/* binding */ API_Path),
+/* harmony export */   "API_Admin_Login": () => (/* binding */ API_Admin_Login),
+/* harmony export */   "API_Admin_Logout": () => (/* binding */ API_Admin_Logout),
+/* harmony export */   "API_Path_unverified_factories": () => (/* binding */ API_Path_unverified_factories),
+/* harmony export */   "AdminAuthMiddelwareRoute": () => (/* binding */ AdminAuthMiddelwareRoute),
+/* harmony export */   "View_Admin_Login": () => (/* binding */ View_Admin_Login),
+/* harmony export */   "View_Admin_Home": () => (/* binding */ View_Admin_Home),
+/* harmony export */   "View_Admin_unverified_factories": () => (/* binding */ View_Admin_unverified_factories),
+/* harmony export */   "get_content": () => (/* binding */ get_content)
 /* harmony export */ });
-var path = "http://127.0.0.1:8000/api/v1/auth/admin/login";
+//__________API_______________
+var API_Path = "http://127.0.0.1:8000/api/v1/auth/admin/";
+var API_Admin_Login = API_Path + "login";
+var API_Admin_Logout = API_Path + "logout";
+var AdminAuthMiddelwareRoute = API_Path + 'user'; //-------------View_Admin_unauthenticated_factories--------------
+
+var API_Path_unverified_factories = "http://127.0.0.1:8000/api/v1/dashboard/factories/underverificationfactories/"; //_________Views______________
+
+var Views_Path = "http://localhost:3000/tallybills/admins/dashboard/";
+var View_Admin_Login = Views_Path + "login";
+var View_Admin_Home = Views_Path + "home";
+var View_Admin_unverified_factories = Views_Path + "unverified-factories"; // ------------helper
+
+var get_content = function get_content($result, $url) {
+  $("#content").html($result.substring($result.indexOf("<!--__CONTENT__-->"), $result.indexOf("<!--END__CONTENT__-->")));
+  window.history.pushState("", "unverified", $url);
+};
+
+var $auth$clickAJAX = function $auth$clickAJAX($ele, $url) {
+  $($ele).click(function (e) {
+    e.preventDefault();
+    $.ajax({
+      url: $url,
+      //PHP file to execute
+      type: 'GET',
+      //method used POST or GET
+      dataType: "html",
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('_token')
+      }
+    }).done(function (result) {
+      get_content(result, $url);
+    }).fail(function (result) {
+      console.log(result.responseJSON.message);
+    }).ajaxStop;
+  });
+};
 
 /******/ })()
 ;
