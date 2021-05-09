@@ -2,9 +2,12 @@
     "/js/app.js": "/js/app.js",
     "/js/LoginAdmin.js": "/js/LoginAdmin.js",
     "/js/global.js": "/js/global.js",
+    "/js/shared pages.js": "/js/shared pages.js",
     "/js/HomeAdmin.js": "/js/HomeAdmin.js",
     "/js/nav-bar.js": "/js/nav-bar.js",
     "/js/aside-nav-bar.js": "/js/aside-nav-bar.js",
+    "/js/under_verification_factories.js": "/js/under_verification_factories.js",
     "/css/app.css": "/css/app.css",
+    "/css/under_verification_factories.css": "/css/under_verification_factories.css",
     "/css/admin-login.css": "/css/admin-login.css"
 }

@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@section('title','Home')
 @section('content')
     <!--__CONTENT__-->
     <div class="container">
@@ -42,11 +43,7 @@
             </table>
         </div>
     </div>
+    <script async src="{{mix('js/shared pages.js')}}"></script>
+    <script async src="{{mix('js/HomeAdmin.js')}}"></script>
     <!--END__CONTENT__-->
 @endsection
-@section('scripts')
-    <script src="{{asset('js/HomeAdmin.js')}}"></script>
-@endsection
-{{--
-@section("css",asset('css/'))
---}}

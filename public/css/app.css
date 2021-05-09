@@ -23060,7 +23060,7 @@ body {
 #loading-icon {
   display: none;
   color: black;
-  z-index: 3;
+  z-index: 5;
   margin-left: 3px;
   position: absolute;
   top: 50%;
@@ -23148,30 +23148,70 @@ body {
     transform: rotate(0deg);
   }
 }
-.chip {
+#report {
+  display: none;
+  width: 350px;
+  height: 300px;
+  background-color: #212529;
   position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#report .message {
+  color: #cbd5e0;
+  text-indent: 20px;
+  font-size: larger;
+  margin: 40px 10px 0 20px;
+}
+#report #confirm {
+  position: absolute;
+  left: 30px;
+  bottom: 3px;
+}
+#report #cancel {
+  position: absolute;
+  right: 30px;
+  bottom: 3px;
+}
+#report #closeWindow {
+  color: #01356C;
+  font-size: xx-large;
+  position: absolute;
+  right: 2px;
+}
+#report #closeWindow:hover {
+  color: #0a53be;
+}
+
+#alert {
+  display: none;
+  width: 50%;
+  position: fixed;
   right: 0;
-  bottom: 0;
+  top: 30%;
+  z-index: 3;
+}
+#alert .bi {
   display: inline-block;
-  padding: 0 25px;
-  height: 50px;
-  font-size: 16px;
-  line-height: 50px;
-  border-radius: 25px;
-  background-color: white;
-  box-sizing: border-box;
-  width: 200px;
-}
-.chip img {
+  color: darkgreen;
+  vertical-align: center;
+  font-size: x-large;
   position: absolute;
-  right: 0;
-  float: right;
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
+  left: 3px;
+  top: 1px;
 }
-.chip span {
-  color: #0d0d0d;
+#alert .message {
+  margin-top: 6px;
+}
+#alert .close-alert {
+  color: darkgreen;
+  font-size: x-large;
   position: absolute;
-  left: 5px;
+  right: 3px;
+  top: 1px;
+}
+#alert .close-alert:hover {
+  color: black;
 }

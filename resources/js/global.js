@@ -1,4 +1,6 @@
 //__________API_______________
+import $ from "jquery";
+
 const API_Path ="http://127.0.0.1:8000/api/v1/auth/admin/";
 const API_Admin_Login= API_Path + "login";
 const API_Admin_Logout= API_Path + "logout";
@@ -14,29 +16,40 @@ const View_Admin_Login= Views_Path + "login";
 const View_Admin_Home= Views_Path + "home";
 const View_Admin_unverified_factories= Views_Path + "unverified-factories";
 
-// ------------helper
-const get_content=function ($result , $url ){
+// ------------helper functions
+//----replace content
+const set_content=function ($result){
     $("#content").html($result.substring($result.indexOf("<!--__CONTENT__-->"),$result.indexOf("<!--END__CONTENT__-->")));
-    window.history.pushState("","unverified", $url);
+};
+const set_css=function ($result){
+    $("#css").replaceWith($result.substring($result.indexOf("<!--Css-->"),$result.indexOf("<!--END-Css-->")));
+};
+const set_title=function ($result){
+    $("#title").replaceWith($result.substring($result.indexOf("<!--Title-->"),$result.indexOf("<!--END-Title-->")));
 };
 export const $auth$clickAJAX=function ($ele, $url) {
-    $($ele).click(function (e){
-        e.preventDefault();
-        $.ajax({
-            url : $url, //PHP file to execute
-            type : 'GET', //method used POST or GET
-            dataType: "html",
-            headers: {
-                "Authorization": "Bearer " + localStorage.getItem('_token')
-            }
-        }).done(function (result){
-            get_content(result,$url);
-        }).fail(function (result){
-            console.log(result.responseJSON.message);
-        }).ajaxStop;
-    });
-};
+        $($ele).click(function (e){
+            e.preventDefault();
+            $.ajax(
+                {
+                    url: $url,
+                    type: "GET",
+                    dataType:"text",
+                    success: function (result,status) {
+                        if (status === "success"){
+                            set_css(result);
+                            set_title(result);
+                            set_content(result);
+                            window.history.pushState("","unverified", $url);
+                            // $("#content").empty().load($url +" #content");
+                            $.holdReady(true);                              //set hold
+                            function releaseHold() { $.holdReady(false); }  //callback to release hold
 
+                        }
+                    },
+                });
+        });
+};
 
 
 
@@ -48,6 +61,5 @@ export {
     AdminAuthMiddelwareRoute,
     View_Admin_Login,
     View_Admin_Home,
-    View_Admin_unverified_factories,
-    get_content
+    View_Admin_unverified_factories
 };
