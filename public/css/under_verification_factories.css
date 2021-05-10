@@ -10,6 +10,7 @@
   border-radius: 25px;
   background-color: white;
   box-sizing: border-box;
+  z-index: 0;
 }
 @media (max-width: 576px) {
   .chip {
@@ -33,21 +34,39 @@
   height: 50px;
   width: 50px;
   border-radius: 50%;
+  z-index: -2;
 }
 .chip span {
   color: #0d0d0d;
   position: absolute;
   left: 5px;
+  z-index: 0;
 }
 
 .confirm_factory {
   position: absolute;
   top: 25%;
   right: 0;
+  z-index: 0;
 }
 
 .cancel_factory {
   position: absolute;
   top: 50%;
   right: 0;
+  z-index: 0;
+}
+
+.property_file_container .property_file {
+  transition: width 0.5s cubic-bezier(0.29, 1.01, 1, -0.68);
+}
+.property_file_container .property_file:hover {
+  width: 40%;
+  position: relative;
+  left: 10%;
+}
+@media (min-width: 576px) and (max-width: 992px) {
+  .property_file_container .property_file:hover {
+    width: 30%;
+  }
 }

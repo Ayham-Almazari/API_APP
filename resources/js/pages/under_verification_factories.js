@@ -99,6 +99,45 @@ $(document).ready(()=>{
         $("#report #confirm").attr("disabled", false);
     });
 
+    $(document).on('click','.property_file_container',function (e){
+        var id= $(this).attr('id');
+        console.log(id);
+        $("#factory_view_"+id)
+         .css({
+            position:"fixed",
+            top:"50%",
+            left:"50%",
+            transform: "translate(-30%,-45%)",
+            border:'5px',
+            "z-index":2,
+            width:'50%',
+            height:'80%'
+        }).append("<a href=''><i class='close-alert fas fa-times' style='color:#0a53be;position: absolute;right: 3px;top:3px ;font-size: x-large' ></i></a>");
+        $("#property_file_"+id).css({
+            position:"relative",
+            transition:"none",
+            left:'8%',
+            top:'2%',
+            width:"60%",
+            height:"90%"
+        });
+        $("#factory_view_"+id+" .chip").hide();
+        $("#factory_view_"+id+" h2").css({
+            position:"relative",
+            left:"70%"
+        });
+        $("#factory_view_"+id+" .confirm_factory").css({
+            position:"relative",
+            bottom:'-200px',
+            left:"80%"
+        });
+        $("#factory_view_"+id+" .cancel_factory").css({
+            position:"relative",
+            bottom:"-200px",
+            left:"55%"
+        });
+
+    });
 });
 
 let     search_about = null;
@@ -112,3 +151,5 @@ $("#search").on("keyup", function() {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
     });
 });
+
+

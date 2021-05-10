@@ -47,10 +47,11 @@ class UsersProfilesController extends Controller
         $user_profile = Arr::only($request->validated(), ['first_name', 'last_name', 'picture', 'instagram', 'facebook', 'address']);
 
         update_image:
-        $update_image = $this->update_image($request->user()->profile->picture,
-            auth()->user()->getJWTCustomClaims()['role'] . 's/profile-images', $user_profile['picture']);
-        $user_profile['picture'] = $update_image ? $update_image->uploaded_image : null;
-
+        if ($request->has('picture')):
+            $update_image = $this->update_image($request->user()->profile->picture,
+                auth()->user()->getJWTCustomClaims()['role'] . 's/profile-images', $user_profile['picture']);
+            $user_profile['picture'] = $update_image ? $update_image->uploaded_image : null;
+        endif;
         update_user_info:
         auth()->user()->profile()->update($user_profile);
         auth()->user()->update($user_info);

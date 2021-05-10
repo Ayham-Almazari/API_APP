@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\OwnerControllers\FactoryOrdersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\auth\OwnerAuth;
@@ -23,6 +24,7 @@ Route::middleware(['auth:owner'])->prefix('owner_cms')->group(function () {
     Route::get('factories/{factory}/offers',[\App\Http\Controllers\API\OwnerControllers\FactoryOffers::class,'index'])->name('factories.products.Offers.index');
     Route::apiResource('factories.products.offers'  ,FactoryOffers::class)->except(['index']);
     Route::get('factory/{factory}/category/{category}/products',[\App\Http\Controllers\API\OwnerControllers\FactoryCategories::class,'ShowCategoryProducts'])->name('factories.products.filter');
-    Route::resource('orders/factories/{factory}',  FactoryOrdersController::class)->only(['index','show']);
+    Route::get('factories/{factory}/orders', [FactoryOrdersController::class, 'index']);
+    Route::get('factories/{factory}/orders/{order}',  [FactoryOrdersController::class,'show']);
 });
 

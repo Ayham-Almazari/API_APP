@@ -27,7 +27,7 @@ class FactoryOrdersController
     }
 
 
-    public function show(Order $order){
+    public function show(Factory $factory,Order $order){
         /*  $orders =Order::where('status', 'Shipped')
               ->where('buyer_id', auth()->user()->getJWTIdentifier())->get();*/
         return new OrderResource($order);
