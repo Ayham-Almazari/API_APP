@@ -1,0 +1,53 @@
+.chip {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: inline-block;
+  padding: 0 25px;
+  height: 50px;
+  font-size: 16px;
+  line-height: 50px;
+  border-radius: 25px;
+  background-color: white;
+  box-sizing: border-box;
+}
+@media (max-width: 576px) {
+  .chip {
+    width: 100%;
+  }
+}
+@media (min-width: 576px) and (max-width: 992px) {
+  .chip {
+    width: 80%;
+  }
+}
+@media (min-width: 992px) {
+  .chip {
+    width: 90%;
+  }
+}
+.chip img {
+  position: absolute;
+  right: 0;
+  float: right;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+.chip span {
+  color: #0d0d0d;
+  position: absolute;
+  left: 5px;
+}
+
+.confirm_factory {
+  position: absolute;
+  top: 25%;
+  right: 0;
+}
+
+.cancel_factory {
+  position: absolute;
+  top: 50%;
+  right: 0;
+}

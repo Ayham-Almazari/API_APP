@@ -1,3 +1,5 @@
+@import "helper/mixins";
+@import "helper/variables";
 .chip {
     position: absolute;
     right: 0;
@@ -10,7 +12,15 @@
     border-radius: 25px;
     background-color: white;
     box-sizing: border-box;
-    width: 200px;
+    @include ele-edit($sm){
+        width: 100%;
+    }
+    @include ele-edit($md){
+        width: 80%;
+    }
+    @include ele-edit($lg){
+        width: 90%;
+    }
     img {
         position: absolute;
         right: 0;
@@ -24,4 +34,15 @@
         position: absolute;
         left:5px;
     }
+
+}
+.confirm_factory{
+    position: absolute;
+    top:25%;
+    right: 0;
+}
+.cancel_factory{
+    position: absolute;
+    top: 50%;
+    right: 0;
 }

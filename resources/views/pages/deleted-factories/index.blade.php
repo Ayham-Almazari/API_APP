@@ -12,9 +12,9 @@
                     <div class="card-img-overlay" style="margin-left: 300px">
                         <a href="{{--{{route('users.show',$post->user->id)}}--}}" class="chip">
                             <img src="{{$factory->owner->profile->picture}}" alt="Person" width="96" height="96"/>
-                            <span class="owner-name"> {{$factory->owner->profile->first_name . " " . $factory->owner->profile->last_name }}</span>
+                            <span> {{$factory->owner->profile->first_name . " " . $factory->owner->profile->last_name }}</span>
                         </a>
-                        <h2 class="factory-name">{{$factory->factory_name}}</h2>
+                        <h2>{{$factory->factory_name}}</h2>
                         <a factory_id="{{$factory->id}}" href=""
                            class="btn btn-success confirm_factory"> Confirm </a>
                         <a  factory_id="{{$factory->id}}" href=""
@@ -30,9 +30,9 @@
                     </div>
             @endforelse
 
-          {{--  <div class="container">
+            <div class="container">
                     {{$factories->links()}}
-                </div>--}}
+                </div>
         </div>
     </div>
     <script src="{{mix('js/shared pages.js')}}"></script>

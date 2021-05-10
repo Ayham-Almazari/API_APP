@@ -22770,6 +22770,7 @@ readers do not read off random characters that represent icons */
     position: fixed;
     height: 100%;
     width: 20%;
+    margin-top: 22px;
   }
 }
 
@@ -22812,7 +22813,7 @@ readers do not read off random characters that represent icons */
 
 /* Handle on hover */
 body {
-  height: 150%;
+  height: 100%;
   width: 100%;
   overflow-x: hidden;
   /* Hide horizontal scrollbar */
@@ -22827,6 +22828,23 @@ body {
   position: sticky;
   top: 0;
   z-index: 2;
+}
+@media (min-width: 992px) {
+  .navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+}
+@media (min-width: 576px) and (max-width: 992px) {
+  .navbar {
+    width: 100%;
+  }
+}
+@media (max-width: 576px) {
+  .navbar {
+    width: 100%;
+  }
 }
 .navbar .nav-search {
   align-self: center;
@@ -23052,7 +23070,7 @@ body {
   margin-left: 10px;
 }
 
-.navbar .nav-search .search-icon, .navbar .profile-info .profile-nav, .navbar .profile-info .profile-icon, .navbar .profile-info .profile-icon:after {
+body, .navbar .nav-search .search-icon, .navbar .profile-info .profile-nav, .navbar .profile-info .profile-icon, .navbar .profile-info .profile-icon:after {
   padding: 0;
   margin: 0;
 }
@@ -23153,7 +23171,7 @@ body {
   width: 350px;
   height: 300px;
   background-color: #212529;
-  position: absolute;
+  position: fixed;
   z-index: 3;
   top: 50%;
   left: 50%;

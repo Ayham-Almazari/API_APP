@@ -10,7 +10,7 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "$auth$clickAJAX": () => (/* binding */ $auth$clickAJAX),
+/* harmony export */   "$change_$content": () => (/* binding */ $change_$content),
 /* harmony export */   "API_Path": () => (/* binding */ API_Path),
 /* harmony export */   "API_Admin_Login": () => (/* binding */ API_Admin_Login),
 /* harmony export */   "API_Admin_Logout": () => (/* binding */ API_Admin_Logout),
@@ -49,7 +49,7 @@ var set_title = function set_title($result) {
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#title").replaceWith($result.substring($result.indexOf("<!--Title-->"), $result.indexOf("<!--END-Title-->")));
 };
 
-var $auth$clickAJAX = function $auth$clickAJAX($ele, $url) {
+var $change_$content = function $change_$content($ele, $url) {
   jquery__WEBPACK_IMPORTED_MODULE_0___default()($ele).click(function (e) {
     e.preventDefault();
     jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
@@ -58,18 +58,11 @@ var $auth$clickAJAX = function $auth$clickAJAX($ele, $url) {
       dataType: "text",
       success: function success(result, status) {
         if (status === "success") {
-          //set hold
-          var releaseHold = function releaseHold() {
-            jquery__WEBPACK_IMPORTED_MODULE_0___default().holdReady(false);
-          }; //callback to release hold
-
-
           set_css(result);
           set_title(result);
-          set_content(result);
-          window.history.pushState("", "unverified", $url); // $("#content").empty().load($url +" #content");
+          set_content(result); // $("#content").load($url +" #content");
 
-          jquery__WEBPACK_IMPORTED_MODULE_0___default().holdReady(true);
+          window.history.pushState("", "unverified", $url); // $("#content").empty().load($url +" #content");
         }
       }
     });
@@ -11049,7 +11042,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _global_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../global.js */ "./resources/js/global.js");
 
 $(document).ready(function () {
-  (0,_global_js__WEBPACK_IMPORTED_MODULE_0__.$auth$clickAJAX)('#Under_Verification_Factories', _global_js__WEBPACK_IMPORTED_MODULE_0__.View_Admin_unverified_factories);
+  (0,_global_js__WEBPACK_IMPORTED_MODULE_0__.$change_$content)('#Under_Verification_Factories', _global_js__WEBPACK_IMPORTED_MODULE_0__.View_Admin_unverified_factories);
+  $(".close-alert").click(function () {
+    $("#alert").fadeOut(500);
+  });
+  var $loading_icon = $('#loading-icon');
+  $(document).ajaxStart(function () {
+    $loading_icon.show();
+  }).ajaxStop(function () {
+    $loading_icon.hide();
+  });
 });
 })();
 

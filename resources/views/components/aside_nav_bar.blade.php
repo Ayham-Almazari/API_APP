@@ -18,10 +18,14 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link" id="Under_Verification_Factories">Under Verification Factories</a>
+                            <a href="" class="nav-link" id="Under_Verification_Factories">Under Verification Factories
+                                <i style='display: none;color:white' id='loading-btn' class='fas fa-cog fa-spin faa-fast'></i>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link">Categories</a>
+                            <a href="" class="nav-link">Categories
+                                <i style='display: none;color:white' id='loading-btn' class='fas fa-cog fa-spin faa-fast'></i>
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a href="" class="nav-link">Trashed</a>
@@ -38,5 +42,4 @@
         </aside>
     </div>
 </div>
-unauthenticated factories
 <script src="{{mix('js/aside-nav-bar.js')}}"></script>

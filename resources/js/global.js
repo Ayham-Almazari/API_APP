@@ -27,7 +27,7 @@ const set_css=function ($result){
 const set_title=function ($result){
     $("#title").replaceWith($result.substring($result.indexOf("<!--Title-->"),$result.indexOf("<!--END-Title-->")));
 };
-export const $auth$clickAJAX=function ($ele, $url) {
+export const $change_$content=function ($ele, $url) {
         $($ele).click(function (e){
             e.preventDefault();
             $.ajax(
@@ -40,11 +40,9 @@ export const $auth$clickAJAX=function ($ele, $url) {
                             set_css(result);
                             set_title(result);
                             set_content(result);
+                            // $("#content").load($url +" #content");
                             window.history.pushState("","unverified", $url);
                             // $("#content").empty().load($url +" #content");
-                            $.holdReady(true);                              //set hold
-                            function releaseHold() { $.holdReady(false); }  //callback to release hold
-
                         }
                     },
                 });

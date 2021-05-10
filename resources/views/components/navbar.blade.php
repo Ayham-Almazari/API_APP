@@ -1,5 +1,5 @@
 <!-- nav -->
-<nav class="navbar navbar-expand-lg  navbar-light bg-light" >
+<nav class="navbar navbar-expand-lg  navbar-light bg-light" role="navigation" >
     <div class="container-fluid">
         <a class="navbar-brand home_page" href="">
             {{ config('app.name', 'Laravel') }}
@@ -45,8 +45,25 @@
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
                 </li>
-                <form class="d-flex  nav-search" autocomplete="off">
-                    <input class="" type="search" placeholder="Search" id="search" onclick="document.getElementById('search').style.outline='none'">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Filter
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li>
+                            <a class="dropdown-item" href="#?filter=All"><input type="radio" name="Filter-Search" value=".card" style="display: inline"> All</a>
+                        <li><hr class="dropdown-divider"></li>
+                         <a class="dropdown-item" href="#?filter=Factory_name"><input class="dropdown-item" type="radio" name="Filter-Search" value=".factory-name" style="display: inline" >Factory name</a>
+                         <a class="dropdown-item" href="#?filter=Owner_name"><input class="dropdown-item" type="radio" name="Filter-Search" value=".owner-name" style="display: inline" >Owner name</a>
+                        </li>
+
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li>
+                <form  class="d-flex nav-search" autocomplete="off">
+                    <input id="search" class="" type="search" placeholder="Search" id="search" onclick="document.getElementById('search').style.outline='none'">
                     <button class="search-icon" type="submit"><i class="fas fa-search"></i></button>
                 </form>
                 <!-- user profile -->
