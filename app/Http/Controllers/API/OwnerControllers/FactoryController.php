@@ -83,25 +83,33 @@ class FactoryController extends Controller
      */
     public function update(CreateFactoryRequest $request, Factory $factory)
     {
+
         try {
             $this->authorize('authorize-owner-factory', $factory);
             $data = $request->validated();
             updated_images:{
-                $update_image = $this->update_image($factory->logo, 'factories/logos', $request->logo);
-                $data['logo'] = $update_image ? $update_image->uploaded_image : null;
-                $update_image = $this->update_image($factory->cover_photo, 'factories/cover_photos', $request->cover_photo);
+                if($request->has('logo')):
+                    $update_image = $this->update_image($factory->logo, 'factories/logos', $request->logo);
+                    $data['logo'] = $update_image ? $update_image->uploaded_image : null;
+                    endif;
+                if($request->has('cover_photo')):
+                    $update_image = $this->update_image($factory->cover_photo, 'factories/cover_photos', $request->cover_photo);
                 $data['cover_photo'] = $update_image ? $update_image->uploaded_image : null;
+                endif;
+
             }
             update_factory:
             $factory->update($data);
             update_factory_logo_orders:
             UpdateFactoryOrdersJob::dispatch($factory->id, $request->logo)->delay(Carbon::now()->addSeconds(15));
         } catch (NotReadableException $e) {
-            return $this->returnError(['product_picture' => [$e->getMessage() . " {NotReadable}"]]);
+            return $this->returnError(['Factory_Controller' => [$e->getMessage() . " {NotReadable}"]]);
         } catch (NotWritableException $e) {
-            return $this->returnError(['product_picture' => [$e->getMessage() . " {NotWritable}"]]);
+            return $this->returnError(['Factory_Controller' => [$e->getMessage() . " {NotWritable}"]]);
         } catch (NotSupportedException $e) {
-            return $this->returnError(['product_picture' => [$e->getMessage() . " {NotSupported}"]]);
+            return $this->returnError(['Factory_Controller' => [$e->getMessage() . " {NotSupported}"]]);
+        }catch(\Exception  $e){
+            return $this->returnData(['class' => [get_class($e)]]);
         }
         Response:
         return (new Factoryresource($factory))->additional([

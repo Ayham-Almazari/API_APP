@@ -50,6 +50,8 @@ class Factory extends Model
     {
         if (Str::contains($value,'https://')) {
             return $value;
+        }elseif(is_null($value)){
+            return $value;
         }else{
             return asset('storage/'.$value);
         }
@@ -58,6 +60,8 @@ class Factory extends Model
     {
         if (Str::contains($value,'https://')) {
             return $value;
+        }elseif(is_null($value)){
+            return $value;
         }else{
             return asset('storage/'.$value);
         }
@@ -65,6 +69,8 @@ class Factory extends Model
     public function getLogoAttribute($value)
     {
         if (Str::contains($value,'https://')) {
+            return $value;
+        }elseif(is_null($value)){
             return $value;
         }else{
             return asset('storage/'.$value);

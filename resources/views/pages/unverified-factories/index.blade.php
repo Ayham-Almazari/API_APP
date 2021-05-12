@@ -3,17 +3,18 @@
 @section('title',"UnderVerificationFactories")
 @section('content')
     <!--__CONTENT__-->
-    <div class="container mt-5">
+    <h1 style="font-weight: bold;border-bottom:2px solid #01356C;margin: 9% auto 3%;width: fit-content"><i>Factories Under Verification</i> </h1>
+    <div class="container">
         <div class="row">
             @forelse($factories as $factory)
                 <div class="card bg-dark text-white col-lg-6 mt-1" id="factory_view_{{$factory->id}}">
-                    <a id="{{$factory->id}}" class="property_file_container" href="#image">
+                    <a  id="{{$factory->id}}" class="property_file_container" href="#image">
                         <img class="property_file" id="property_file_{{$factory->id}}" src="{{$factory->property_file}}"  width="300px"  height="200px" alt="..."
                                 style="margin-left: -13px">
                     </a>
                     <div class="card-img-overlay" style="margin-left: 300px">
                         <a href="{{--{{route('users.show',$post->user->id)}}--}}" class="chip">
-                            <img src="{{$factory->owner->profile->picture}}" alt="Person" width="96" height="96"/>
+                            <img src="{{$factory->owner->profile->picture}}"  alt="Person" width="96" height="96"/>
                             <span class="owner-name"> {{$factory->owner->profile->first_name . " " . $factory->owner->profile->last_name }}</span>
                         </a>
                         <h2 class="factory-name">{{$factory->factory_name}}</h2>
@@ -24,7 +25,7 @@
                     </div>
                 </div>
                 @empty
-                    <div class="alert alert-success" role="alert">
+                    <div class="alert alert-success mt-5" role="alert">
                         <h4 class="alert-heading">No Factories To verify</h4>
                         <p>This page show the factories under verify , when the owner built factory the factory will appear here .</p>
                         <hr>

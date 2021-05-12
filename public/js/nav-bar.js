@@ -80,7 +80,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "AdminAuthMiddelwareRoute": () => (/* binding */ AdminAuthMiddelwareRoute),
 /* harmony export */   "View_Admin_Login": () => (/* binding */ View_Admin_Login),
 /* harmony export */   "View_Admin_Home": () => (/* binding */ View_Admin_Home),
-/* harmony export */   "View_Admin_unverified_factories": () => (/* binding */ View_Admin_unverified_factories)
+/* harmony export */   "View_Admin_unverified_factories": () => (/* binding */ View_Admin_unverified_factories),
+/* harmony export */   "API_Path_unverified_deleted_factories": () => (/* binding */ API_Path_unverified_deleted_factories),
+/* harmony export */   "View_Admin_unverified_deleted_factories": () => (/* binding */ View_Admin_unverified_deleted_factories)
 /* harmony export */ });
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
@@ -91,12 +93,14 @@ var API_Admin_Login = API_Path + "login";
 var API_Admin_Logout = API_Path + "logout";
 var AdminAuthMiddelwareRoute = API_Path + 'user'; //-------------View_Admin_unauthenticated_factories--------------
 
-var API_Path_unverified_factories = "http://127.0.0.1:8000/api/v1/dashboard/factories/underverificationfactories/"; //_________Views______________
+var API_Path_unverified_factories = "http://127.0.0.1:8000/api/v1/dashboard/factories/underverificationfactories/";
+var API_Path_unverified_deleted_factories = "http://127.0.0.1:8000/api/v1/dashboard/factories/underverificationfactoriesfordlete/"; //_________Views______________
 
 var Views_Path = "http://localhost:3000/tallybills/admins/dashboard/";
 var View_Admin_Login = Views_Path + "login";
 var View_Admin_Home = Views_Path + "home";
-var View_Admin_unverified_factories = Views_Path + "unverified-factories"; // ------------helper functions
+var View_Admin_unverified_factories = Views_Path + "unverified-factories";
+var View_Admin_unverified_deleted_factories = Views_Path + "unverified-deleted-factories"; // ------------helper functions
 //----replace content
 
 var set_content = function set_content($result) {

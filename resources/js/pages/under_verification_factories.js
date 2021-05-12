@@ -1,6 +1,7 @@
-import {API_Path_unverified_factories } from "../global";
+import {API_Path_unverified_factories , $change_$content,View_Admin_unverified_factories } from "../global";
 import "../auth/middelwares/AdminRedirectToLoginIFUnauthMeddleware.js";
 
+    //cancele info
     const cancel_factory={
         ele_clickable:".cancel_factory",
         attr_to_get_id:'factory_id',
@@ -12,7 +13,7 @@ import "../auth/middelwares/AdminRedirectToLoginIFUnauthMeddleware.js";
         message: "Are you sure that ? , you are going to <b><u>REMOVE</u> <strike  style='color: red'>factory</strike></b> .",
         id:"Not Set Yet"
     };
-
+    //confirmation infp
     const confirm_factory={
         ele_clickable:".confirm_factory",
         attr_to_get_id:'factory_id',
@@ -24,43 +25,39 @@ import "../auth/middelwares/AdminRedirectToLoginIFUnauthMeddleware.js";
         message: "Are you sure that ? , you are going to <b><u>Verify</u> <b  style='color: green'>factory</b></b> .",
         id:"Not Set Yet"
     };
-
     let info = "request to process";
-    //confirm
-$(document).on('click',confirm_factory.ele_clickable,function (e){
+    //confirm set info
+    $(document).on('click',confirm_factory.ele_clickable,function (e){
         e.preventDefault();
         info = confirm_factory ;
         $("#report .message").html(info.message);
-        $("#report #cancel").html(info.cancel_button).click(() => {
-            $("#report").fadeOut(500);
-        });
-        $("#report #confirm").html(info.confirm_button + "<i style='display: none' id='loading-btn' class='fas fa-cog fa-spin faa-fast'></i>")
+        $("#report #cancel").html(info.cancel_button);
+        $("#report #confirm").html(info.confirm_button + "<i style='display: none' id='loading-btn' class='fas fa-cog fa-spin faa-fast'></i>");
         $("#report").fadeIn();
-        $("#closeWindow").click(function (e) {
-            $("#report").fadeOut(500);
-        });
         info.id = $(this).attr(info.attr_to_get_id);
         console.log(info.id);
     });
-    //delete
+    //delete set info
     $(document).on('click',cancel_factory.ele_clickable,function (e) {
         e.preventDefault();
         info =cancel_factory;
         $("#report .message").html(info.message);
-        $("#report #cancel").html(info.cancel_button).click(() => {
-            $("#report").fadeOut(500);
-        });
+        $("#report #cancel").html(info.cancel_button);
         $("#report #confirm").html(info.confirm_button + "<i style='display: none' id='loading-btn' class='fas fa-cog fa-spin faa-fast'></i>")
         $("#report").fadeIn();
-        $("#closeWindow").click(function (e) {
-            $("#report").fadeOut(500);
-        });
         info.id = $(this).attr(info.attr_to_get_id);
         console.log(info.id);
     });
-
-$("#report #confirm")
-        .click((e) => {
+    $(document).ready((e)=>{
+        //fadeout the report
+        $("#report #cancel").click(() => {
+            $("#report").fadeOut(500);
+        });
+        $("#closeWindow").click(function (e) {
+            $("#report").fadeOut(500);
+        });
+//------------------------loading btn------------------------------------------------------------
+ $("#report #confirm").click((e) => {
             $.ajax(
                 {
                     url: info.url + info.id,
@@ -71,34 +68,34 @@ $("#report #confirm")
                         console.log(status)
                         if (status === "success") {
                             $("#report").fadeOut(500);
-                            $(info.class_to_append_with_id_to_remove + info.id).remove();
+                            $(info.class_to_append_with_id_to_remove + info.id)
+                                .animate({
+                                    position:"absolute",
+                                    top:"50%",
+                                    left:"50%",
+                                    transform: "translate(-50%,-50%)",
+                                    opacity:0,
+                                    _zIndex:3
+                                },"slow",()=>{
+                                    $(info.class_to_append_with_id_to_remove + info.id).remove();
+                                });
                             $("#alert .message").html(result.msg);
                             $("#alert").fadeIn();
                         }
                     }
                 });
         });
-
-
-$(document).ready(()=>{
-    $(document).ajaxStart(function () {
+//------------------------loading btn------------------------------------------------------------
+    $(document)
+        .ajaxStart(function () {
         $("#loading-btn").show();
-        $(info.class_to_append_with_id_to_remove + info.id)
-            .animate({
-                position:"absolute",
-                top:"50%",
-                left:"50%",
-                transform: "translate(-50%,-50%)",
-                opacity:0,
-                _zIndex:3
-            },"slow");
         $("#report #confirm").attr("disabled", true);
-        $('#loading-icon').hide();
-    }).ajaxStop(function () {
+    })
+        .ajaxStop(function () {
         $("#loading-btn").hide();
         $("#report #confirm").attr("disabled", false);
     });
-
+//------------------------Zoom and style property file-------------------------------------------
     $(document).on('click','.property_file_container',function (e){
         var id= $(this).attr('id');
         console.log(id);
@@ -116,40 +113,47 @@ $(document).ready(()=>{
         $("#property_file_"+id).css({
             position:"relative",
             transition:"none",
-            left:'8%',
-            top:'2%',
-            width:"60%",
-            height:"90%"
+            left:'3%',
+            top:'1%',
+            width:"62%",
+            height:"90%",
+            "z-index": 8
+        }).addClass("zoom");
+        $("#factory_view_"+id+" .chip").css({
+            width:'200px'
         });
-        $("#factory_view_"+id+" .chip").hide();
         $("#factory_view_"+id+" h2").css({
-            position:"relative",
-            left:"70%"
-        });
-        $("#factory_view_"+id+" .confirm_factory").css({
-            position:"relative",
-            bottom:'-200px',
-            left:"80%"
-        });
-        $("#factory_view_"+id+" .cancel_factory").css({
-            position:"relative",
-            bottom:"-200px",
-            left:"55%"
+            marginTop:'10px',
+            textAlign:"left",
+            position:"absolute",
+            right:'20%'
         });
 
+            $("#factory_view_"+ id +" .close-alert").hover(()=>{
+                $("#factory_view_"+ id +" .close-alert").css({
+                    color:"red"
+                });
+            }).mouseout(()=>{
+                $("#factory_view_"+id+" .close-alert").css({
+                    color:"darkblue"
+                });
+                    });
+        $change_$content("#factory_view_"+id+" .close-alert",View_Admin_unverified_factories);
+    });
+//------------------------search-----------------------------------------------------------------
+    let     search_about = null;
+    $('input:radio[name="Filter-Search"]').change(function(){
+        search_about =$(this).val();
+        console.log(search_about);
+    });
+    $("#search").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $('.row .card').filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        });
     });
 });
 
-let     search_about = null;
-$('input:radio[name="Filter-Search"]').change(function(){
-    search_about =$(this).val();
-    console.log(search_about);
-});
-$("#search").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $('.row .card').filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-    });
-});
+
 
 

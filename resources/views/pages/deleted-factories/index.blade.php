@@ -1,42 +1,45 @@
 @extends('layouts.admin')
-@section('css',asset("css/under_verification_factories.css"))
-@section('title',"UnderVerificationFactories")
+@section('title','under-verification-factories')
 @section('content')
     <!--__CONTENT__-->
-    <div class="container mt-5">
+    <h1 style="border-bottom-left-radius: 10px;border-bottom-right-radius:10px;font-weight: bold;border-bottom:2px solid #01356C;margin: 9% auto 3%;width: fit-content"><i><span style="color:darkblue ">Deleted</span> Factories Under Verification</i> </h1>
+    <div class="container">
         <div class="row">
-            @forelse($factories as $factory)
-                <div class="card bg-dark text-white col-lg-6 mt-1" id="factory_view_{{$factory->id}}">
-                    <img src="{{$factory->property_file}}"  width="300px"  height="200px" alt="..."
-                         style="margin-left: -13px">
-                    <div class="card-img-overlay" style="margin-left: 300px">
-                        <a href="{{--{{route('users.show',$post->user->id)}}--}}" class="chip">
-                            <img src="{{$factory->owner->profile->picture}}" alt="Person" width="96" height="96"/>
-                            <span> {{$factory->owner->profile->first_name . " " . $factory->owner->profile->last_name }}</span>
-                        </a>
-                        <h2>{{$factory->factory_name}}</h2>
-                        <a factory_id="{{$factory->id}}" href=""
-                           class="btn btn-success confirm_factory"> Confirm </a>
-                        <a  factory_id="{{$factory->id}}" href=""
-                            class="btn btn-danger cancel_factory"> Remove </a>
-                    </div>
+            <table class="table table-hover">
+                <div class="badge bg-dark" style="height: 50px;width: 100%">
+                    <h1 style="font-size: large;font-weight: bold;margin-top: 5px">All Factories</h1>
                 </div>
-                @empty
-                    <div class="alert alert-success" role="alert">
+                <tr class="">
+                    <th>Logo</th>
+                    <th>Factory Name</th>
+                    <th style="text-indent: 22%">Owner</th>
+                    <th style="text-indent: 22%">Actions</th>
+                </tr>
+                @forelse($factories as $factory)
+                <tr class="table-row" id="factory_view_{{$factory->id}}">
+                    <td class=""><img src="{{$factory->logo}}" alt="..." width="50px" height="50px"></td>
+                    <td class=""><h2>{{$factory->factory_name}}</h2></td>
+                    <td class=""><h2>{{$factory->owner->profile->first_name . ' ' . $factory->owner->profile->last_name}}</h2></td>
+                    <td class="">
+                   <span class="">
+                      <a href="" class="btn btn-danger cancel_factory" factory_id="{{$factory->id}}">Force Delete</a>
+                       <a href="" class="btn btn-success confirm_factory" factory_id="{{$factory->id}}"> Restore </a>
+                    </span>
+                    </td>
+                </tr>
+                 @empty
+                    <div class="alert alert-success mt-5" role="alert">
                         <h4 class="alert-heading">No Factories To verify</h4>
                         <p>This page show the factories under verify , when the owner built factory the factory will appear here .</p>
                         <hr>
                         <p class="mb-0">Be accurate and sure of the ownership file that the owner has uploaded before making the decision to confirm or delete .</p>
                     </div>
-            @endforelse
+                @endforelse
 
-            <div class="container">
-                    {{$factories->links()}}
-                </div>
+            </table>
         </div>
     </div>
-    <script src="{{mix('js/shared pages.js')}}"></script>
-    <script src="{{asset('js/under_verification_factories.js')}}"></script>
+    <script async src="{{mix('js/shared pages.js')}}"></script>
+    <script async src="{{mix('js/under_verification_deleted_factories.js')}}"></script>
     <!--END__CONTENT__-->
-@stop
-
+@endsection

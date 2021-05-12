@@ -50,7 +50,7 @@ class CreateFactoryRequest extends FormRequest
             "phone"        =>["nullable","min:11","numeric","regex:/^\+9627[789]\d{7}$/"],
             'address'      =>'nullable|string|max:255',
             'email'        =>'nullable|string|email|max:255',
-            'Description'  =>'nullable|string|max:996'
+            'description'  =>'nullable|string|max:996'
         ]);
         if($this->isMethod('put'))
             return $update;

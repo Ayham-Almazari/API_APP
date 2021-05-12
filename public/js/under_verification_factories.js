@@ -49,7 +49,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "AdminAuthMiddelwareRoute": () => (/* binding */ AdminAuthMiddelwareRoute),
 /* harmony export */   "View_Admin_Login": () => (/* binding */ View_Admin_Login),
 /* harmony export */   "View_Admin_Home": () => (/* binding */ View_Admin_Home),
-/* harmony export */   "View_Admin_unverified_factories": () => (/* binding */ View_Admin_unverified_factories)
+/* harmony export */   "View_Admin_unverified_factories": () => (/* binding */ View_Admin_unverified_factories),
+/* harmony export */   "API_Path_unverified_deleted_factories": () => (/* binding */ API_Path_unverified_deleted_factories),
+/* harmony export */   "View_Admin_unverified_deleted_factories": () => (/* binding */ View_Admin_unverified_deleted_factories)
 /* harmony export */ });
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
@@ -60,12 +62,14 @@ var API_Admin_Login = API_Path + "login";
 var API_Admin_Logout = API_Path + "logout";
 var AdminAuthMiddelwareRoute = API_Path + 'user'; //-------------View_Admin_unauthenticated_factories--------------
 
-var API_Path_unverified_factories = "http://127.0.0.1:8000/api/v1/dashboard/factories/underverificationfactories/"; //_________Views______________
+var API_Path_unverified_factories = "http://127.0.0.1:8000/api/v1/dashboard/factories/underverificationfactories/";
+var API_Path_unverified_deleted_factories = "http://127.0.0.1:8000/api/v1/dashboard/factories/underverificationfactoriesfordlete/"; //_________Views______________
 
 var Views_Path = "http://localhost:3000/tallybills/admins/dashboard/";
 var View_Admin_Login = Views_Path + "login";
 var View_Admin_Home = Views_Path + "home";
-var View_Admin_unverified_factories = Views_Path + "unverified-factories"; // ------------helper functions
+var View_Admin_unverified_factories = Views_Path + "unverified-factories";
+var View_Admin_unverified_deleted_factories = Views_Path + "unverified-deleted-factories"; // ------------helper functions
 //----replace content
 
 var set_content = function set_content($result) {
@@ -11073,6 +11077,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _global__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../global */ "./resources/js/global.js");
 /* harmony import */ var _auth_middelwares_AdminRedirectToLoginIFUnauthMeddleware_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../auth/middelwares/AdminRedirectToLoginIFUnauthMeddleware.js */ "./resources/js/auth/middelwares/AdminRedirectToLoginIFUnauthMeddleware.js");
 
+ //cancele info
 
 var cancel_factory = {
   ele_clickable: ".cancel_factory",
@@ -11084,7 +11089,8 @@ var cancel_factory = {
   cancel_button: "Cancel",
   message: "Are you sure that ? , you are going to <b><u>REMOVE</u> <strike  style='color: red'>factory</strike></b> .",
   id: "Not Set Yet"
-};
+}; //confirmation infp
+
 var confirm_factory = {
   ele_clickable: ".confirm_factory",
   attr_to_get_id: 'factory_id',
@@ -11096,75 +11102,75 @@ var confirm_factory = {
   message: "Are you sure that ? , you are going to <b><u>Verify</u> <b  style='color: green'>factory</b></b> .",
   id: "Not Set Yet"
 };
-var info = "request to process"; //confirm
+var info = "request to process"; //confirm set info
 
 $(document).on('click', confirm_factory.ele_clickable, function (e) {
   e.preventDefault();
   info = confirm_factory;
   $("#report .message").html(info.message);
-  $("#report #cancel").html(info.cancel_button).click(function () {
-    $("#report").fadeOut(500);
-  });
+  $("#report #cancel").html(info.cancel_button);
   $("#report #confirm").html(info.confirm_button + "<i style='display: none' id='loading-btn' class='fas fa-cog fa-spin faa-fast'></i>");
   $("#report").fadeIn();
-  $("#closeWindow").click(function (e) {
-    $("#report").fadeOut(500);
-  });
   info.id = $(this).attr(info.attr_to_get_id);
   console.log(info.id);
-}); //delete
+}); //delete set info
 
 $(document).on('click', cancel_factory.ele_clickable, function (e) {
   e.preventDefault();
   info = cancel_factory;
   $("#report .message").html(info.message);
-  $("#report #cancel").html(info.cancel_button).click(function () {
-    $("#report").fadeOut(500);
-  });
+  $("#report #cancel").html(info.cancel_button);
   $("#report #confirm").html(info.confirm_button + "<i style='display: none' id='loading-btn' class='fas fa-cog fa-spin faa-fast'></i>");
   $("#report").fadeIn();
-  $("#closeWindow").click(function (e) {
-    $("#report").fadeOut(500);
-  });
   info.id = $(this).attr(info.attr_to_get_id);
   console.log(info.id);
 });
-$("#report #confirm").click(function (e) {
-  $.ajax({
-    url: info.url + info.id,
-    type: info.type,
-    headers: {
-      "Authorization": "Bearer " + localStorage.getItem('_token')
-    },
-    success: function success(result, status) {
-      console.log(status);
-
-      if (status === "success") {
-        $("#report").fadeOut(500);
-        $(info.class_to_append_with_id_to_remove + info.id).remove();
-        $("#alert .message").html(result.msg);
-        $("#alert").fadeIn();
-      }
-    }
+$(document).ready(function (e) {
+  //fadeout the report
+  $("#report #cancel").click(function () {
+    $("#report").fadeOut(500);
   });
-});
-$(document).ready(function () {
+  $("#closeWindow").click(function (e) {
+    $("#report").fadeOut(500);
+  }); //------------------------loading btn------------------------------------------------------------
+
+  $("#report #confirm").click(function (e) {
+    $.ajax({
+      url: info.url + info.id,
+      type: info.type,
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('_token')
+      },
+      success: function success(result, status) {
+        console.log(status);
+
+        if (status === "success") {
+          $("#report").fadeOut(500);
+          $(info.class_to_append_with_id_to_remove + info.id).animate({
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%,-50%)",
+            opacity: 0,
+            _zIndex: 3
+          }, "slow", function () {
+            $(info.class_to_append_with_id_to_remove + info.id).remove();
+          });
+          $("#alert .message").html(result.msg);
+          $("#alert").fadeIn();
+        }
+      }
+    });
+  }); //------------------------loading btn------------------------------------------------------------
+
   $(document).ajaxStart(function () {
     $("#loading-btn").show();
-    $(info.class_to_append_with_id_to_remove + info.id).animate({
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%,-50%)",
-      opacity: 0,
-      _zIndex: 3
-    }, "slow");
     $("#report #confirm").attr("disabled", true);
-    $('#loading-icon').hide();
   }).ajaxStop(function () {
     $("#loading-btn").hide();
     $("#report #confirm").attr("disabled", false);
-  });
+  }); //------------------------Zoom and style property file-------------------------------------------
+
   $(document).on('click', '.property_file_container', function (e) {
     var id = $(this).attr('id');
     console.log(id);
@@ -11181,37 +11187,43 @@ $(document).ready(function () {
     $("#property_file_" + id).css({
       position: "relative",
       transition: "none",
-      left: '8%',
-      top: '2%',
-      width: "60%",
-      height: "90%"
+      left: '3%',
+      top: '1%',
+      width: "62%",
+      height: "90%",
+      "z-index": 8
+    }).addClass("zoom");
+    $("#factory_view_" + id + " .chip").css({
+      width: '200px'
     });
-    $("#factory_view_" + id + " .chip").hide();
     $("#factory_view_" + id + " h2").css({
-      position: "relative",
-      left: "70%"
+      marginTop: '10px',
+      textAlign: "left",
+      position: "absolute",
+      right: '20%'
     });
-    $("#factory_view_" + id + " .confirm_factory").css({
-      position: "relative",
-      bottom: '-200px',
-      left: "80%"
+    $("#factory_view_" + id + " .close-alert").hover(function () {
+      $("#factory_view_" + id + " .close-alert").css({
+        color: "red"
+      });
+    }).mouseout(function () {
+      $("#factory_view_" + id + " .close-alert").css({
+        color: "darkblue"
+      });
     });
-    $("#factory_view_" + id + " .cancel_factory").css({
-      position: "relative",
-      bottom: "-200px",
-      left: "55%"
-    });
+    (0,_global__WEBPACK_IMPORTED_MODULE_0__.$change_$content)("#factory_view_" + id + " .close-alert", _global__WEBPACK_IMPORTED_MODULE_0__.View_Admin_unverified_factories);
+  }); //------------------------search-----------------------------------------------------------------
+
+  var search_about = null;
+  $('input:radio[name="Filter-Search"]').change(function () {
+    search_about = $(this).val();
+    console.log(search_about);
   });
-});
-var search_about = null;
-$('input:radio[name="Filter-Search"]').change(function () {
-  search_about = $(this).val();
-  console.log(search_about);
-});
-$("#search").on("keyup", function () {
-  var value = $(this).val().toLowerCase();
-  $('.row .card').filter(function () {
-    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+  $("#search").on("keyup", function () {
+    var value = $(this).val().toLowerCase();
+    $('.row .card').filter(function () {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+    });
   });
 });
 })();

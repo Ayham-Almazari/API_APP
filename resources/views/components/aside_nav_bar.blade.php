@@ -1,7 +1,8 @@
 <div class="container-fluid aside admin-aside">
     <div class="row min-vj-100 flex-column flex-md-row admin-aside">
         <aside class="col-12 col-md-3 col-xl-2 p-0 bg-dark flex-shrink-1 admin-aside">
-            <nav id="sidebar" class="navbar-expand-md navbar-dark bd-dark flex-md-column flex-row algin-items-center py-2 text-center">
+            <nav id="sidebar"
+                 class="navbar-expand-md navbar-dark bd-dark flex-md-column flex-row algin-items-center py-2 text-center">
                 <button type="button" class="navbar-toggler border-0 oder-1"
                         data-bs-target="#nav" aria-controls="nav"
                         aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="collapse">
@@ -9,33 +10,59 @@
                 </button>
                 <div class="collapse navbar-collapse order-last" id="nav">
                     <ul class="navbar-nav flex-column w-100 justify-content-center">
-                        <li class="nav-item">
-                            <a href="" class="nav-link">Posts</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link justify-content-between">
-                                Todos <span class="badge bg-primary badge-pill"></span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link" id="Under_Verification_Factories">Under Verification Factories
-                                <i style='display: none;color:white' id='loading-btn' class='fas fa-cog fa-spin faa-fast'></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link">Categories
-                                <i style='display: none;color:white' id='loading-btn' class='fas fa-cog fa-spin faa-fast'></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link">Trashed</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link">Statistics</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link">Users</a>
-                        </li>
+                        @php
+                            const count_btn="<span class='badge bg-primary badge-pill'> </span>";
+                            $nav_items=[
+                            "Factories Under Verification"=>[
+                            "class"=>"nav-link justify-content-between ",
+                            "id"=>"Under_Verification_Factories",
+                            "loading-id"=>1
+                            ],
+                            "Deleted Factories Under Verification"=>[
+                            "class"=>"nav-link justify-content-between",
+                            "id"=>"Under_Verification_Deleted_Factories",
+                            "loading-id"=>2
+                            ],
+                            "Posts"=>[//
+                            "class"=>"nav-link justify-content-between",
+                            "id"=>"Under_Verification_Deleted_Factories",
+                            "loading-id"=>3
+                            ],
+                            "Categories"=>[
+                            "class"=>"nav-link justify-content-between",
+                            "id"=>"Under_Verification_Deleted_Factories",
+                            "loading-id"=>4
+                            ],
+                            "Trashed"=>[
+                            "class"=>"nav-link justify-content-between",
+                            "id"=>"Under_Verification_Deleted_Factories",
+                            "loading-id"=>5
+                            ],
+                            "Statistics"=>[
+                            "class"=>"nav-link justify-content-between",
+                            "id"=>"Under_Verification_Deleted_Factories",
+                            "loading-id"=>6
+                            ],
+                            "Users"=>[
+                            "class"=>"nav-link justify-content-between",
+                            "id"=>"Under_Verification_Deleted_Factories",
+                            "loading-id"=>7
+                            ]
+                            ];
+                        @endphp
+                        @foreach($nav_items as $nav_item => $nav_detail)
+                            <li  class="nav-item" for="{{$nav_detail['loading-id']}}">
+                                <a href=""
+                                   class="{{$nav_detail['class']}} ayham"
+                                   id="{{$nav_detail['id']}}">
+                                    {{$nav_item}}
+                                </a>
+                                <i style='display: none;color:white'
+                                   id="{{'loading-id-'.$nav_detail['loading-id']}}"
+                                       class='fas fa-cog fa-spin faa-fast' >
+                                </i>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </nav>

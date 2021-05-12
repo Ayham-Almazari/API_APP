@@ -70,13 +70,3 @@
     width: 30%;
   }
 }
-
-.zoom {
-  transition: all 2s ease-out;
-}
-
-.zoom:hover {
-  /* IE 9 */
-  /* Safari 3-8 */
-  transform: scale(1.5);
-}

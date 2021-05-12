@@ -17,4 +17,5 @@ Route::prefix('tallybills/admins/dashboard')->name('view.')->group(function () {
     Route::view('login', 'pages.ajax-login')->name("admin.login");
     Route::view('home', 'pages.admin_home')->name("admin.home");
     Route::get('unverified-factories', [\App\Http\Controllers\API\Admin\ViewsAJax\UnderVerificationFactoryViews::class,"index"])->name("admin.home");
+    Route::get('unverified-deleted-factories', [\App\Http\Controllers\API\Admin\ViewsAJax\UnderVerificationDeletedFactoryViews::class,"index"])->name("admin.home");
 });
