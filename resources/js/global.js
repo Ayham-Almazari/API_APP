@@ -9,6 +9,7 @@ const AdminAuthMiddelwareRoute = API_Path + 'user';
 //-------------View_Admin_unauthenticated_factories--------------
 const API_Path_unverified_factories  ="http://127.0.0.1:8000/api/v1/dashboard/factories/underverificationfactories/";
 const API_Path_unverified_deleted_factories  ="http://127.0.0.1:8000/api/v1/dashboard/factories/underverificationfactoriesfordlete/";
+const API_Path_unverified_owners  ="http://127.0.0.1:8000/api/v1/dashboard/owners/underverificationownrs/";
 
 
 //_________Views______________
@@ -17,6 +18,7 @@ const View_Admin_Login= Views_Path + "login";
 const View_Admin_Home= Views_Path + "home";
 const View_Admin_unverified_factories= Views_Path + "unverified-factories";
 const View_Admin_unverified_deleted_factories= Views_Path + "unverified-deleted-factories";
+const View_Admin_unverified_owners= Views_Path + "unverified-owners";
 
 // ------------helper functions
 //----replace content
@@ -58,10 +60,12 @@ export {
     API_Admin_Login,
     API_Admin_Logout,
     API_Path_unverified_factories,
+    API_Path_unverified_owners,
     AdminAuthMiddelwareRoute,
     View_Admin_Login,
     View_Admin_Home,
     View_Admin_unverified_factories,
     API_Path_unverified_deleted_factories,
-    View_Admin_unverified_deleted_factories
+    View_Admin_unverified_deleted_factories,
+    View_Admin_unverified_owners
 };

@@ -16,7 +16,7 @@
                     <th style="text-indent: 22%">Actions</th>
                 </tr>
                 @forelse($factories as $factory)
-                <tr class="table-row" id="factory_view_{{$factory->id}}">
+                        <tr class="table-row" id="factory_view_{{$factory->id}}">
                     <td class=""><img src="{{$factory->logo}}" alt="..." width="50px" height="50px"></td>
                     <td class=""><h2>{{$factory->factory_name}}</h2></td>
                     <td class=""><h2>{{$factory->owner->profile->first_name . ' ' . $factory->owner->profile->last_name}}</h2></td>
@@ -28,9 +28,9 @@
                     </td>
                 </tr>
                  @empty
-                    <div class="alert alert-success mt-5" role="alert">
-                        <h4 class="alert-heading">No Factories To verify</h4>
-                        <p>This page show the factories under verify , when the owner built factory the factory will appear here .</p>
+                    <div class="alert alert-success mt-5 "  role="alert">
+                        <h4 class="alert-heading">No Factories to verify</h4>
+                        <p>This page show the deleted factories under verify , when the owner delete factory the factory will appear here .</p>
                         <hr>
                         <p class="mb-0">Be accurate and sure of the ownership file that the owner has uploaded before making the decision to confirm or delete .</p>
                     </div>

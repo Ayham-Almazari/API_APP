@@ -1,6 +1,7 @@
 import {
     View_Admin_unverified_factories,
     View_Admin_unverified_deleted_factories,
+    View_Admin_unverified_owners,
     $change_$content
 } from "../global.js";
 
@@ -8,6 +9,7 @@ import {
 $(document).ready(function() {
     $change_$content("#Under_Verification_Deleted_Factories",View_Admin_unverified_deleted_factories);
     $change_$content('#Under_Verification_Factories',View_Admin_unverified_factories);
+    $change_$content('#Under_Verification_Owners',View_Admin_unverified_owners);
 
 
     $(".close-alert").click(()=>{

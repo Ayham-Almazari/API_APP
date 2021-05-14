@@ -18,35 +18,40 @@
                             "id"=>"Under_Verification_Factories",
                             "loading-id"=>1
                             ],
-                            "Deleted Factories Under Verification"=>[
+                            "Owners Under Verification"=>[
                             "class"=>"nav-link justify-content-between",
-                            "id"=>"Under_Verification_Deleted_Factories",
+                            "id"=>"Under_Verification_Owners",
                             "loading-id"=>2
                             ],
-                            "Posts"=>[//
+                            "Deleted Factories Under Verification"=>[
                             "class"=>"nav-link justify-content-between",
                             "id"=>"Under_Verification_Deleted_Factories",
                             "loading-id"=>3
                             ],
+                            "Posts"=>[//
+                            "class"=>"nav-link justify-content-between",
+                            "id"=>"Under_Verification_Deleted_Factories",
+                            "loading-id"=>null
+                            ],
                             "Categories"=>[
                             "class"=>"nav-link justify-content-between",
                             "id"=>"Under_Verification_Deleted_Factories",
-                            "loading-id"=>4
+                            "loading-id"=>null
                             ],
                             "Trashed"=>[
                             "class"=>"nav-link justify-content-between",
                             "id"=>"Under_Verification_Deleted_Factories",
-                            "loading-id"=>5
+                            "loading-id"=>null
                             ],
                             "Statistics"=>[
                             "class"=>"nav-link justify-content-between",
                             "id"=>"Under_Verification_Deleted_Factories",
-                            "loading-id"=>6
+                            "loading-id"=>null
                             ],
                             "Users"=>[
                             "class"=>"nav-link justify-content-between",
                             "id"=>"Under_Verification_Deleted_Factories",
-                            "loading-id"=>7
+                            "loading-id"=>null
                             ]
                             ];
                         @endphp

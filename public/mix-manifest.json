@@ -8,7 +8,9 @@
     "/js/aside-nav-bar.js": "/js/aside-nav-bar.js",
     "/js/under_verification_factories.js": "/js/under_verification_factories.js",
     "/js/under_verification_deleted_factories.js": "/js/under_verification_deleted_factories.js",
+    "/js/under_verification_owner.js": "/js/under_verification_owner.js",
     "/css/app.css": "/css/app.css",
+    "/css/under_verification_owners.css": "/css/under_verification_owners.css",
     "/css/under_verification_deleted_factories.css": "/css/under_verification_deleted_factories.css",
     "/css/under_verification_factories.css": "/css/under_verification_factories.css",
     "/css/admin-login.css": "/css/admin-login.css"

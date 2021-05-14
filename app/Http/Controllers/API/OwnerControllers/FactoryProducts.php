@@ -90,16 +90,17 @@ class FactoryProducts extends Controller
      * Display the specified resource.
      *only if the product belong to the factory
      * @param Product $product
-     * @return Response
+     * @return ProductResource
      */
     public function show(Factory $factory, Product $product)
     {
         $this->authorize('authorize-owner-product', [$factory, $product]);
-        return new ProductResource($product->makeHidden(['category_id'])->makeVisible(['created_at', 'updated_at']));
+        return new ProductResource($product->makeHidden(['category_id'])->makeVisible(["availability",'created_at', 'updated_at']));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in storage==
+     *
      *
      * @param Request $request
      * @param Product $product

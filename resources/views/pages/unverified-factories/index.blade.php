@@ -3,7 +3,7 @@
 @section('title',"UnderVerificationFactories")
 @section('content')
     <!--__CONTENT__-->
-    <h1 style="font-weight: bold;border-bottom:2px solid #01356C;margin: 9% auto 3%;width: fit-content"><i>Factories Under Verification</i> </h1>
+    <h1 style="border-bottom-left-radius: 10px;border-bottom-right-radius:10px;font-weight: bold;border-bottom:2px solid #01356C;margin: 9% auto 3%;width: fit-content"><i>Factories Under Verification</i> </h1>
     <div class="container">
         <div class="row">
             @forelse($factories as $factory)

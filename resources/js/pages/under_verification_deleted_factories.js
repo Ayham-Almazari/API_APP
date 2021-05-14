@@ -8,7 +8,7 @@ const cancel_factory={
     class_to_append_with_id_to_remove:"#factory_view_",
     url:API_Path_unverified_deleted_factories,
     type:'DELETE',
-    confirm_button:"Remove Factory",
+    confirm_button:"Force Remove Factory",
     cancel_button:"Cancel",
     message: "Are you sure that ? , you are going to <b><u>Force Delete</u> <strike  style='color: red'>factory</strike></b> .",
     id:"Not Set Yet"
@@ -20,7 +20,7 @@ const confirm_factory={
     class_to_append_with_id_to_remove:"#factory_view_",
     url:API_Path_unverified_deleted_factories,
     type:'GET',
-    confirm_button:"Confirm Factory",
+    confirm_button:"Restore Factory",
     cancel_button:"Cancel",
     message: "Are you sure that ? , you are going to <b><u>Restore</u> <b  style='color: green'>factory</b></b> .",
     id:"Not Set Yet"

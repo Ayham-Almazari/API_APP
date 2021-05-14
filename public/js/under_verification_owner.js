@@ -1,19 +1,19 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./resources/js/auth/middelwares/AdminRedirectToHomeIFAuthMeddleware.js":
-/*!******************************************************************************!*\
-  !*** ./resources/js/auth/middelwares/AdminRedirectToHomeIFAuthMeddleware.js ***!
-  \******************************************************************************/
+/***/ "./resources/js/auth/middelwares/AdminRedirectToLoginIFUnauthMeddleware.js":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/auth/middelwares/AdminRedirectToLoginIFUnauthMeddleware.js ***!
+  \*********************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _global_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../global.js */ "./resources/js/global.js");
+/* harmony import */ var _global__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../global */ "./resources/js/global.js");
 // ------ ajax
 
 $.ajax({
-  url: _global_js__WEBPACK_IMPORTED_MODULE_0__.AdminAuthMiddelwareRoute,
+  url: _global__WEBPACK_IMPORTED_MODULE_0__.AdminAuthMiddelwareRoute,
   //PHP file to execute
   type: 'GET',
   //method used POST or GET
@@ -24,9 +24,10 @@ $.ajax({
 }).done(function (result) {
   localStorage.setItem('user', result.data.user.profile.first_name + " " + result.data.user.profile.last_name);
   localStorage.setItem('picture', result.data.user.profile.picture);
-  window.location.href = _global_js__WEBPACK_IMPORTED_MODULE_0__.View_Admin_Home;
+  $(".profile-image").attr('src', localStorage.getItem('picture'));
+  $("#profile_name").html(localStorage.getItem('user'));
 }).fail(function (result) {
-  console.log(result.responseJSON.message);
+  window.location.href = _global__WEBPACK_IMPORTED_MODULE_0__.View_Admin_Login;
 }).ajaxStop;
 
 /***/ }),
@@ -11073,72 +11074,161 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!*****************************************!*\
-  !*** ./resources/js/auth/LoginAdmin.js ***!
-  \*****************************************/
+/*!********************************************************!*\
+  !*** ./resources/js/pages/under_verification_owner.js ***!
+  \********************************************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _middelwares_AdminRedirectToHomeIFAuthMeddleware_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./middelwares/AdminRedirectToHomeIFAuthMeddleware.js */ "./resources/js/auth/middelwares/AdminRedirectToHomeIFAuthMeddleware.js");
-/* harmony import */ var _global_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../global.js */ "./resources/js/global.js");
+/* harmony import */ var _global__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../global */ "./resources/js/global.js");
+/* harmony import */ var _auth_middelwares_AdminRedirectToLoginIFUnauthMeddleware_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../auth/middelwares/AdminRedirectToLoginIFUnauthMeddleware.js */ "./resources/js/auth/middelwares/AdminRedirectToLoginIFUnauthMeddleware.js");
 
- // ------ ajax
+ //cancele info
 
-$("#admin_login").click(function (e) {
+var cancel_factory = {
+  ele_clickable: ".cancel_factory",
+  attr_to_get_id: 'factory_id',
+  class_to_append_with_id_to_remove: "#factory_view_",
+  url: _global__WEBPACK_IMPORTED_MODULE_0__.API_Path_unverified_owners,
+  type: 'DELETE',
+  confirm_button: "Remove Owner",
+  cancel_button: "Cancel",
+  message: "Are you sure that ? , you are going to <b><u>REMOVE</u> <strike  style='color: red'>owner</strike></b> .",
+  id: "Not Set Yet"
+}; //confirmation infp
+
+var confirm_factory = {
+  ele_clickable: ".confirm_factory",
+  attr_to_get_id: 'factory_id',
+  class_to_append_with_id_to_remove: "#factory_view_",
+  url: _global__WEBPACK_IMPORTED_MODULE_0__.API_Path_unverified_owners,
+  type: 'GET',
+  confirm_button: "Confirm Owner",
+  cancel_button: "Cancel",
+  message: "Are you sure that ? , you are going to <b><u>Verify</u> <b  style='color: green'>owner</b></b> .",
+  id: "Not Set Yet"
+};
+var info = "request to process"; //confirm set info
+
+$(document).on('click', confirm_factory.ele_clickable, function (e) {
   e.preventDefault();
-  var formData = new FormData($('#loginForm')[0]);
-  formData.set('remember', $('#gridCheck1').is(':checked') ? true : false);
-  $.ajax({
-    url: _global_js__WEBPACK_IMPORTED_MODULE_1__.API_Admin_Login,
-    //PHP file to execute
-    type: 'POST',
-    //method used POST or GET
-    dataType: "json",
-    data: {
-      "identifier": formData.get('identifier'),
-      "password": formData.get('password'),
-      "remember_me": $('#gridCheck1').is(':checked') ? 1 : 0
-    },
-    // Parameters passed to the PHP file
-    // processData : false,
-    // contentType:false,
-    // cache:false,
-    // enctype:'multipart/form-data',
-    success: function success(result) {// Has to be there !
-      // console.log(result);
-    },
-    error: function error(result, status, _error) {// Handle errors
-    }
-  }).done(function (result) {
-    localStorage.setItem('_token', result._token);
-    $("#identifier_error").hide();
-    $("#password_error").hide();
-    $("#Invalid_User").hide();
-    console.log(result);
-    window.location.href = _global_js__WEBPACK_IMPORTED_MODULE_1__.View_Admin_Home;
-  }).fail(function (result) {
-    console.log(result);
+  info = confirm_factory;
+  $("#report .message").html(info.message);
+  $("#report #cancel").html(info.cancel_button);
+  $("#report #confirm").html(info.confirm_button + "<i style='display: none' id='loading-btn' class='fas fa-cog fa-spin faa-fast'></i>");
+  $("#report").fadeIn();
+  info.id = $(this).attr(info.attr_to_get_id);
+  console.log(info.id);
+}); //delete set info
 
-    if (result.responseJSON.hasOwnProperty('errors')) {
-      result.responseJSON.errors.hasOwnProperty("identifier") ? $("#identifier_error").text(result.responseJSON.errors.identifier[0]).show() : $("#identifier_error").css({
-        "display": 'none'
-      });
-      result.responseJSON.errors.hasOwnProperty("password") ? $("#password_error").text(result.responseJSON.errors.password[0]).show() : null;
-    } else {
-      $("#identifier_error").css({
-        "display": 'none'
-      });
-      $("#password_error").css({
-        "display": 'none'
-      });
-    }
-
-    result.responseJSON.hasOwnProperty("general") ? $("#Invalid_User").text(result.responseJSON.general).show() : $("#Invalid_User").hide();
-  }).always(function () {});
+$(document).on('click', cancel_factory.ele_clickable, function (e) {
+  e.preventDefault();
+  info = cancel_factory;
+  $("#report .message").html(info.message);
+  $("#report #cancel").html(info.cancel_button);
+  $("#report #confirm").html(info.confirm_button + "<i style='display: none' id='loading-btn' class='fas fa-cog fa-spin faa-fast'></i>");
+  $("#report").fadeIn();
+  info.id = $(this).attr(info.attr_to_get_id);
+  console.log(info.id);
 });
-var $loading_icon = $('#loading-icon').hide();
-$(document).ajaxStart(function () {
-  $loading_icon.show();
-}).ajaxStop(function () {
-  $loading_icon.hide();
+$(document).ready(function (e) {
+  //fadeout the report
+  $("#report #cancel").click(function () {
+    $("#report").fadeOut(500);
+  });
+  $("#closeWindow").click(function (e) {
+    $("#report").fadeOut(500);
+  }); //------------------------loading btn------------------------------------------------------------
+
+  $("#report #confirm").click(function (e) {
+    $.ajax({
+      url: info.url + info.id,
+      type: info.type,
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem('_token')
+      },
+      success: function success(result, status) {
+        console.log(status);
+
+        if (status === "success") {
+          $("#report").fadeOut(500);
+          $(info.class_to_append_with_id_to_remove + info.id).animate({
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%,-50%)",
+            opacity: 0,
+            _zIndex: 3
+          }, "slow", function () {
+            $(info.class_to_append_with_id_to_remove + info.id).remove();
+          });
+          $("#alert .message").html(result.msg);
+          $("#alert").fadeIn();
+        }
+      }
+    });
+  }); //------------------------loading btn------------------------------------------------------------
+
+  $(document).ajaxStart(function () {
+    $("#loading-btn").show();
+    $("#report #confirm").attr("disabled", true);
+  }).ajaxStop(function () {
+    $("#loading-btn").hide();
+    $("#report #confirm").attr("disabled", false);
+  }); //------------------------Zoom and style property file-------------------------------------------
+
+  $(document).on('click', '.property_file_container', function (e) {
+    var id = $(this).attr('id');
+    console.log(id);
+    $("#factory_view_" + id).css({
+      position: "fixed",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-30%,-45%)",
+      border: '5px',
+      "z-index": 2,
+      width: '50%',
+      height: '80%'
+    }).append("<a href=''><i class='close-alert fas fa-times' style='color:#0a53be;position: absolute;right: 3px;top:3px ;font-size: x-large' ></i></a>");
+    $("#property_file_" + id).css({
+      position: "relative",
+      transition: "none",
+      left: '3%',
+      top: '1%',
+      width: "62%",
+      height: "90%",
+      "z-index": 8
+    }).addClass("zoom");
+    $("#factory_view_" + id + " .chip").css({
+      width: '200px'
+    });
+    $("#factory_view_" + id + " h2").css({
+      textAlign: "left",
+      position: "absolute",
+      right: '0',
+      top: "70%"
+    });
+    $("#factory_view_" + id + " .close-alert").hover(function () {
+      $("#factory_view_" + id + " .close-alert").css({
+        color: "red"
+      });
+    }).mouseout(function () {
+      $("#factory_view_" + id + " .close-alert").css({
+        color: "darkblue"
+      });
+    });
+    (0,_global__WEBPACK_IMPORTED_MODULE_0__.$change_$content)("#factory_view_" + id + " .close-alert", _global__WEBPACK_IMPORTED_MODULE_0__.View_Admin_unverified_owners);
+  }); //------------------------search-----------------------------------------------------------------
+
+  var search_about = null;
+  $('input:radio[name="Filter-Search"]').change(function () {
+    search_about = $(this).val();
+    console.log(search_about);
+  });
+  $("#search").on("keyup", function () {
+    var value = $(this).val().toLowerCase();
+    $('.row .card').filter(function () {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+    });
+  });
 });
 })();
 

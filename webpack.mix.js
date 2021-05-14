@@ -20,10 +20,13 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/components/aside-nav-bar.js', 'public/js')
     .js('resources/js/pages/under_verification_factories.js', 'public/js')
     .js('resources/js/pages/under_verification_deleted_factories.js', 'public/js')
+    .js('resources/js/pages/under_verification_owner.js', 'public/js')
+    .js('resources/js/pages/users.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .sass("resources/sass/admin-login.scss",'public/css')
     .sass("resources/sass/under_verification_factories.scss",'public/css')
-    .sass("resources/sass/under_verification_deleted_factories.scss",'public/css');
+    .sass("resources/sass/under_verification_deleted_factories.scss",'public/css')
+    .sass("resources/sass/under_verification_owners.scss",'public/css');
 
 mix.browserSync({
     proxy: 'localhost:8000',
