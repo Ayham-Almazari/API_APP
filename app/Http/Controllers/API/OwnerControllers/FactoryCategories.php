@@ -58,6 +58,7 @@ class FactoryCategories extends Controller
     public function store(CreateCategoryRequest $request,Factory $factory)
     {
         $this->authorize('authorize-owner-factory', $factory);
+        $this->authorize('CanAddCategory', [Factory::class,$factory]);
         $category = $factory->categories()->create($request->validated());
         return $this->returnSuccessMessage("Category '{$category->category_name}' for '{$request->factory->factory_name}' factory created successfully .", \Symfony\Component\HttpFoundation\Response::HTTP_CREATED);
     }
@@ -116,6 +117,7 @@ class FactoryCategories extends Controller
     {
         $this->authorize('authorize-owner-factory', $factory);
         $this->authorize('authorize-owner-category', [$factory,$category]);
+        $this->authorize('canUpdateCategory', [Factory::class,$factory]);
         update_category:{
         $category->update(
             $request->validated()

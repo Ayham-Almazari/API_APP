@@ -69,6 +69,7 @@ Route::group([
             Route::get('refresh'    , [AdminAuth::class,'refresh'] );
             //get current authotocated user
             Route::get( 'user'    ,    [AdminAuth::class,'user']);
+            Route::delete('remove/{admin}', [\App\Http\Controllers\API\Admin\ViewsAJax\UsersViews::class,"deleteadmin"])->name('search.removeAdmin');
         });
         //admin reset password routes
         //throttle

@@ -62,6 +62,7 @@ class FactoryProducts extends Controller
         try {
             authorize_and_ifcategory_not_found:{
                 $this->authorize('authorize-owner-factory', $factory);
+                $this->authorize('canAddProduct', [Factory::class,$factory]);
                 $factory->categories()->count() === 0 ? throw new FactoryNoCategoriesYet($factory->factory_name . ' does not has any category yet') : null;
                 $category = $factory->categories->find($request->category_id) ??
                     throw new CategoryNotFoundException ('Not found Or Unauthorized Category .');
@@ -111,6 +112,7 @@ class FactoryProducts extends Controller
         try {
             authorize_and_if_category_not_found:
             $this->authorize('authorize-owner-product', [$factory, $product]);
+            $this->authorize('canUpdateProduct', [Factory::class,$factory]);
             $factory->categories()->count() === 0 ? throw new FactoryNoCategoriesYet($factory->factory_name . ' does not has any category yet') : null;
             $category = $factory->categories->find($request->category_id) ??
                 throw new CategoryNotFoundException ('Not found Or Unauthorized Category .');

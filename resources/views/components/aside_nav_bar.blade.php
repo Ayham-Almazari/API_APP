@@ -28,10 +28,10 @@
                             "id"=>"Under_Verification_Deleted_Factories",
                             "loading-id"=>3
                             ],
-                            "Posts"=>[//
+                            "Manage Factories"=>[//
                             "class"=>"nav-link justify-content-between",
-                            "id"=>"Under_Verification_Deleted_Factories",
-                            "loading-id"=>null
+                            "id"=>"Manage_Factories",
+                            "loading-id"=>5
                             ],
                             "Categories"=>[
                             "class"=>"nav-link justify-content-between",
@@ -48,10 +48,10 @@
                             "id"=>"Under_Verification_Deleted_Factories",
                             "loading-id"=>null
                             ],
-                            "Users"=>[
+                            "Manage Users"=>[
                             "class"=>"nav-link justify-content-between",
-                            "id"=>"Under_Verification_Deleted_Factories",
-                            "loading-id"=>null
+                            "id"=>"users",
+                            "loading-id"=>4
                             ]
                             ];
                         @endphp

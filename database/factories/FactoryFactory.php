@@ -24,7 +24,8 @@ class FactoryFactory extends Factory
         return [
             'factory_name'=>$this->faker->word,
             'logo'=>$this->faker->imageUrl('286','180','TallyBills'),
-            'property_file'=>$this->faker->imageUrl('286','180','TallyBills')
+            'property_file'=>$this->faker->imageUrl('286','180','TallyBills'),
+            'description'=>$this->faker->text
         ];
     }
 }

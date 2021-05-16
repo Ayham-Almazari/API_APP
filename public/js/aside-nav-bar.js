@@ -10,19 +10,25 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "UpdateFactoryPermissions": () => (/* binding */ UpdateFactoryPermissions),
 /* harmony export */   "$change_$content": () => (/* binding */ $change_$content),
+/* harmony export */   "$reload_$content": () => (/* binding */ $reload_$content),
 /* harmony export */   "API_Path": () => (/* binding */ API_Path),
 /* harmony export */   "API_Admin_Login": () => (/* binding */ API_Admin_Login),
 /* harmony export */   "API_Admin_Logout": () => (/* binding */ API_Admin_Logout),
 /* harmony export */   "API_Path_unverified_factories": () => (/* binding */ API_Path_unverified_factories),
 /* harmony export */   "API_Path_unverified_owners": () => (/* binding */ API_Path_unverified_owners),
+/* harmony export */   "API_Admin_Register": () => (/* binding */ API_Admin_Register),
+/* harmony export */   "API_Admin_Delete": () => (/* binding */ API_Admin_Delete),
 /* harmony export */   "AdminAuthMiddelwareRoute": () => (/* binding */ AdminAuthMiddelwareRoute),
 /* harmony export */   "View_Admin_Login": () => (/* binding */ View_Admin_Login),
 /* harmony export */   "View_Admin_Home": () => (/* binding */ View_Admin_Home),
 /* harmony export */   "View_Admin_unverified_factories": () => (/* binding */ View_Admin_unverified_factories),
 /* harmony export */   "API_Path_unverified_deleted_factories": () => (/* binding */ API_Path_unverified_deleted_factories),
 /* harmony export */   "View_Admin_unverified_deleted_factories": () => (/* binding */ View_Admin_unverified_deleted_factories),
-/* harmony export */   "View_Admin_unverified_owners": () => (/* binding */ View_Admin_unverified_owners)
+/* harmony export */   "View_Admin_unverified_owners": () => (/* binding */ View_Admin_unverified_owners),
+/* harmony export */   "View_Admin_users": () => (/* binding */ View_Admin_users),
+/* harmony export */   "View_Admin_Manage_Factories": () => (/* binding */ View_Admin_Manage_Factories)
 /* harmony export */ });
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
@@ -31,7 +37,11 @@ __webpack_require__.r(__webpack_exports__);
 var API_Path = "http://127.0.0.1:8000/api/v1/auth/admin/";
 var API_Admin_Login = API_Path + "login";
 var API_Admin_Logout = API_Path + "logout";
-var AdminAuthMiddelwareRoute = API_Path + 'user'; //-------------View_Admin_unauthenticated_factories--------------
+var API_Admin_Register = API_Path + "register/";
+var API_Admin_Delete = API_Path + "remove/";
+var AdminAuthMiddelwareRoute = API_Path + 'user';
+var UpdateFactoryPermissions = "http://127.0.0.1:8000/api/v1/dashboard/update/permissions/factory/"; //{factory_id}
+//-------------View_Admin_unauthenticated_factories--------------
 
 var API_Path_unverified_factories = "http://127.0.0.1:8000/api/v1/dashboard/factories/underverificationfactories/";
 var API_Path_unverified_deleted_factories = "http://127.0.0.1:8000/api/v1/dashboard/factories/underverificationfactoriesfordlete/";
@@ -42,7 +52,9 @@ var View_Admin_Login = Views_Path + "login";
 var View_Admin_Home = Views_Path + "home";
 var View_Admin_unverified_factories = Views_Path + "unverified-factories";
 var View_Admin_unverified_deleted_factories = Views_Path + "unverified-deleted-factories";
-var View_Admin_unverified_owners = Views_Path + "unverified-owners"; // ------------helper functions
+var View_Admin_unverified_owners = Views_Path + "unverified-owners";
+var View_Admin_users = Views_Path + "users";
+var View_Admin_Manage_Factories = Views_Path + "manage-factories"; // ------------helper functions
 //----replace content
 
 var set_content = function set_content($result) {
@@ -74,6 +86,22 @@ var $change_$content = function $change_$content($ele, $url) {
         }
       }
     });
+  });
+};
+var $reload_$content = function $reload_$content($url) {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
+    url: $url,
+    type: "GET",
+    dataType: "text",
+    success: function success(result, status) {
+      if (status === "success") {
+        set_css(result);
+        set_title(result);
+        set_content(result); // $("#content").load($url +" #content");
+
+        window.history.pushState("", "unverified", $url); // $("#content").empty().load($url +" #content");
+      }
+    }
   });
 };
 
@@ -11053,6 +11081,9 @@ $(document).ready(function () {
   (0,_global_js__WEBPACK_IMPORTED_MODULE_0__.$change_$content)("#Under_Verification_Deleted_Factories", _global_js__WEBPACK_IMPORTED_MODULE_0__.View_Admin_unverified_deleted_factories);
   (0,_global_js__WEBPACK_IMPORTED_MODULE_0__.$change_$content)('#Under_Verification_Factories', _global_js__WEBPACK_IMPORTED_MODULE_0__.View_Admin_unverified_factories);
   (0,_global_js__WEBPACK_IMPORTED_MODULE_0__.$change_$content)('#Under_Verification_Owners', _global_js__WEBPACK_IMPORTED_MODULE_0__.View_Admin_unverified_owners);
+  (0,_global_js__WEBPACK_IMPORTED_MODULE_0__.$change_$content)('#users', _global_js__WEBPACK_IMPORTED_MODULE_0__.View_Admin_users);
+  (0,_global_js__WEBPACK_IMPORTED_MODULE_0__.$change_$content)('#Manage_Factories', _global_js__WEBPACK_IMPORTED_MODULE_0__.View_Admin_Manage_Factories); ///close alert
+
   $(".close-alert").click(function () {
     $("#alert").fadeOut(500);
   }); //------------------------icon loading for page------------------------------------------------------------
@@ -11071,7 +11102,7 @@ $(document).ready(function () {
     });
     $this.removeClass('active'); // console.log(loading_id);//'loading-id-'
 
-    $($this).addClass("active").css({
+    $($this).css({
       borderBottom: "1px solid white"
     });
     $(document).ajaxStart(function () {

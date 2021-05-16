@@ -2,7 +2,7 @@ import {
     View_Admin_unverified_factories,
     View_Admin_unverified_deleted_factories,
     View_Admin_unverified_owners,
-    $change_$content
+    $change_$content, View_Admin_users, View_Admin_Manage_Factories
 } from "../global.js";
 
 
@@ -10,8 +10,11 @@ $(document).ready(function() {
     $change_$content("#Under_Verification_Deleted_Factories",View_Admin_unverified_deleted_factories);
     $change_$content('#Under_Verification_Factories',View_Admin_unverified_factories);
     $change_$content('#Under_Verification_Owners',View_Admin_unverified_owners);
+    $change_$content('#users',View_Admin_users);
+    $change_$content('#Manage_Factories',View_Admin_Manage_Factories);
 
 
+///close alert
     $(".close-alert").click(()=>{
         $("#alert").fadeOut(500);
     });
@@ -32,7 +35,7 @@ $(document).ready(function() {
         });
         $this.removeClass('active');
        // console.log(loading_id);//'loading-id-'
-        $($this).addClass("active").css({
+        $($this).css({
             borderBottom:"1px solid white"
         });
         $(document).ajaxStart(function (){

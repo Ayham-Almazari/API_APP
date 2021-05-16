@@ -1,72 +1,102 @@
-import {API_Path_unverified_owners , $change_$content ,View_Admin_unverified_owners } from "../global";
+import {
+    API_Path_unverified_owners,
+    $change_$content,
+    View_Admin_unverified_owners,
+    API_Admin_Register, View_Admin_users, $reload_$content, API_Admin_Delete
+} from "../global";
 import "../auth/middelwares/AdminRedirectToLoginIFUnauthMeddleware.js";
+import $ from "jquery";
 
-    //cancele info
-    const cancel_factory={
-        ele_clickable:".cancel_factory",
-        attr_to_get_id:'factory_id',
-        class_to_append_with_id_to_remove:"#factory_view_",
-        url:API_Path_unverified_owners,
-        type:'DELETE',
-        confirm_button:"Remove Owner",
-        cancel_button:"Cancel",
-        message: "Are you sure that ? , you are going to <b><u>REMOVE</u> <strike  style='color: red'>owner</strike></b> .",
-        id:"Not Set Yet"
-    };
-    //confirmation infp
-    const confirm_factory={
-        ele_clickable:".confirm_factory",
-        attr_to_get_id:'factory_id',
-        class_to_append_with_id_to_remove:"#factory_view_",
-        url:API_Path_unverified_owners,
-        type:'GET',
-        confirm_button:"Confirm Owner",
-        cancel_button:"Cancel",
-        message: "Are you sure that ? , you are going to <b><u>Verify</u> <b  style='color: green'>owner</b></b> .",
-        id:"Not Set Yet"
-    };
-    let info = "request to process";
-    //confirm set info
-    $(document).on('click',confirm_factory.ele_clickable,function (e){
-        e.preventDefault();
-        info = confirm_factory ;
-        $("#report .message").html(info.message);
-        $("#report #cancel").html(info.cancel_button);
-        $("#report #confirm").html(info.confirm_button + "<i style='display: none' id='loading-btn' class='fas fa-cog fa-spin faa-fast'></i>");
-        $("#report").fadeIn();
-        info.id = $(this).attr(info.attr_to_get_id);
-        console.log(info.id);
+//cancele info
+const cancel_factory = {
+    ele_clickable: ".remove_admin",
+    attr_to_get_id: 'admin_id',
+    class_to_append_with_id_to_remove: "#admin_view_",
+    url: API_Admin_Delete,
+    type: 'DELETE',
+    confirm_button: "Force Delete Admin",
+    cancel_button: "Cancel",
+    message: "Are you sure that ? , you are going to <b><u>REMOVE</u> <strike  style='color: red'>Admin</strike></b> .",
+    id: "Not Set Yet"
+};
+//confirmation infp
+const add_admin = {
+    ele_clickable: ".add-admin-tr",
+    url: API_Admin_Register,
+    attr_to_get_id:"username",
+    type: 'GET',
+    confirm_button: "Set As Admin",
+    cancel_button: "Cancel",
+    message: "Are you sure that ? , you are going to <b><u>assign </u><b> Admin : </b> <br><br> ",
+    username: "Not Set Yet"
+};
+let info = "request to process";
+
+//confirm set info
+$(document).on('click', add_admin.ele_clickable, function (e) {
+    info = add_admin;
+    info.username = $(this).attr(info.attr_to_get_id );
+    $("#report .message").html(info.message +"\'"+ info.username + " \'");
+    $("#report #cancel").html(info.cancel_button);
+    $("#report #confirm").html(info.confirm_button + "<i style='display: none' id='loading-btn' class='fas fa-cog fa-spin faa-fast'></i>");
+    $("#report").fadeIn();
+});
+//delete set info
+$(document).on('click', cancel_factory.ele_clickable, function (e) {
+    e.preventDefault();
+    info = cancel_factory;
+    $("#report .message").html(info.message);
+    $("#report #cancel").html(info.cancel_button);
+    $("#report #confirm").html(info.confirm_button + "<i style='display: none' id='loading-btn' class='fas fa-cog fa-spin faa-fast'></i>")
+    $("#report").fadeIn();
+    info.id = $(this).attr(info.attr_to_get_id);
+    console.log(info.id);
+});
+$(document).ready((e) => {
+    //show admins
+    $(".adminCount").click(() => {
+        $(".buyerCount").removeClass('active_users');
+        $(".ownerCount").removeClass('active_users');
+        $(".adminCount").addClass('active_users');
+        $("#BuyersTable").hide();
+        $("#OwnersTable").hide();
+        $("#AdminsTable").show();
     });
-    //delete set info
-    $(document).on('click',cancel_factory.ele_clickable,function (e) {
-        e.preventDefault();
-        info =cancel_factory;
-        $("#report .message").html(info.message);
-        $("#report #cancel").html(info.cancel_button);
-        $("#report #confirm").html(info.confirm_button + "<i style='display: none' id='loading-btn' class='fas fa-cog fa-spin faa-fast'></i>")
-        $("#report").fadeIn();
-        info.id = $(this).attr(info.attr_to_get_id);
-        console.log(info.id);
+    $(".buyerCount").click(() => {
+        $(".adminCount").removeClass('active_users');
+        $(".ownerCount").removeClass('active_users');
+        $(".buyerCount").addClass('active_users');
+        $("#OwnersTable").hide();
+        $("#AdminsTable").hide();
+        $("#BuyersTable").show();
     });
-    $(document).ready((e)=>{
-        //fadeout the report
-        $("#report #cancel").click(() => {
-            $("#report").fadeOut(500);
-        });
-        $("#closeWindow").click(function (e) {
-            $("#report").fadeOut(500);
-        });
+    $(".ownerCount").click(() => {
+        $(".buyerCount").removeClass('active_users');
+        $(".adminCount").removeClass('active_users');
+        $(".ownerCount").addClass('active_users');
+        $("#BuyersTable").hide();
+        $("#AdminsTable").hide();
+        $("#OwnersTable").show();
+    });
+
+    //fadeout the report
+    $("#report #cancel").click(() => {
+        $("#report").fadeOut(500);
+    });
+    $("#closeWindow").click(function (e) {
+        $("#report").fadeOut(500);
+    });
 //------------------------loading btn------------------------------------------------------------
- $("#report #confirm").click((e) => {
-            $.ajax(
-                {
-                    url: info.url + info.id,
-                    type:  info.type,
-                    headers: {"Authorization": "Bearer " + localStorage.getItem('_token')}
-                    ,
-                    success: function (result, status) {
-                        console.log(status)
-                        if (status === "success") {
+    $("#report #confirm").click((e) => {
+        $.ajax(
+            {
+                url: (info.type === "DELETE") ? info.url + info.id : info.url + info.username,
+                type: info.type,
+                headers: {"Authorization": "Bearer " + localStorage.getItem('_token')}
+                ,
+                success: function (result, status) {
+                    if (status === "success") {
+                        if(info.type === "DELETE"){
                             $("#report").fadeOut(500);
                             $(info.class_to_append_with_id_to_remove + info.id)
                                 .animate({
@@ -80,80 +110,65 @@ import "../auth/middelwares/AdminRedirectToLoginIFUnauthMeddleware.js";
                                     $(info.class_to_append_with_id_to_remove + info.id).remove();
                                 });
                             $("#alert .message").html(result.msg);
+                            $("#countaminstodecrease").html(eval($("#countaminstodecrease").text() - 1));
                             $("#alert").fadeIn();
+                        }else{
+                            $("#report").fadeOut(500);
+                            $('#AddAdminRequest').fadeOut('500');
+                            $("#alert .message").html(result.msg);
+                            $("#alert").fadeIn();
+                            //--------------relocation----------------
+                            $reload_$content(View_Admin_users);
                         }
+
                     }
-                });
-        });
+                }
+            });
+    });
+
 //------------------------loading btn------------------------------------------------------------
     $(document)
         .ajaxStart(function () {
-        $("#loading-btn").show();
-        $("#report #confirm").attr("disabled", true);
-    })
+            $("#loading-btn").show();
+            $("#report #confirm").attr("disabled", true);
+        })
         .ajaxStop(function () {
-        $("#loading-btn").hide();
-        $("#report #confirm").attr("disabled", false);
-    });
-//------------------------Zoom and style property file-------------------------------------------
-    $(document).on('click','.property_file_container',function (e){
-        var id= $(this).attr('id');
-        console.log(id);
-        $("#factory_view_"+id)
-         .css({
-            position:"fixed",
-            top:"50%",
-            left:"50%",
-            transform: "translate(-30%,-45%)",
-            border:'5px',
-            "z-index":2,
-            width:'50%',
-            height:'80%'
-        }).append("<a href=''><i class='close-alert fas fa-times' style='color:#0a53be;position: absolute;right: 3px;top:3px ;font-size: x-large' ></i></a>");
-        $("#property_file_"+id).css({
-            position:"relative",
-            transition:"none",
-            left:'3%',
-            top:'1%',
-            width:"62%",
-            height:"90%",
-            "z-index": 8
-        }).addClass("zoom");
-        $("#factory_view_"+id+" .chip").css({
-            width:'200px'
-        });
-        $("#factory_view_"+id+" h2").css({
-            textAlign:"left",
-            position:"absolute",
-            right:'0',
-            top:"70%"
+            $("#loading-btn").hide();
+            $("#report #confirm").attr("disabled", false);
         });
 
-            $("#factory_view_"+ id +" .close-alert").hover(()=>{
-                $("#factory_view_"+ id +" .close-alert").css({
-                    color:"red"
-                });
-            }).mouseout(()=>{
-                $("#factory_view_"+id+" .close-alert").css({
-                    color:"darkblue"
-                });
-                    });
-        $change_$content("#factory_view_"+id+" .close-alert",View_Admin_unverified_owners);
-    });
-//------------------------search-----------------------------------------------------------------
-    let     search_about = null;
-    $('input:radio[name="Filter-Search"]').change(function(){
-        search_about =$(this).val();
-        console.log(search_about);
-    });
-    $("#search").on("keyup", function() {
+    $("#search").on("keyup", function () {
         var value = $(this).val().toLowerCase();
-        $('.row .card').filter(function() {
+        $('.table .table-row').filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
         });
     });
-});
 
+    $('#searchforadmins').on('keyup', function () {
+        let $value = $(this).val();
+        $.ajax({
+            type: 'get',
+            url: 'http://localhost:8000/api/v1/dashboard/search',
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem('_token')
+            },
+            data: {'search': $value},
+            success: function (data) {
+                $('#tabledata').html(data);
+            }
+        });
+    });
+    $("#btn-add-admin").click((e) => {
+        e.preventDefault();
+        $('#AddAdminRequest').fadeIn();
+        $('input').focus();
+    });
+
+    $('.close-alert').click(() => {
+        $('#AddAdminRequest').fadeOut('500');
+    });
+
+});
 
 
 

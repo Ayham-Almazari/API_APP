@@ -38,7 +38,6 @@
                 </div>--}}
         </div>
     </div>
-    <script src="{{mix('js/shared pages.js')}}"></script>
     <script src="{{asset('js/under_verification_factories.js')}}"></script>
     <!--END__CONTENT__-->
 @stop

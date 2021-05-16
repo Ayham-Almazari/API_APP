@@ -1,5 +1,5 @@
 <!-- nav -->
-<nav class="navbar navbar-expand-lg  navbar-light bg-light" role="navigation" >
+<div class="navbar navbar-expand-lg  navbar-light bg-light" role="navigation" >
     <div class="container-fluid">
         <a class="navbar-brand home_page" href="">
             {{ config('app.name', 'Laravel') }}
@@ -83,6 +83,6 @@
             </ul>
         </div>
     </div>
-</nav>
+</div>
 <!-- end nav nav -->
 <script src="{{mix("js/nav-bar.js")}}"></script>

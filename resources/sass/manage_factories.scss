@@ -1,0 +1,47 @@
+.adminCount {
+    position: absolute;
+    width: 25%;
+    left: 25%;
+    cursor: pointer;
+}
+.buyerCount {
+    position: absolute;
+    width: 25%;
+    left:50%;
+    cursor: pointer;
+}
+
+.ownerCount{
+    position: absolute;
+    width: 25%;
+    left: 75%;
+    cursor: pointer;
+}
+
+.active_users{
+    background: linear-gradient(120deg,darken(#014995,8) 10%, lighten(black,5) 50%, darken(#014995,8) -50%,black 100%);
+}
+.close-alert{
+    cursor: pointer;
+    color: goldenrod;
+    font-size: x-large ;
+    position: absolute;
+    right: -10px;
+    top: -20px;
+    &:hover{
+        color: black;
+    }
+}
+#AddAdminRequest{
+    position: absolute;left:50%;top:50%;
+    transform: translate(-50%,-50%);
+    width: fit-content;
+    z-index: 2;color: whitesmoke;display: none;
+    background: linear-gradient(120deg,darken(#014995,8) 10%, lighten(black,5) 50%, darken(#014995,8) -50%,black 100%);
+}
+.add-admin-tr{
+    cursor: pointer;
+    &:hover{
+        color: whitesmoke;
+    }
+}

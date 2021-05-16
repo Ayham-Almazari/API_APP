@@ -114,4 +114,44 @@ class FactoryPolicy
     {
         return $owner->id==$factory->owner_id;
     }
+    /**
+    * Determine whether the user can view any models.
+     *
+     * @param  \App\Models\Buyer  $buyer
+     * @return mixed
+     */
+    public function CanAddCategory($owner,$factory)
+    {
+        return $factory->CanAddCategory();
+    }
+    /**
+    * Determine whether the user can view any models.
+     *
+     * @param  \App\Models\Buyer  $buyer
+     * @return mixed
+     */
+    public function canUpdateCategory($owner,$factory)
+    {
+        return $factory->canUpdateCategory();
+    }
+    /**
+    * Determine whether the user can view any models.
+     *
+     * @param  \App\Models\Buyer  $buyer
+     * @return mixed
+     */
+    public function canAddProduct($owner,$factory)
+    {
+        return $factory->canAddProduct();
+    }
+    /**
+    * Determine whether the user can view any models.
+     *
+     * @param  \App\Models\Buyer  $buyer
+     * @return mixed
+     */
+    public function canUpdateProduct($owner,$factory)
+    {
+        return $factory->canUpdateProduct();
+    }
 }

@@ -1,0 +1,57 @@
+.adminCount {
+  position: absolute;
+  width: 25%;
+  left: 25%;
+  cursor: pointer;
+}
+
+.buyerCount {
+  position: absolute;
+  width: 25%;
+  left: 50%;
+  cursor: pointer;
+}
+
+.ownerCount {
+  position: absolute;
+  width: 25%;
+  left: 75%;
+  cursor: pointer;
+}
+
+.active_users {
+  background: linear-gradient(120deg, #01356c 10%, #0d0d0d 50%, #01356c -50%, black 100%);
+}
+
+.close-alert {
+  cursor: pointer;
+  color: goldenrod;
+  font-size: x-large;
+  position: absolute;
+  right: -10px;
+  top: -20px;
+}
+.close-alert:hover {
+  color: black;
+}
+
+#AddAdminRequest {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  z-index: 2;
+  color: whitesmoke;
+  display: none;
+  background: linear-gradient(120deg, #01356c 10%, #0d0d0d 50%, #01356c -50%, black 100%);
+}
+
+.add-admin-tr {
+  cursor: pointer;
+}
+.add-admin-tr:hover {
+  color: whitesmoke;
+}

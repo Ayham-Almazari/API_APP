@@ -12,7 +12,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Spatie\Permission\Traits\HasRoles;
 class Admin extends  Authenticatable implements JWTSubject
 {
-    use HasFactory,Notifiable,MustVerifyEmail,SoftDeletes,HasRoles ;
+    use HasFactory,Notifiable,MustVerifyEmail,SoftDeletes ;
     protected $dateFormat="Y-m-d H:i:s";
 
     protected $table="admins";

@@ -45,7 +45,6 @@
             </table>
         </div>
     </div>
-    <script async src="{{mix('js/shared pages.js')}}"></script>
     <script async src="{{mix('js/under_verification_deleted_factories.js')}}"></script>
     <!--END__CONTENT__-->
 @endsection
