@@ -1,5 +1,11 @@
-import {API_Path_unverified_owners , $change_$content ,View_Admin_unverified_owners } from "../global";
+import {
+    API_Path_unverified_owners,
+    $change_$content,
+    View_Admin_unverified_owners,
+    View_Admin_Manage_Factories
+} from "../global";
 import "../auth/middelwares/AdminRedirectToLoginIFUnauthMeddleware.js";
+import $ from "jquery";
 
     //cancele info
     const cancel_factory={
@@ -153,7 +159,4 @@ import "../auth/middelwares/AdminRedirectToLoginIFUnauthMeddleware.js";
         });
     });
 });
-
-
-
 

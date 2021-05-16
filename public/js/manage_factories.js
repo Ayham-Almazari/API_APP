@@ -85,7 +85,7 @@ var View_Admin_unverified_factories = Views_Path + "unverified-factories";
 var View_Admin_unverified_deleted_factories = Views_Path + "unverified-deleted-factories";
 var View_Admin_unverified_owners = Views_Path + "unverified-owners";
 var View_Admin_users = Views_Path + "users";
-var View_Admin_Manage_Factories = Views_Path + "manage-factories"; // ------------helper functions
+var View_Admin_Manage_Factories = Views_Path + "manage-factories/"; // ------------helper functions
 //----replace content
 
 var set_content = function set_content($result) {
@@ -11122,7 +11122,8 @@ $("#search").on("keyup", function () {
   $('#component .col').filter(function () {
     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
   });
-});
+}); //factory permissions
+
 $('.ChangePermissions').click(function (e) {
   var id = $(this).attr('forfactory');
   var $data = {
@@ -11146,6 +11147,12 @@ $('.ChangePermissions').click(function (e) {
       $("#alert").fadeIn();
     }
   });
+}); //Show-Factory-Products
+
+$('.Show-Factory-Products').click(function (e) {
+  var id = $(this).attr('forfactory');
+  console.log(id);
+  $("#ProductsContent" + id).load(_global__WEBPACK_IMPORTED_MODULE_0__.View_Admin_Manage_Factories + id + "/products");
 });
 })();
 

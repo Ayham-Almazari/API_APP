@@ -24,4 +24,5 @@ Route::prefix('tallybills/admins/dashboard')->name('view.')->group(function () {
         Route::get('unverified-owners', [\App\Http\Controllers\API\Admin\ViewsAJax\UnderVerificationOwnersViews::class,"index"]);
         Route::get('users', [\App\Http\Controllers\API\Admin\ViewsAJax\UsersViews::class,"index"]);
         Route::get('manage-factories', [\App\Http\Controllers\API\Admin\ViewsAJax\ManageFactories::class,"index"]);
+        Route::get('manage-factories/{factory}/products', [\App\Http\Controllers\API\Admin\ViewsAJax\ManageFactories::class,"products"]);
 });

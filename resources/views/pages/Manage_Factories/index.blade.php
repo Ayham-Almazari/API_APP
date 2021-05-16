@@ -86,12 +86,30 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="modal fade " id="products{{$factory->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title" id="exampleModalLabel">Factory {{$factory->factory_name}} Products</h3>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                     <div class="modal-body">
+                                         <div class="row row-cols-1 row-cols-md-3 g-4" id="ProductsContent{{$factory->id}}">
+                                         </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Button trigger modal -->
                         <a class="btn btn-primary" data-bs-toggle="modal" href="#description{{$factory->id}}" role="button">Description</a>
                         <a class="btn btn-primary" data-bs-toggle="modal" href="#contact{{$factory->id}}" role="button">Contact</a>
                         <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#permissions{{$factory->id}}">
                             Permissions
                         </button>
+                        <a id="showproductsmodal{{$factory->id}}" class="btn btn-info mt-2 Show-Factory-Products" data-bs-toggle="modal" href="#products{{$factory->id}}" forfactory="{{$factory->id}}" role="button">Products</a>
                         </p>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 import {
     UpdateFactoryPermissions,
-    API_Admin_Register, View_Admin_users, $reload_$content, API_Admin_Delete
+    API_Admin_Register, View_Admin_users, $reload_$content, API_Admin_Delete, View_Admin_Manage_Factories
 } from "../global";
 import "../auth/middelwares/AdminRedirectToLoginIFUnauthMeddleware.js";
 
@@ -20,7 +20,7 @@ import "../auth/middelwares/AdminRedirectToLoginIFUnauthMeddleware.js";
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
         });
     });
-
+//factory permissions
     $('.ChangePermissions').click(function (e){
         var id = $(this).attr('forfactory');
         let $data={
@@ -47,5 +47,12 @@ import "../auth/middelwares/AdminRedirectToLoginIFUnauthMeddleware.js";
 
     });
 
+
+    //Show-Factory-Products
+$('.Show-Factory-Products').click(function (e){
+    var id = $(this).attr('forfactory');
+    console.log(id);
+    $("#ProductsContent"+id).load(View_Admin_Manage_Factories + id+ "/products");
+});
 
 

@@ -23,7 +23,7 @@ const View_Admin_unverified_factories= Views_Path + "unverified-factories";
 const View_Admin_unverified_deleted_factories= Views_Path + "unverified-deleted-factories";
 const View_Admin_unverified_owners= Views_Path + "unverified-owners";
 const View_Admin_users= Views_Path + "users";
-const View_Admin_Manage_Factories= Views_Path + "manage-factories";
+const View_Admin_Manage_Factories= Views_Path + "manage-factories/";
 
 // ------------helper functions
 //----replace content

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Factory;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +17,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect()->route("view.admin.login");
 });
-
-
 
 //Route::resource('/upload',csvController::class);
