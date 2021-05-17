@@ -6,17 +6,17 @@ namespace App\Http\Traits\permissions;
 
 trait Factory
 {
-    public function CanAddCategory() {
-        return $this->F_permissions->can_add_category;
+    public function scopeCanAddCategory($scope) {
+        return $scope->join('factory_permissions','factories.id','=','factory_permissions.id')->value('can_add_category');
     }
-    public function CanUpdateCategory() {
-        return $this->F_permissions->can_update_category;
+    public function scopeCanUpdateCategory($scope) {
+        return $scope->join('factory_permissions','factories.id','=','factory_permissions.id')->value('can_update_category');
     }
-    public function CanAddProduct() {
-        return $this->F_permissions->can_add_product;
+    public function scopeCanAddProduct($scope) {
+        return $scope->join('factory_permissions','factories.id','=','factory_permissions.id')->value('can_add_product');
     }
-    public function CanUpdateProduct() {
-        return $this->F_permissions->can_update_product;
+    public function scopeCanUpdateProduct($scope) {
+        return $scope->join('factory_permissions','factories.id','=','factory_permissions.id')->value('can_update_product');
     }
 
     //de-permissive

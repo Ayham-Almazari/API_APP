@@ -36,7 +36,7 @@ class CreateProductRequest extends FormRequest
                     if (!in_array($extension,['jpg','gif','jpeg','png','webp'])) {
                         $fail("The $attribute must be a file of type: jpg,png,jpeg,webp,gif.");
                 }
-            },'base64dimensions:min_width=100,min_height=200'],
+            }],//,'base64dimensions:min_width=100,min_height=200'
             'availability' => 'boolean',
         ];
     }

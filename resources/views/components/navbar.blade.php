@@ -31,37 +31,7 @@
                 <li class="nav-item">
                     <a class="nav-link home_page" aria-current="page" href="">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Filter
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li>
-                            <a class="dropdown-item" href="#?filter=All"><input type="radio" name="Filter-Search" value=".card" style="display: inline"> All</a>
-                        <li><hr class="dropdown-divider"></li>
-                         <a class="dropdown-item" href="#?filter=Factory_name"><input class="dropdown-item" type="radio" name="Filter-Search" value=".factory-name" style="display: inline" >Factory name</a>
-                         <a class="dropdown-item" href="#?filter=Owner_name"><input class="dropdown-item" type="radio" name="Filter-Search" value=".owner-name" style="display: inline" >Owner name</a>
-                        </li>
-
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li>
                 <form  class="d-flex nav-search" autocomplete="off">
                     <input id="search" class="" type="search" placeholder="Search" id="search" onclick="document.getElementById('search').style.outline='none'">
                     <button class="search-icon" type="submit"><i class="fas fa-search"></i></button>

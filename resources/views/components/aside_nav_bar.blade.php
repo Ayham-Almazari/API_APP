@@ -33,16 +33,6 @@
                             "id"=>"Manage_Factories",
                             "loading-id"=>5
                             ],
-                            "Categories"=>[
-                            "class"=>"nav-link justify-content-between",
-                            "id"=>"Under_Verification_Deleted_Factories",
-                            "loading-id"=>null
-                            ],
-                            "Trashed"=>[
-                            "class"=>"nav-link justify-content-between",
-                            "id"=>"Under_Verification_Deleted_Factories",
-                            "loading-id"=>null
-                            ],
                             "Statistics"=>[
                             "class"=>"nav-link justify-content-between",
                             "id"=>"Under_Verification_Deleted_Factories",

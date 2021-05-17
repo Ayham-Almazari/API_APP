@@ -44,7 +44,7 @@ class ViewFactoriesResources extends Controller
 //            $products = Product::select('id','product_name','product_picture','availability')->whereIn('category_id', $categories_ids)->with('under_category:id,factory_id,category_name')->orderBy('id')->paginate(6);
         $products =DB::table('products as p') ->select(
             'p.id','p.category_id','c.factory_id',
-            'p.product_name','p.product_picture','p.product_picture','p.product_description','p.price','c.category_name')
+            'p.product_name', DB::raw('CONCAT(\''.asset('storage').'/'.'\',p.product_picture) AS product_picture'),'p.product_description','p.price','c.category_name')
             ->join('categories as c', function ($join) use ($factory) {
                 $join->on('p.category_id', '=', 'c.id')
                     ->where('c.factory_id','=',$factory->id )
@@ -52,7 +52,7 @@ class ViewFactoriesResources extends Controller
             })->orderBy('p.id')
             ->paginate(10);
     }
-        return response()->json($products);
+        return $this->returnData($products);
     }
 
     /**

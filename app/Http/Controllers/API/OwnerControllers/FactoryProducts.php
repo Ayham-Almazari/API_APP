@@ -39,15 +39,14 @@ class FactoryProducts extends Controller
 //            $products = Product::select('id','product_name','product_picture','availability')->whereIn('category_id', $categories_ids)->with('under_category:id,factory_id,category_name')->orderBy('id')->paginate(6);
         $products = DB::table('products as p')->select(
             'p.id', 'p.category_id', 'c.factory_id',
-            'p.product_name', 'p.product_picture', 'p.product_picture', 'p.availability', 'c.category_name', 'p.price')
+            'p.product_name',  DB::raw('CONCAT(\''.asset('storage').'/'.'\',p.product_picture) AS product_picture'), 'p.availability', 'c.category_name', 'p.price')
             ->join('categories as c', function ($join) use ($factory) {
                 $join->on('p.category_id', '=', 'c.id')
                     ->where('c.factory_id', '=', $factory->id);
             })->orderBy('p.id')
             ->paginate(10);
     }
-        return response()->json($products);
-
+        return $this->returnData($products);
     }
 
     /**
@@ -119,13 +118,17 @@ class FactoryProducts extends Controller
             $data = $request->validated();
 
             update_upload_image:
+            if($request->has('product_picture')):
             $update_image = $this->update_image($product->product_picture, 'factories/product-images', $request->product_picture);
             $data['product_picture'] = $update_image ? $update_image->uploaded_image : null;
+            endif;
 
             update_product:
             $product->update($data);
             update_upload_image_for_orders:
+            if($request->has('product_picture')):
             UpdateProductsOrdersJob::dispatch($product, $data, $request->product_picture)->delay(Carbon::now()->addSeconds(15));
+            endif;
 
         } catch (NotReadableException $e) {
             return $this->returnError(['product_picture' => [$e->getMessage() . " {NotReadable}"]]);

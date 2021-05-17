@@ -16,7 +16,7 @@ class FactoriesObserver
      */
     public function created(Factory $factory)
     {
-        //
+        $factory->F_permissions()->create(['factory_id'=>$factory->id]);
     }
 
     /**

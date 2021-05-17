@@ -30,7 +30,7 @@ class CreateFactoryRequest extends FormRequest
                 if (!in_array($extension,['jpg','gif','jpeg','png','webp'])) {
                     $fail("The $attribute must be a file of type: jpg,png,jpeg,webp,gif.");
                 }
-            },'base64dimensions:min_width=100,min_height=200'];
+            }];//,'base64dimensions:min_width=100,min_height=200'
         array_unshift($validate_base64,'bail','required');
         $create= [
             "factory_name"  =>'required|min:3|string|alpha_dash|max:255',
