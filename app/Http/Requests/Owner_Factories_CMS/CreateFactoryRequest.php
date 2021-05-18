@@ -33,7 +33,7 @@ class CreateFactoryRequest extends FormRequest
             }];//,'base64dimensions:min_width=100,min_height=200'
         array_unshift($validate_base64,'bail','required');
         $create= [
-            "factory_name"  =>'required|min:3|string|alpha_dash|max:255',
+            "factory_name"  =>'required|min:3|string|max:255',
             'property_file' => $validate_base64
         ];
         if ($this->isMethod('post'))

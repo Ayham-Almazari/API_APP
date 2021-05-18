@@ -50,7 +50,7 @@ class ViewFactoriesResources extends Controller
                     ->where('c.factory_id','=',$factory->id )
                     ->where('p.availability','=',1);
             })->orderBy('p.id')
-            ->paginate(10);
+            ->get();
     }
         return $this->returnData($products);
     }

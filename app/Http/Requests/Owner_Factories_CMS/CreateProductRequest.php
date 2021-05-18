@@ -26,7 +26,7 @@ class CreateProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'product_name' => ['string','alpha_dash' ,'max:255', 'required'],
+            'product_name' => ['string' ,'max:255', 'required'],
             'price'=>'numeric|required',
             'category_id' => 'numeric|required',
             'product_description' => 'required|string|max:996',

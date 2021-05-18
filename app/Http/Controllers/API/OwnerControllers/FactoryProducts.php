@@ -44,7 +44,7 @@ class FactoryProducts extends Controller
                 $join->on('p.category_id', '=', 'c.id')
                     ->where('c.factory_id', '=', $factory->id);
             })->orderBy('p.id')
-            ->paginate(10);
+            ->get();
     }
         return $this->returnData($products);
     }
