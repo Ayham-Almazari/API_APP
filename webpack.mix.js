@@ -28,6 +28,7 @@ mix.js('resources/js/app.js', 'public/js')
     .sass("resources/sass/under_verification_factories.scss",'public/css')
     .sass("resources/sass/under_verification_deleted_factories.scss",'public/css')
     .sass("resources/sass/users.scss",'public/css')
+    .sass("resources/sass/home.scss",'public/css')
     .sass("resources/sass/manage_factories.scss",'public/css')
     .sass("resources/sass/under_verification_owners.scss",'public/css');
 

@@ -42,7 +42,7 @@ trait Auth
             if ($identifier === 'username')           //if valid username
                 $user = $this->get_user_by_username($model, $request);
             //if any error ///////////// return general error rather than ($user->original)
-            if ($user instanceof JsonResponse) return response(["general"=>"Invalid Username Or Password ."], Response::HTTP_UNPROCESSABLE_ENTITY);
+            if ($user instanceof JsonResponse) return response(["general"=>"Inva lid Username Or Password ."], Response::HTTP_UNPROCESSABLE_ENTITY);
 
 
             //set $credentials

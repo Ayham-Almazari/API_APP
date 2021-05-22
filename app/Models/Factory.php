@@ -131,4 +131,5 @@ quasi aliquam eligendi, placeat qui corporis!
             ->withPivot('id as order_id','status','comment','orderDate','requiredDate','shippedDate')
             ->withTimestamps();
     }
+
 }

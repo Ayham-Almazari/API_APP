@@ -33,11 +33,6 @@
                             "id"=>"Manage_Factories",
                             "loading-id"=>5
                             ],
-                            "Statistics"=>[
-                            "class"=>"nav-link justify-content-between",
-                            "id"=>"Under_Verification_Deleted_Factories",
-                            "loading-id"=>null
-                            ],
                             "Manage Users"=>[
                             "class"=>"nav-link justify-content-between",
                             "id"=>"users",

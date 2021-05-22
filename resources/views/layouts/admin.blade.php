@@ -13,7 +13,9 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{mix('css/app.css')}}">
-    <!--Css--><link id="css" rel="stylesheet" href="@yield('css')"><!--END-Css-->
+    <!--Css-->
+    <link id="css" rel="stylesheet" href="@yield('css')">
+    <!--END-Css-->
 
     <style>
         body {
