@@ -89,6 +89,11 @@ class OrderController extends Controller
             ['shippedDate' => Carbon::now()->format('Y-m-d H:i:s'),
                 'status' => 'Shipped'
             ]));
+
+        $this->cart->each(function ($product){
+            $product->warehouse_quantity=$product->warehouse_quantity-$product->cart->quantity;
+            $product->save();
+        });
         $this->RelationalCart->detach();
         return new OrderResource($order);
     }

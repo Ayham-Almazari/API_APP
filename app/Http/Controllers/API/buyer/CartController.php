@@ -62,6 +62,9 @@ class CartController extends Controller
         $response=\Gate::inspect('AuthorizeProductForCart',[Product::class,$this->factory,$product]);
         if ($response->denied())
             return $this->returnErrorMessage($response->message());
+        if ($request->quantity > $product->warehouse_quantity) {
+        return $this->returnError(['quantity'=>["The quantity ordered exceeds the quantity in the warehouse ". ( $this->factory->factory_name ?? "of this" ) . " factory "]]);
+        }
         if ( $this->cart->find($product->id)) {
             $this->RelationalCart->updateExistingPivot($product->id,$request->only('quantity'));
             return $this->returnSuccessMessage('Updated Successfully .',201);
@@ -70,6 +73,7 @@ class CartController extends Controller
             return $this->returnSuccessMessage('Added Successfully .',201);
         }
         //if you need to return refreshed model
+
         //return auth()->user()->Cart()->where('product_id',$product->id)->get();
     }
 

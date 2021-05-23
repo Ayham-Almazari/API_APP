@@ -38,6 +38,7 @@ class CreateProductRequest extends FormRequest
                 }
             }],//,'base64dimensions:min_width=100,min_height=200'
             'availability' => 'boolean',
+            'warehouse_quantity'=>'numeric|required'
         ];
     }
 
