@@ -23,16 +23,16 @@ class ManufactorSeeder extends Seeder
     public function run()
     {
         Owner::withoutEvents(function () {
-            Owner::factory(50)->create()->each(function ($user) {
+            Owner::factory(6)->create()->each(function ($user) {
                 Factory::withoutEvents(function ()use ($user){
                     Factory::factory(2)->create(['owner_id' => $user->id])->each(function ($factory) {
                         FactoryPermissions::create(['factory_id' => $factory->id]);
                         Category::factory(5)->create(['factory_id' => $factory->id])->each(function ($category) {
-                            Product::factory(3)->create(['category_id' => $category->id])->each(
+                            Product::factory(3)->create(['category_id' => $category->id,"warehouse_quantity"=>random_int(10,100)])->each(
                                 fn($product)=>Offer::factory(1)->create(['product_id'=>$product->id])
                             );
                         });
-                });
+                    });
                 });
                 UsersProfiles::factory(1)->create(['owner_id' => $user->id]);
             });

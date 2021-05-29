@@ -20,7 +20,7 @@ class UsersProfiles extends Model
         "admin_id",
         "buyer_id",
         "owner_id"
-        ];
+    ];
 
 
     //relations-------------------------------------------------------------------

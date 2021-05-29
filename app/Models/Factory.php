@@ -39,7 +39,7 @@ class Factory extends Model
     protected $hidden = [
         'password','property_file'
     ];
-        //accessors
+    //accessors
     /**
      * Get prperty file from public.
      *
@@ -68,20 +68,26 @@ class Factory extends Model
     }
     public function getLogoAttribute($value)
     {
-        if (Str::contains($value,'https://')) {
-            return $value;
-        }elseif(empty($value)){
+        if(Str::afterLast($value,'storage/')===""){
             $logo = \Arr::random(['logos/datacolor.svg','logos/dos-pinos-1.svg'
-                 ,'logos/maracaju-atletico-clube-de-maracaju-ms.svg',
+                ,'logos/maracaju-atletico-clube-de-maracaju-ms.svg',
+                "logos/ms-4.svg","logos/ms-dos.svg","logos/ms-dos-prompt.svg","logos/Rainbow_Studios_logo.svg"]);
+            return asset($logo);
+        }elseif (Str::contains($value,'https://')) {
+            return $value;
+        }   elseif(empty($value)){
+            $logo = \Arr::random(['logos/datacolor.svg','logos/dos-pinos-1.svg'
+                ,'logos/maracaju-atletico-clube-de-maracaju-ms.svg',
                 "logos/ms-4.svg","logos/ms-dos.svg","logos/ms-dos-prompt.svg","logos/Rainbow_Studios_logo.svg"]);
             return asset($logo);
         }else{
             return asset('storage/'.$value);
         }
     }
+
     public function getDescriptionAttribute($value)
     {
-       if(empty($value)){
+        if(empty($value)){
             return "
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
 molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
@@ -128,7 +134,7 @@ quasi aliquam eligendi, placeat qui corporis!
         return $this->belongsToMany(Buyer::class,'orders','factory_id','buyer_id')
             ->using(Order::class)
             ->as('order')
-            ->withPivot('id as order_id','status','comment','orderDate','requiredDate','shippedDate')
+            ->withPivot('id as order_id','status','comment','orderDate','shippedDate')
             ->withTimestamps();
     }
 

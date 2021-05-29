@@ -57,10 +57,12 @@ class ForceDeleteFactory extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject('Force Delete Factory')
             ->line('Welcome '. $this->name .' ,')
-            ->line('We apologize, but your factory '.$this->factory_name.' has been deleted as per your request,
+            ->line('We apologize, but your factory ' . $this->factory_name . ' has been deleted as per your request,
              and we hope that our services are not bad or did not meet your business needs.')
             ->line('Thank you for using our application!')
+            ->action('your factories', url('http://localhost:4200/allFactories'))
             ->line('Welcome to TallyBills');
+
     }
 
     /**

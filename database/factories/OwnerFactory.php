@@ -26,7 +26,7 @@ class OwnerFactory extends Factory
             "phone"=>$this->faker->phoneNumber,
             'username'=>$this->faker->userName,
             'property_file'=>$this->faker->imageUrl(),
-            'password'=>bcrypt('MRmazari98=')
+            'password'=>bcrypt('123456789')
         ];
     }
 }

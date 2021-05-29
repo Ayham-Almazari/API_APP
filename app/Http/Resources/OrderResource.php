@@ -30,7 +30,7 @@ class OrderResource extends JsonResource
                 'total_amount'    =>$this->total_amount,
                 'comment'         =>$this->comment,
                 'orderDate'       =>$this->orderDate,
-                'requiredDate'    =>$this->requiredDate,
+//                'requiredDate'    =>$this->requiredDate,
                 'shippedDate'     =>$this->shippedDate
             ],
                 'details'         =>$this->Details->map(fn($detail)=>[

@@ -61,7 +61,7 @@ class FactoryConfirm extends Notification implements ShouldQueue
                 ->line('Welcome '. $this->name .' , ')
                 ->line('Your factory '.$this->factory_name.' data has been verified, and your factory has been successfully built on our platform,
              and now you can access it and start adding categories and products to display and sell.')
-                ->action('your factory', url('/'))
+                ->action('your factory', url('http://localhost:4200/allFactories'))
                 ->line('Thank you for using our application!')
                 ->line('Welcome to TallyBills');
     }

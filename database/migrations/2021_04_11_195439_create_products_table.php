@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->text("product_description");
             $table->string("product_picture")->nullable();
             $table->boolean('availability')->default(1);
+            $table->integer('warehouse_quantity')->nullable();
             $table->timestamps();
             $table->engine = 'InnoDB';
         });

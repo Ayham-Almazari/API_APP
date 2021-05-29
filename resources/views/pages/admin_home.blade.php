@@ -141,5 +141,5 @@
     <script src="{{asset('js/bootstrap-datepicker.js')}}"></script>
     <script src="{{asset('js/custom.js')}}">
 
-    <!--END__CONTENT__-->
+        <!--END__CONTENT__-->
 @endsection

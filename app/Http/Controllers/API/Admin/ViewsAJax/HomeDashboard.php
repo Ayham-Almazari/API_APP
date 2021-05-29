@@ -33,9 +33,9 @@ class HomeDashboard extends Controller
             $this->owners=Owner::count();
             $this->orders=Order::where('status','Shipped')->count();
             $this->carts=Buyer::has('Cart')->get()->count();
-            $this->payment=Order::all()->sum(function ($order) {
-                return  $order->total_amount;
-            });
+        $this->payment=Order::all()->sum(function ($order) {
+            return  (double)$order->total_amount;
+        });
             $this->products=Product::count();
             //(number_of_buyers/number_of_users)*100
             $this->buyers_percentage=round((Buyer::has('OrderWithFactories')->get()->count()/$this->buyers)*100,2);

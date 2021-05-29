@@ -82,10 +82,9 @@ class OrderController extends Controller
         $order = Order::findOrFail($order);
         if ($order->status === "Shipped") {
             return $this->returnErrorMessage('This order has already been Shipped .');
-        }
-        $request->validate(['comment' => 'string|nullable|max:966', 'requiredDate' => 'string']);
+        }$request->validate(['comment' => 'string|nullable|max:966']);
         $order->update(array_merge(
-            $request->only('requiredDate', 'comment'),
+            $request->only( 'comment'),
             ['shippedDate' => Carbon::now()->format('Y-m-d H:i:s'),
                 'status' => 'Shipped'
             ]));

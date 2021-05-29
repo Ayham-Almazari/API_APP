@@ -11,7 +11,7 @@ Route::prefix('api/v1/dashboard')->middleware(['auth:admin'])->group(function ()
     Route::get('factories/underverificationfactoriesfordlete/{id}',[UnderVerificationDeleteOwnerFactoryController::class,'RestoreFactory']);
     Route::delete('factories/underverificationfactoriesfordlete/{id}',[UnderVerificationDeleteOwnerFactoryController::class,'DeleteFactory']);
     Route::get('search', [\App\Http\Controllers\API\Admin\ViewsAJax\UsersViews::class,"search"])->name('search.forRegisterBuyerAsAdmin');
-    Route::put('update/permissions/factory/{factory}', [\App\Http\Controllers\API\Admin\ManageFactories::class,"UpdateFactoryPermissions"])->name('search.forRegisterBuyerAsAdmin');
+    Route::put('update/permissions/factory/{factory}', [\App\Http\Controllers\API\Admin\ManageFactories::class,"UpdateFactoryPermissions"])->name('Adminpermission');
 });
 //
 
